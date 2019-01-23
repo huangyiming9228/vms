@@ -1,0 +1,45 @@
+{extend name="wx_base" /}
+
+{block name="style"}
+<style>
+.weui-cell__hd > img {
+  height: 16px;
+  width: 16px;
+}
+</style>
+{/block}
+
+{block name="content"}
+<div class="weui-cells__title">尊敬的{$account}用户，请选择您要办理的业务：</div>
+<div class="weui-cells">
+  <a class="weui-cell weui-cell_access" href="{:url('index/business/wx_cars_reservations')}">
+    <div class="weui-cell__hd"><img src="{$Think.STATIC_URL}/images/wx_cars_reservations.png"></div>
+    <div class="weui-cell__bd">
+      <p>车辆预约</p>
+    </div>
+    <div class="weui-cell__ft">
+    </div>
+  </a>
+  <a class="weui-cell weui-cell_access" href="{:url('index/business/wx_mot_test')}">
+    <div class="weui-cell__hd"><img src="{$Think.STATIC_URL}/images/wx_mot_test.png"></div>
+    <div class="weui-cell__bd">
+      <p>年审</p>
+    </div>
+    <div class="weui-cell__ft">
+    </div>
+  </a>
+  <a class="weui-cell weui-cell_access" href="{:url('index/business/wx_book_record')}">
+    <div class="weui-cell__hd"><img src="{$Think.STATIC_URL}/images/wx_book_record.png"></div>
+    <div class="weui-cell__bd">
+      <p>预约记录</p>
+    </div>
+    <div class="weui-cell__ft">
+    </div>
+  </a>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+</script>
+{/block}

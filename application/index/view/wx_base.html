@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{$title}</title>
+  <link rel="stylesheet" href="{$Think.STATIC_URL}/css/common.css">
+  <!-- 引入jquery -->
+  <script src="{$Think.STATIC_URL}/libs/jquery/dist/jquery.min.js"></script>
+  <!-- 引入jquery-weui -->
+  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/jquery-weui/dist/lib/weui.min.css">
+  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/jquery-weui/dist/css/jquery-weui.min.css">
+  <script src="{$Think.STATIC_URL}/libs/jquery-weui/dist/js/jquery-weui.min.js"></script>
+  {block name="private_file"}
+  {/block}
+  {block name="style"}
+  {/block}
+</head>
+<body>
+  <div class="weui-tab">
+    {block name="content"}
+    {/block}
+  </div>
+  {block name="javascript"}
+  {/block}
+</body>
+</html>

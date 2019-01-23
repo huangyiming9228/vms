@@ -1,0 +1,52 @@
+{extend name="wx_base" /}
+
+{block name="private_file"}
+<link rel="stylesheet" href="{$Think.STATIC_URL}/css/wx_login.css">
+<link rel="stylesheet" href="{$Think.STATIC_URL}/libs/semantic-ui/semantic.min.css">
+<script src="{$Think.STATIC_URL}/libs/semantic-ui/semantic.min.js"></script>
+{/block}
+
+{block name="content"}
+<div class="login-head">
+  <h2>车辆业务办理</h2>
+</div>
+<div class="login-body">
+  <form id="user-form" class="form">
+    <div class="ui left icon input fluid form-group">
+      <input type="text" placeholder="员工号" id="account" name="account">
+      <i class="user icon"></i>
+    </div>
+    <div class="ui left icon input fluid form-group">
+      <input type="password" placeholder="密码" id="psw" name="psw">
+      <i class="newspaper icon"></i>
+    </div>
+    <button class="fluid ui button blue" id="btn-login">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+  </form>
+  <p class="tips">说明：<br>
+    1.员工号：西南石油大学正式员级离退休人员工号；<br>
+    2.密码：swpu+身份证后四位。
+  </p>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+$('#btn-login').on('click', (e) => {
+  e.preventDefault();
+  const account = $('#account').val();
+  const psw = $('#psw').val();
+  if (!account || !psw) {
+    return $.toast('账号或密码不能为空！', 'forbidden');
+  }
+  $.post("{:url('login_check')}", { account, psw }, (response) => {
+    if (response) {
+      $.toast(response.msg, 800, () => {
+        window.location.href = response.url;
+      })
+    } else {
+      $.toast('账号或密码错误！', 'forbidden');
+    }
+  })
+})
+</script>
+{/block}
