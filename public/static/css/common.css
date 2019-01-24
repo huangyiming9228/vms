@@ -14,3 +14,8 @@ body {
   margin-top: 0 !important;
   padding-top: 0.77em;
 }
+
+.weui-btn_primary,
+.weui-btn_primary:focus {
+  background-color: #2185D0 !important;
+}

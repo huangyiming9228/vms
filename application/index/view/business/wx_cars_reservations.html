@@ -12,39 +12,40 @@
 {block name="content"}
 <div class="weui-cells__title tips">尊敬的{$account}用户，请填写要预约的车辆信息：</div>
 <div class="weui-cells weui-cells_form">
-  <div class="weui-cell">
-    <div class="weui-cell__hd">
-      <label class="weui-label">员工电话</label>
-    </div>
-    <div class="weui-cell__bd">
-      <input class="weui-input" type="number" pattern="[0-9]*" placeholder="输入员工电话">
-    </div>
-  </div>
-  <div class="weui-cell">
-    <div class="weui-cell__hd">
-      <label class="weui-label">预约车牌号</label>
-    </div>
-    <div class="weui-cell__bd">
-      <input class="weui-input" type="text" placeholder="输入来访车辆车牌号">
-    </div>
-  </div>
-  <div class="weui-cell">
+  <form id="form-submit">
+    <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">预约人姓名</label>
+        <label class="weui-label">员工电话</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="输入预约人姓名">
+        <input class="weui-input" type="number" pattern="[0-9]*" placeholder="输入员工电话" name="tel">
       </div>
     </div>
-  <div class="weui-cell">
-    <div class="weui-cell__hd">
-      <label for="" class="weui-label">到访时间</label>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约车牌号</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="例如：川A123456" name="card_no">
+      </div>
     </div>
-    <div class="weui-cell__bd">
-      <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择明天的到访时间" readonly>
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+          <label class="weui-label">预约人姓名</label>
+        </div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name">
+        </div>
+      </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label for="" class="weui-label">到访时间</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择明天的到访时间" readonly>
+      </div>
     </div>
-  </div>
-  <div class="weui-cell">
+    <div class="weui-cell">
       <div class="weui-cell__hd">
         <label class="weui-label">到访事由</label>
       </div>
@@ -52,13 +53,15 @@
         <input class="weui-input" type="text" placeholder="输入到访事由" id="visit_reason" name="visit_reason">
       </div>
     </div>
+  </form>
 </div>
 <!-- <div class="weui-cells__tips">当前允许预约明天的到访时间</div> -->
-<a href="javascript:;" class="weui-btn weui-btn_primary btn-submit">预约</a>
+<a href="javascript:;" class="weui-btn weui-btn_primary btn-submit" id="btn-submit">预约</a>
 {/block}
 
 {block name="javascript"}
 <script>
+// 绑定时间选择器
 $('#visit_date').on('click', function() {
   const self = this;
   weui.picker(getHours(), {
@@ -74,7 +77,7 @@ $('#visit_date').on('click', function() {
   })
 })
 
-// 获取时间段
+// 获取预约时间段
 const getHours = () => {
   let hours = [];
   for (let i = 7; i < 24; i++) {
@@ -82,5 +85,23 @@ const getHours = () => {
   }
   return hours;
 }
+
+// 绑定提交事件
+$('#btn-submit').on('click', function() {
+  const form = document.querySelector('#form-submit');
+  let validateFlag = true;
+  const _alert = (errMsg) => {
+    weui.topTips(errMsg, 1500);
+    validateFlag = false;
+  }
+
+  if (validateFlag) {
+    validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
+    validateFlag && (form.card_no.value || _alert('请填写车牌号！'));
+    validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
+    validateFlag && (form.visit_date.value || _alert('请选择到访时间！'));
+    validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
+  }
+});
 </script>
 {/block}
