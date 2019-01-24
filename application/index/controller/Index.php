@@ -7,6 +7,11 @@ use think\Db;
 
 class Index extends Controller
 {
+  // 错误路径处理
+  public function _empty() {
+    $this->error('404!路径不存在.');
+  }
+
   // 渲染首页
   public function wx_index() {
     return $this->fetch('wx_index', [
@@ -17,9 +22,13 @@ class Index extends Controller
 
   // 渲染登录页面
   public function wx_login() {
-    return $this->fetch('wx_login', [
-      'title' => '登录',
-    ]);
+    if (Session::has('account')) {
+      $this->redirect('wx_index');
+    } else {
+      return $this->fetch('wx_login', [
+        'title' => '登录',
+      ]);
+    }
   }
 
   // 登录验证
