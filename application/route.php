@@ -12,7 +12,6 @@ use think\Route;
 
 Route::rule([
     'admin' => 'admin/index/index',
-    'wx_login' => 'index/index/wx_login',
 ]);
 
 return [

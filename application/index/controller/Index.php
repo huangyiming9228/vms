@@ -16,13 +16,13 @@ class Index extends Controller
   public function wx_index() {
     return $this->fetch('wx_index', [
       'title' => '首页',
-      'account' => Session::get('account'),
+      'user_account' => Session::get('user_account'),
     ]);
   }
 
   // 渲染登录页面
   public function wx_login() {
-    // if (Session::has('account')) {
+    // if (Session::has('user_account')) {
     //   $this->redirect('wx_index');
     // } else {
     //   return $this->fetch('wx_login', [
@@ -39,7 +39,7 @@ class Index extends Controller
     $account = $_POST['account'];
     $psw = $_POST['psw'];
     if ($account == 'admin' && $psw == 'admin') {
-      Session::set('account', $account);
+      Session::set('user_account', $account);
       $this->success('登录成功！', url('wx_index'));
     } else {
       return false;

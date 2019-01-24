@@ -3,6 +3,9 @@
 {block name="style"}
 <style>
 .weui-cell__hd > img {
+  margin-right: 5px;
+  position: relative;
+  top: 3px;
   height: 16px;
   width: 16px;
 }
@@ -10,7 +13,7 @@
 {/block}
 
 {block name="content"}
-<div class="weui-cells__title">尊敬的{$account}用户，请选择您要办理的业务：</div>
+<div class="weui-cells__title">尊敬的{$user_account}用户，请选择您要办理的业务：</div>
 <div class="weui-cells">
   <a class="weui-cell weui-cell_access" href="{:url('index/business/wx_cars_reservations')}">
     <div class="weui-cell__hd"><img src="{$Think.STATIC_URL}/images/wx_cars_reservations.png"></div>

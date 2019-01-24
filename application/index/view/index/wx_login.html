@@ -38,18 +38,23 @@ $('#btn-login').on('click', (e) => {
   if (!account || !psw) {
     return weui.topTips('账号或密码不能为空！', 2000);
   }
-  $.post("{:url('login_check')}", { account, psw }, (response) => {
-    if (response) {
-      weui.toast(response.msg, {
-        duration: 800,
-        callback: () => {
-          window.location.href = response.url;
-        }
-      });
-    } else {
-      weui.topTips('账号或密码错误！', 2000);
-    }
-  })
+  try {
+    $.post("{:url('login_check')}", { account, psw }, (response) => {
+      if (response) {
+        weui.toast(response.msg, {
+          duration: 800,
+          callback: () => {
+            window.location.href = response.url;
+          }
+        });
+      } else {
+        weui.topTips('账号或密码错误！', 2000);
+      }
+    })
+  } catch (error) {
+    console.log('erroe', error);
+    weui.topTips('网络错误！提交失败。', 1500);
+  }
 })
 </script>
 {/block}

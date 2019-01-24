@@ -7,11 +7,18 @@ use think\Db;
 
 class Business extends Controller
 {
+  // 控制器初始化
+  public function _initialize() {
+    if (!Session::has('user_account')) {
+      $this->error('登录过期，请重新登录！');
+    }
+  }
+
   // 渲染微信预约页面
   public function wx_cars_reservations() {
     return $this->fetch('wx_cars_reservations', [
       'title' => '车辆预约',
-      'account' => Session::get('account'),
+      'account' => Session::get('user_account'),
     ]);
   }
 
@@ -27,5 +34,26 @@ class Business extends Controller
     return $this->fetch('wx_book_record', [
       'title' => '预约记录',
     ]);
+  }
+
+  /*
+   * @desc 保存预约数据
+   * @status 0 - 未审核
+   *         1 - 审核通过
+   *         2 - 审核未通过
+   */
+  public function save_reservation() {
+    $data = $_POST;
+    $data['status'] = 0;
+    $data['submitter_no'] = Session::get('user_account');
+    // $data['submitter'] = Session::get('user_name');
+    $data['submitter'] = 'admin';
+    $data['submit_time'] = Date('Y-m-d H:i:s');
+    $res = Db::table('reservation_list')->insert($data);
+    if ($res) {
+      $this->success('提交成功，请耐心等待审核。', url('index/index/wx_index'));
+    } else {
+      return false;
+    }
   }
 }

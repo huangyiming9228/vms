@@ -6,6 +6,9 @@
   margin: 40px 30px 0 30px;
   /* background-color: #2185D0; */
 }
+.weui-picker__action {
+  color: #2185D0 !important;
+}
 </style>
 {/block}
 
@@ -26,7 +29,7 @@
         <label class="weui-label">预约车牌号</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="例如：川A123456" name="card_no">
+        <input class="weui-input" type="text" placeholder="例如：川A123456" name="car_no" id="car_no">
       </div>
     </div>
     <div class="weui-cell">
@@ -42,7 +45,7 @@
         <label for="" class="weui-label">到访时间</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择明天的到访时间" readonly>
+        <input class="weui-input" type="text" id="visit_time" name="visit_time" placeholder="选择明天的到访时间" readonly>
       </div>
     </div>
     <div class="weui-cell">
@@ -62,7 +65,7 @@
 {block name="javascript"}
 <script>
 // 绑定时间选择器
-$('#visit_date').on('click', function() {
+$('#visit_time').on('click', function() {
   const self = this;
   weui.picker(getHours(), {
     container: 'body',
@@ -73,9 +76,9 @@ $('#visit_date').on('click', function() {
     onClose: function(value) {
       $(self).val(Global.getTomorrowDate() + ' ' + $(self).val() + ':00');
     },
-    id: 'visit_date',
+    id: 'visit_time',
   })
-})
+});
 
 // 获取预约时间段
 const getHours = () => {
@@ -84,7 +87,12 @@ const getHours = () => {
     hours.push(i < 10 ? ('0' + i + ':00') : (i + ':00'));
   }
   return hours;
-}
+};
+
+// 车牌字母转换为大写
+$('#car_no').on('change', function() {
+  $(this).val($(this).val().toUpperCase());
+});
 
 // 绑定提交事件
 $('#btn-submit').on('click', function() {
@@ -93,14 +101,41 @@ $('#btn-submit').on('click', function() {
   const _alert = (errMsg) => {
     weui.topTips(errMsg, 1500);
     validateFlag = false;
-  }
+  };
 
   if (validateFlag) {
     validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
-    validateFlag && (form.card_no.value || _alert('请填写车牌号！'));
+    validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
+    validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
     validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-    validateFlag && (form.visit_date.value || _alert('请选择到访时间！'));
+    validateFlag && (form.visit_time.value || _alert('请选择到访时间！'));
     validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
+  }
+
+  if(validateFlag) {
+    const loading = weui.loading('提交中...');
+    try {
+      $.post("{:url('save_reservation')}", $('#form-submit').serializeArray(), (response) => {
+        if (response) {
+          loading.hide(() => {
+            weui.toast(response.msg, {
+              duration: 1000,
+              callback: () => {
+                // window.location.replace(response.url);
+                window.location.href = response.url;
+              }
+            });
+          })
+        } else {
+          loading.hide();
+          weui.topTips('预约失败！您今天已没有预约次数了，请明天再预约。', 3000);
+        }
+      });
+    } catch (error) {
+      loading.hide();
+      console.log('erroe', error);
+      weui.topTips('网络错误！提交失败。', 1500);
+    }
   }
 });
 </script>
