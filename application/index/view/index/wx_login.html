@@ -22,10 +22,10 @@
     </div>
     <button class="fluid ui button blue" id="btn-login">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
   </form>
-  <p class="tips">说明：<br>
+  <!-- <p class="tips">说明：<br>
     1.员工号：西南石油大学正式员级离退休人员工号；<br>
     2.密码：swpu+身份证后四位。
-  </p>
+  </p> -->
 </div>
 {/block}
 
@@ -41,6 +41,7 @@ $('#btn-login').on('click', (e) => {
   $.post("{:url('login_check')}", { account, psw }, (response) => {
     if (response) {
       $.toast(response.msg, 800, () => {
+        // window.location.replace(response.url);
         window.location.href = response.url;
       })
     } else {

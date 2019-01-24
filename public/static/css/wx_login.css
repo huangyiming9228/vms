@@ -1,0 +1,15 @@
+.login-head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
+.login-body {
+  margin: 0 30px;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+.tips {
+  margin-top: 20px;
+}
