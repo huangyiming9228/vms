@@ -5,19 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{$title}</title>
+  <!-- 引入公共文件 -->
   <link rel="stylesheet" href="{$Think.STATIC_URL}/css/common.css">
+  <script src="{$Think.STATIC_URL}/js/common.js"></script>
   <!-- 引入jquery -->
   <script src="{$Think.STATIC_URL}/libs/jquery/dist/jquery.min.js"></script>
-  <!-- 引入jquery-weui -->
-  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/jquery-weui/dist/lib/weui.min.css">
-  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/jquery-weui/dist/css/jquery-weui.min.css">
-  <script src="{$Think.STATIC_URL}/libs/jquery-weui/dist/js/jquery-weui.min.js"></script>
+  {block name="weui"}
+  <!-- 引入weui -->
+  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/weui/weui.min.css">
+  <script src="{$Think.STATIC_URL}/libs/weui/weui.min.js"></script>
+  {/block}
   {block name="private_file"}
   {/block}
   {block name="style"}
   {/block}
 </head>
-<body>
+<body ontouchstart>
   <div class="weui-tab">
     {block name="content"}
     {/block}

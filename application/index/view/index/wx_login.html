@@ -36,16 +36,18 @@ $('#btn-login').on('click', (e) => {
   const account = $('#account').val();
   const psw = $('#psw').val();
   if (!account || !psw) {
-    return $.toast('账号或密码不能为空！', 'forbidden');
+    return weui.topTips('账号或密码不能为空！', 2000);
   }
   $.post("{:url('login_check')}", { account, psw }, (response) => {
     if (response) {
-      $.toast(response.msg, 800, () => {
-        // window.location.replace(response.url);
-        window.location.href = response.url;
-      })
+      weui.toast(response.msg, {
+        duration: 800,
+        callback: () => {
+          window.location.href = response.url;
+        }
+      });
     } else {
-      $.toast('账号或密码错误！', 'forbidden');
+      weui.topTips('账号或密码错误！', 2000);
     }
   })
 })

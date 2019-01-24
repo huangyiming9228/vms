@@ -22,13 +22,16 @@ class Index extends Controller
 
   // 渲染登录页面
   public function wx_login() {
-    if (Session::has('account')) {
-      $this->redirect('wx_index');
-    } else {
-      return $this->fetch('wx_login', [
-        'title' => '登录',
-      ]);
-    }
+    // if (Session::has('account')) {
+    //   $this->redirect('wx_index');
+    // } else {
+    //   return $this->fetch('wx_login', [
+    //     'title' => '登录',
+    //   ]);
+    // }
+    return $this->fetch('wx_login', [
+      'title' => '登录',
+    ]);
   }
 
   // 登录验证

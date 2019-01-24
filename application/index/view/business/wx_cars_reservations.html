@@ -2,14 +2,85 @@
 
 {block name="style"}
 <style>
+.btn-submit {
+  margin: 40px 30px 0 30px;
+  /* background-color: #2185D0; */
+}
 </style>
 {/block}
 
 {block name="content"}
-
+<div class="weui-cells__title tips">尊敬的{$account}用户，请填写要预约的车辆信息：</div>
+<div class="weui-cells weui-cells_form">
+  <div class="weui-cell">
+    <div class="weui-cell__hd">
+      <label class="weui-label">员工电话</label>
+    </div>
+    <div class="weui-cell__bd">
+      <input class="weui-input" type="number" pattern="[0-9]*" placeholder="输入员工电话">
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__hd">
+      <label class="weui-label">预约车牌号</label>
+    </div>
+    <div class="weui-cell__bd">
+      <input class="weui-input" type="text" placeholder="输入来访车辆车牌号">
+    </div>
+  </div>
+  <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约人姓名</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="输入预约人姓名">
+      </div>
+    </div>
+  <div class="weui-cell">
+    <div class="weui-cell__hd">
+      <label for="" class="weui-label">到访时间</label>
+    </div>
+    <div class="weui-cell__bd">
+      <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择明天的到访时间" readonly>
+    </div>
+  </div>
+  <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">到访事由</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="输入到访事由" id="visit_reason" name="visit_reason">
+      </div>
+    </div>
+</div>
+<!-- <div class="weui-cells__tips">当前允许预约明天的到访时间</div> -->
+<a href="javascript:;" class="weui-btn weui-btn_primary btn-submit">预约</a>
 {/block}
 
 {block name="javascript"}
 <script>
+$('#visit_date').on('click', function() {
+  const self = this;
+  weui.picker(getHours(), {
+    container: 'body',
+    defaultValue: ['07:00'],
+    onChange: function(value) {
+      $(self).val(value);
+    },
+    onClose: function(value) {
+      $(self).val(Global.getTomorrowDate() + ' ' + $(self).val() + ':00');
+    },
+    id: 'visit_date',
+  })
+})
+
+// 获取时间段
+const getHours = () => {
+  let hours = [];
+  for (let i = 7; i < 24; i++) {
+    hours.push(i < 10 ? ('0' + i + ':00') : (i + ':00'));
+  }
+  return hours;
+}
 </script>
 {/block}

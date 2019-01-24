@@ -11,6 +11,7 @@ class Business extends Controller
   public function wx_cars_reservations() {
     return $this->fetch('wx_cars_reservations', [
       'title' => '车辆预约',
+      'account' => Session::get('account'),
     ]);
   }
 
