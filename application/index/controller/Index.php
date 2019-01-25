@@ -38,11 +38,17 @@ class Index extends Controller
   public function login_check() {
     $emp_no = $_POST['emp_no'];
     $psw = $_POST['psw'];
-    if ($emp_no == 'admin' && $psw == 'admin') {
+    $emp_info = Db::table('employee_list')->where('emp_no', $emp_no)->find();
+    if (!$emp_info) {
+      return $this->error('账号不存在！');
+    }
+    if ($psw == $emp_info['psw']) {
       Session::set('emp_no', $emp_no);
+      Session::set('emp_name', $emp_info['emp_name']);
+      Session::set('emp_level', $emp_info['emp_level']);
       $this->success('登录成功！', url('wx_index'));
     } else {
-      $this->error('账号或密码错误！');
+      $this->error('密码错误！');
     }
   }
 }

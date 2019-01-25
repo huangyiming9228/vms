@@ -4,6 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Session;
 use think\Db;
+use think\Log;
 
 class Business extends Controller
 {
@@ -18,8 +19,20 @@ class Business extends Controller
   public function wx_cars_reservations() {
     return $this->fetch('wx_cars_reservations', [
       'title' => '车辆预约',
-      'account' => Session::get('emp_no'),
+      'emp_no' => Session::get('emp_no'),
+      'rest_time' => $this->get_rest_reservation_time()
     ]);
+  }
+
+  // 获取用户剩余预约次数
+  private function get_rest_reservation_time() {
+    $emp_level = Session::get('emp_level');
+    $availabel_time = Db::table('reservation_permission_list')->where('level', $emp_level)->value('reservation_time');
+    $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))->count();
+    Log::record($availabel_time);
+    Log::record($already_time);
+    $rest_time = $emp_level == 3 ? '无限': ($availabel_time - $already_time);
+    return $rest_time;
   }
 
   // 渲染微信年审页面
@@ -43,17 +56,21 @@ class Business extends Controller
    *         2 - 审核未通过
    */
   public function save_reservation() {
+    $availabel_time = Db::table('reservation_permission_list')->where('level', Session::get('emp_level'))->value('reservation_time');
+    $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))->count();
+    if ($already_time >= $availabel_time) {
+      return $this->error('预约失败！您今天的预约次数已用完，请明天再预约。');
+    }
     $data = $_POST;
     $data['status'] = 0;
     $data['submitter_no'] = Session::get('emp_no');
-    // $data['submitter'] = Session::get('user_name');
-    $data['submitter'] = 'admin';
+    $data['submitter'] = Session::get('emp_name');
     $data['submit_time'] = Date('Y-m-d H:i:s');
     $res = Db::table('reservation_list')->insert($data);
     if ($res) {
       $this->success('提交成功，请耐心等待审核。', url('index/index/wx_index'));
     } else {
-      $this->error('预约失败！您今天已没有预约次数了，请明天再预约。');
+      $this->error('服务器错误，提交失败！');
     }
   }
 }
