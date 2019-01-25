@@ -16,13 +16,13 @@ class Index extends Controller
   public function wx_index() {
     return $this->fetch('wx_index', [
       'title' => '首页',
-      'user_account' => Session::get('user_account'),
+      'emp_no' => Session::get('emp_no'),
     ]);
   }
 
   // 渲染登录页面
   public function wx_login() {
-    // if (Session::has('user_account')) {
+    // if (Session::has('emp_no')) {
     //   $this->redirect('wx_index');
     // } else {
     //   return $this->fetch('wx_login', [
@@ -36,10 +36,10 @@ class Index extends Controller
 
   // 登录验证
   public function login_check() {
-    $account = $_POST['account'];
+    $emp_no = $_POST['emp_no'];
     $psw = $_POST['psw'];
-    if ($account == 'admin' && $psw == 'admin') {
-      Session::set('user_account', $account);
+    if ($emp_no == 'admin' && $psw == 'admin') {
+      Session::set('emp_no', $emp_no);
       $this->success('登录成功！', url('wx_index'));
     } else {
       $this->error('账号或密码错误！');

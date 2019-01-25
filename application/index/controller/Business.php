@@ -9,7 +9,7 @@ class Business extends Controller
 {
   // 控制器初始化
   public function _initialize() {
-    if (!Session::has('user_account')) {
+    if (!Session::has('emp_no')) {
       $this->error('登录过期，请重新登录！');
     }
   }
@@ -18,7 +18,7 @@ class Business extends Controller
   public function wx_cars_reservations() {
     return $this->fetch('wx_cars_reservations', [
       'title' => '车辆预约',
-      'account' => Session::get('user_account'),
+      'account' => Session::get('emp_no'),
     ]);
   }
 
@@ -45,7 +45,7 @@ class Business extends Controller
   public function save_reservation() {
     $data = $_POST;
     $data['status'] = 0;
-    $data['submitter_no'] = Session::get('user_account');
+    $data['submitter_no'] = Session::get('emp_no');
     // $data['submitter'] = Session::get('user_name');
     $data['submitter'] = 'admin';
     $data['submit_time'] = Date('Y-m-d H:i:s');

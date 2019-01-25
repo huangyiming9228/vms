@@ -13,7 +13,7 @@
 <div class="login-body">
   <form id="user-form" class="form">
     <div class="ui left icon input fluid form-group">
-      <input type="text" placeholder="员工号" id="account" name="account">
+      <input type="text" placeholder="员工号" id="emp_no" name="emp_no">
       <i class="user icon"></i>
     </div>
     <div class="ui left icon input fluid form-group">
@@ -33,13 +33,13 @@
 <script>
 $('#btn-login').on('click', (e) => {
   e.preventDefault();
-  const account = $('#account').val();
+  const emp_no = $('#emp_no').val();
   const psw = $('#psw').val();
-  if (!account || !psw) {
+  if (!emp_no || !psw) {
     return weui.topTips('账号或密码不能为空！', 1500);
   }
   new Promise((resolve, reject) => {
-    $.post("{:url('login_check')}", { account, psw }, (response) => {
+    $.post("{:url('login_check')}", { emp_no, psw }, (response) => {
       response.code ? weui.toast(response.msg, {
         duration: 800,
         callback: () => {
