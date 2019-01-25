@@ -114,9 +114,9 @@ $('#btn-submit').on('click', function() {
 
   if(validateFlag) {
     const loading = weui.loading('提交中...');
-    try {
+    new Promise((resolve) => {
       $.post("{:url('save_reservation')}", $('#form-submit').serializeArray(), (response) => {
-        if (response) {
+        if (response.code) {
           loading.hide(() => {
             weui.toast(response.msg, {
               duration: 1000,
@@ -127,15 +127,17 @@ $('#btn-submit').on('click', function() {
             });
           })
         } else {
-          loading.hide();
-          weui.topTips('预约失败！您今天已没有预约次数了，请明天再预约。', 3000);
+          loading.hide(() => {
+            weui.topTips(response.msg, 3000);
+          });
         }
       });
-    } catch (error) {
+    })
+    .catch((error) => {
       loading.hide();
       console.log('erroe', error);
       weui.topTips('网络错误！提交失败。', 1500);
-    }
+    })
   }
 });
 </script>

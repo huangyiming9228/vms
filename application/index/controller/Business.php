@@ -53,7 +53,7 @@ class Business extends Controller
     if ($res) {
       $this->success('提交成功，请耐心等待审核。', url('index/index/wx_index'));
     } else {
-      return false;
+      $this->error('预约失败！您今天已没有预约次数了，请明天再预约。');
     }
   }
 }

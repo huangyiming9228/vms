@@ -8,9 +8,9 @@ use think\Db;
 class Index extends Controller
 {
   // 错误路径处理
-  public function _empty() {
-    $this->error('404!路径不存在.');
-  }
+  // public function _empty() {
+  //   $this->error('404!路径不存在.');
+  // }
 
   // 渲染首页
   public function wx_index() {
@@ -42,7 +42,7 @@ class Index extends Controller
       Session::set('user_account', $account);
       $this->success('登录成功！', url('wx_index'));
     } else {
-      return false;
+      $this->error('账号或密码错误！');
     }
   }
 }
