@@ -105,6 +105,7 @@ $('#btn-submit').on('click', function() {
 
   if (validateFlag) {
     validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
+    validateFlag && (form.tel.value.length === 11 || _alert('请填写长度为11位的手机号！'));
     validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
     validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
     validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
@@ -136,7 +137,7 @@ $('#btn-submit').on('click', function() {
     .catch((error) => {
       loading.hide();
       console.log('erroe', error);
-      weui.topTips('网络错误！提交失败。', 1500);
+      weui.topTips('服务器未知错误！提交失败。', 1500);
     })
   }
 });

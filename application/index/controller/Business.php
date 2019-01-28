@@ -29,8 +29,6 @@ class Business extends Controller
     $emp_level = Session::get('emp_level');
     $availabel_time = Db::table('reservation_permission_list')->where('level', $emp_level)->value('reservation_time');
     $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))->count();
-    Log::record($availabel_time);
-    Log::record($already_time);
     $rest_time = $emp_level == 3 ? '无限': ($availabel_time - $already_time);
     return $rest_time;
   }
@@ -46,6 +44,7 @@ class Business extends Controller
   public function wx_book_record() {
     return $this->fetch('wx_book_record', [
       'title' => '预约记录',
+      'emp_no' => Session::get('emp_no'),
     ]);
   }
 
@@ -72,5 +71,13 @@ class Business extends Controller
     } else {
       $this->error('服务器错误，提交失败！');
     }
+  }
+
+  // 获取预约记录
+  public function get_reservation_list($emp_no) {
+    return Db::table('reservation_list')
+              ->where('submitter_no', $emp_no)
+              ->order('visit_time', 'desc')
+              ->select();
   }
 }
