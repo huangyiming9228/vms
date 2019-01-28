@@ -11,4 +11,4 @@
 
 // 应用公共文件
 define('STIE_URL', 'http://localhost/vms');
-define('STATIC_URL', 'http://localhost/vms/public/static');
+define('STATIC_URL', '/vms/public/static');
