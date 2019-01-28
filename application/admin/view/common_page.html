@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link href="{$Think.BACK_SITE_URL}/public/h_admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="{$Think.BACK_SITE_URL}/public/h_admin/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="{$Think.BACK_SITE_URL}/public/h_admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="{$Think.BACK_SITE_URL}/public/h_admin/css/animate.css" rel="stylesheet">
+    <link href="{$Think.BACK_SITE_URL}/public/h_admin/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="{$Think.STATIC_URL}/weui-1.1.2/weui.min.css" rel="stylesheet">
+    <script src="{$Think.BACK_SITE_URL}/public/h_admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="{$Think.BACK_SITE_URL}/public/h_admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- awesomplete 自动补全 -->
+    <link rel="stylesheet" href="{$Think.BACK_SITE_URL}/public/awesomplete/css/awesomplete.css" />
+    <!-- bootstrap Tables -->
+    <link href="{$Think.BACK_SITE_URL}/public/h_admin/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <script src="{$Think.BACK_SITE_URL}/public/h_admin/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="{$Think.BACK_SITE_URL}/public/h_admin/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+    <script src="{$Think.BACK_SITE_URL}/public/h_admin/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="{$Think.BACK_SITE_URL}/public/laydate/laydate.dev.js"></script>
+    <script src="{$Think.BACK_SITE_URL}/public/static/js/common_table.js"></script>
+    <script src="{$Think.STATIC_URL}/weui-1.1.2/weui.min.js"></script>
+    <!-- awesomplete 自动补全 -->
+    <script src="{$Think.BACK_SITE_URL}/public/awesomplete/js/awesomplete.js"></script>
+    <script src="{$Think.BACK_SITE_URL}/public/static/js/common_auto_complete.js"></script>
+    <!-- bootbox  弹出窗 -->
+    <script src="{$Think.BACK_SITE_URL}/public/bootbox/bootbox.min.js"></script>
+    <script src="{$Think.BACK_SITE_URL}/public/static/js/common_alert.js"></script>
+    <!-- 图片旋转插件 -->
+    <script src="{$Think.BACK_STATIC_URL}/jqueryrotate/js/jQueryRotate.js"></script>
+    {notempty name="webupload_widget"}
+    <!-- webuploader -->
+    <link rel="stylesheet" type="text/css" href="{$Think.BACK_SITE_URL}/public/static/webuploader/css/webuploader.css" />
+    <link rel="stylesheet" type="text/css" href="{$Think.BACK_SITE_URL}/public/static/webuploader/css/style.css" />
+    <script type="text/javascript" src="{$Think.BACK_SITE_URL}/public/static/webuploader/js/webuploader.js"></script>
+    {/notempty}
+    {block name="private_file"}{/block}
+    <style type="text/css">
+         .form-control{
+            padding-bottom: 0px;
+            padding-top: 0px;    
+        }
+    </style>
+    {block name="private_css"}{/block}
+</head>
+<body style="background: #F0F3F4;">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="container-fluid">
+                    <div class="row"> 
+                        {block name="content"}
+                        {/block}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {block name="private_body"}
+    {/block}
+    {notempty name="modal"}
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">上传图片</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="weui-cells weui-cells_form" id="uploader" style="margin-top: 0px;">
+                            <div class="weui-cell">
+                                <div class="weui-cell__bd">
+                                    <div class="weui-uploader">
+                                        <div class="weui-uploader__bd">
+                                            <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+                                            <div class="weui-uploader__input-box">
+                                                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="img_id">
+                        <input type="hidden" id="business_id">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn" style="background-color: #EEEEEE;" onclick="img_upload();">上传</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    {/notempty}
+    {notempty name="financing_add_modal"}
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="add_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">新增筹资信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="form-horizontal" id="financing_add_form">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="financing_type">筹资类别</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="5" id="financing_type" name="financing_type"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="financing_standard">筹资标准</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="5" id="financing_standard" name="financing_standard"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="start_date">开始日期</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="start_date" placeholder="yyyy-mm-dd" name="start_date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="end_date">截止日期</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="end_date" placeholder="yyyy-mm-dd" name="end_date">
+                                    </div>
+                                </div>
+                                <input type="hidden" id="id" name="id">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn" style="background-color: #EEEEEE;" id="save_btn">保存</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    {/notempty}
+    {notempty name="financing_site_add_modal"}
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="financing_site_add_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">新增筹资点位信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="form-horizontal" id="financing_site_add_form">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="type">点位类别</label>
+                                    <div class="col-md-10">
+                                        <!-- <input type="text" class="form-control" id="type" name="type"> -->
+                                        <select class="form-control" id="type" name="type">
+                                            <option value="1">第1类</option>
+                                            <option value="2">第2类</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="name">点位名称</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="name" name="name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="address">地址</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="address" name="address">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="tel">电话</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="tel" name="tel">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="longitude">经度坐标</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="longitude" name="longitude">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="latitude">维度坐标</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="latitude" name="latitude">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn" style="background-color: #EEEEEE;" id="save_btn">保存</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    {/notempty}
+    {notempty name="business_introduce_edit_modal"}
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="business_introduce_edit_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">编辑业务介绍</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="form-horizontal" id="business_introduce_edit_form">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="business_name">业务名称</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="business_name" name="business_name" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="business_introduce">业务介绍</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="3" id="business_introduce" name="business_introduce"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="business_notice">特别注意</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="3" id="business_notice" name="business_notice"></textarea>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" id="id" value="">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn" style="background-color: #EEEEEE;" id="save_btn">保存</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    {/notempty}
+    {notempty name="suggestion_reply_modal"}
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="suggestion_reply_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">回复</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="form-horizontal" id="suggestion_reply_modal_form">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="reply">回复内容</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="5" id="reply" name="reply"></textarea>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" id="id" value="">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn" style="background-color: #EEEEEE;" id="save-btn">提交</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    {/notempty}
+    {notempty name="question_reply_modal"}
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="question_reply_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">回复</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="form-horizontal" id="question_reply_modal_form">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="answer">回复内容</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="5" id="answer" name="answer"></textarea>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" id="id" value="">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn" style="background-color: #EEEEEE;" id="save-btn">提交</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    {/notempty}
+    {notempty name="financing_standard_modal"}
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="financing_standard_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">新增年度筹资标准</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="form-horizontal" id="financing_standard_modal_form">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="year">年度</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="year" id="year" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="base_high">成人基本高档</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="base_high" id="base_high" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="base_low">成人基本低档</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="base_low" id="base_low" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="big_ill_high">成人大病互助高档</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="big_ill_high" id="big_ill_high" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="big_ill_low">成人大病互助低档</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="big_ill_low" id="big_ill_low" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="student">学生儿童（含大学生）</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="student" id="student" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="special">重特大疾病</label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="special" id="special" class="form-control">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn" style="background-color: #EEEEEE;" id="btn_save">保存</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    {/notempty}
+</body>
+{notempty name="address_widget"}
+<script type="text/javascript">
+    function popup_address() {
+        $("#addressModal").modal('show');
+    }
+    function close_address() {
+        $("#addressModal").modal('hide');
+    }
+
+
+    //选中勾选的
+    function add_address(name) {
+        $("input:checked[name='addr_id']").each(function() {
+            $text = $(this).next().text().trim();
+            $val = $(this).val();
+            if ($("#" + name + ".selected li[data='" + $val + "']").length == 0) {
+                $li = $('<li><span></span><a class="fa fa-times"></a></li>');
+                $li.find('span').text($text);
+                $li.attr('data', $val);
+                $li.appendTo("#" + name + ".selected ul");
+                recount();
+            };
+        });
+        $("#addr_list input:checked").prop('checked', false);
+    }
+    //全选
+    function select_all() {
+        $("input[name='addr_id']").each(function() {
+            $text = $(this).parents("label").find("span").text();
+            $val = $(this).val();
+            if ($("#rc.selected li[data='" + $val + "']").length == 0) {
+                $li = $('<li><span></span><a class="fa fa-times"></a></li>');
+                $li.find('span').text($text);
+                $li.attr('data', $val);
+                $li.appendTo("#rc.selected ul");
+                recount();
+            };
+        });
+    }
+    //全选计数
+    function recount() {
+        $("#rc_count").text("(" + $("#rc.selected li").length + ")");
+        $("#cc_count").text("(" + $("#cc.selected li").length + ")");
+        $("#bcc_count").text("(" + $("#bcc.selected li").length + ")");
+    }
+    //点击X取消
+    $(document).on("click", ".selected a.fa-times", function() {
+        $(this).parent().remove();
+        recount();
+    });
+    //显示当前部门人员
+    function showdata(data) {
+                    $("#addr_list").html("");
+        if ( type = $("input[name='type']:checked").val() == "dept") {
+            var id = "dept_" + $("#dept a.active").attr("node");
+            var dept_name = $("#dept a.active span").text();
+            var name = dept_name + "&lt;dept@group&gt;";
+            var html_string = conv_address_item(name, id);
+            $("#addr_list").html(html_string);
+        }
+        $("#addr_list").html("");
+        for (s in data) {
+            var user_id = data[s].id;
+            var name = data[s].name;
+            var name = name;
+            var html_string = conv_address_item(name, user_id);
+            $("#addr_list").append(html_string);
+        }
+    }
+    // 双击添加到收件人 因后添加的数据 所以需要用live函数
+    $(document).on("dblclick", "#addr_list label", function() {
+        $text = $(this).text();
+        $val = $(this).find("input").val();
+        if ($("#rc.selected li[data='" + $val + "']").length == 0) {
+            $li = $('<li><span></span><a class="fa fa-times"></a></li>');
+            $li.find('span').text($text);
+            $li.attr('data', $val);
+            $li.appendTo("#rc.selected ul");
+            recount();
+        };
+    });
+    $(document).ready(function() {
+        $("#rb_dept").prop('checked', true);
+        // 选择用户默认选择的类型
+        $("#dept").removeClass("hidden");
+
+        $("input[name='type']").on('click', function() {
+            $("input[name='type']").each(function() {
+                $("#" + $(this).val()).addClass("hidden");
+            });
+            $("#" + $(this).val()).removeClass("hidden");
+        });
+
+        $(".tree_menu  a").click(function() {
+            $(".tree_menu a").removeClass("active");
+            var type = $("input[name='type']:checked").val();
+            $(this).addClass("active");
+            var url="{:url('index/user_manage/get_user_by_dept')}";
+            $.get(url,{'dept_id':$(this).attr("node")},function(data){
+                showdata(data);
+            });
+            return false;
+        });
+    });
+    function save() {
+        console.log('save');
+        $("#rc.selected li").each(function(i) {
+            emp_no = $(this).attr('data');
+            name = jQuery.trim($(this).text());
+            name = name.replace(/<.*>/, '');
+            html = conv_inputbox_item(name, emp_no);
+            console.log(html);
+            $("#actor_wrap .address_list").append(html);
+            close_address();
+        });
+    }
+
+    $(document).ready(function() {
+        $(document).on("click", ".inputbox .address_list a.del", function() {
+            $(this).parent().parent().remove();
+        });
+    });
+</script>
+{/notempty}
+{notempty name="upload_widget"}
+<script type="text/javascript">
+    /************文件上传**************/ 
+    var $list=$("#thelist");   //这几个初始化全局的百度文档上没说明，好蛋疼。  
+    var uploader = WebUploader.create({
+        // 选完文件后，是否自动上传。  
+        auto: true, 
+        // swf文件路径
+        swf: '{$Think.BACK_SITE_URL}/public/static/webuploader/js/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('upload')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#picker',
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+    // 当有文件被添加进队列的时候
+    uploader.on( 'fileQueued', function( file ) {
+        $list.append( '<div id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            '<p class="state">等待上传...</p>' +
+        '</div>' );
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on( 'uploadProgress', function( file, percentage ) {
+        var $li = $( '#'+file.id ),
+            $percent = $li.find('.progress .progress-bar');
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<div class="progress progress-striped active">' +
+              '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+              '</div>' +
+            '</div>').appendTo( $li ).find('.progress-bar');
+        }
+
+        $li.find('p.state').text('上传中');
+
+        $percent.css( 'width', percentage * 100 + '%' );
+    });
+    uploader.on( 'uploadSuccess', function( file ,response) {
+        $( '#'+file.id ).find('p.state').text('已上传');
+        var add_file = $("#add_file").val();
+        add_file = add_file+response+';';
+        $("#add_file").val(add_file);
+    });
+
+    uploader.on( 'uploadError', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传出错');
+    });
+
+    uploader.on( 'uploadComplete', function( file ) {
+        $( '#'+file.id ).find('.progress').fadeOut();
+    });    
+</script>
+{/notempty}
+{block name="private_js"}
+{/block}
+</html>
