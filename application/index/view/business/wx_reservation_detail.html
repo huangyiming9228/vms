@@ -1,0 +1,88 @@
+{extend name="wx_base" /}
+
+{block name="style"}
+<style>
+span[success] {
+  color: green;
+}
+span[failure] {
+  color: red;
+}
+</style>
+{/block}
+
+{block name="content"}
+<div class="weui-cells__title">详细信息</div>
+<div class="weui-cells" id="detail">
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+// 获取数据
+$(function() {
+  const loading = weui.loading('获取数据中...');
+  new Promise((resolve) => {
+    $.get("{:url('get_reservation_detail')}", { id: "{$id}" }, (response) => {
+      if (response) {
+        const html = createDetail(response);
+        $('#detail').append(html);
+      } else {
+        weui.topTips('服务器未知错误！获取失败.', 1500);
+      }
+      loading.hide();
+    })
+  })
+  .catch((error) => {
+    loading.hide();
+    console.log('error', error);
+    weui.topTips('服务器未知错误！获取失败.', 1500);
+  })
+})
+
+// 构建详情html
+function createDetail(detail) {
+  return `<div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>预约车牌号：${detail.car_no}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>预约人姓名：${detail.name}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>员工电话：${detail.tel}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>到访时间：${detail.visit_time}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>到访事由：${detail.visit_reason}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>审核状态：${(() => {
+          switch(detail.status) {
+            case 0: return '<span normal>待审核</span>';
+            case 1: return '<span success>审核通过</span>';
+            case 2: return '<span failure>未通过审核</span>';
+          }
+        })()}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>审核备注：${detail.audit_remark ? detail.audit_remark : '-'}</p>
+    </div>
+  </div>`;
+}
+</script>
+{/block}

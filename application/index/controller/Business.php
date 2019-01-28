@@ -48,6 +48,14 @@ class Business extends Controller
     ]);
   }
 
+  // 渲染微信记录详情页面
+  public function wx_reservation_detail($id) {
+    return $this->fetch('wx_reservation_detail', [
+      'title' => '记录详情',
+      'id' => $id,
+    ]);
+  }
+
   /*
    * @desc 保存预约数据
    * @status 0 - 未审核
@@ -73,11 +81,16 @@ class Business extends Controller
     }
   }
 
-  // 获取预约记录
+  // 获取预约记录列表
   public function get_reservation_list($emp_no) {
     return Db::table('reservation_list')
               ->where('submitter_no', $emp_no)
               ->order('visit_time', 'desc')
               ->select();
+  }
+
+  // 获取预约记录详情
+  public function get_reservation_detail($id) {
+    return Db::table('reservation_list')->where('id', $id)->find();
   }
 }
