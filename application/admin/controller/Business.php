@@ -13,4 +13,8 @@ class Business extends Controller
     ]);
   }
 
+  public function get_reservation_list() {
+    return Db::table('reservation_list')->select();
+  }
+
 }

@@ -17,21 +17,32 @@
   <!-- 引入bootbox -->
   <script src="{$Think.STATIC_URL}/libs/bootbox/bootbox.min.js"></script>
   <!-- 引入animate.css -->
-  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/animate.css/animate.min.css">
+  <!-- <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/animate.css/animate.min.css"> -->
+  <!-- 引入font-awesome -->
+  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/font-awesome/css/font-awesome.min.css">
   {block name="private_file"}
   {/block}
+  <style>
+    body {
+      background-color: #f0f3f4;
+    }
+    .wrapper-content {
+      padding: 20px;
+    }
+    button:focus {
+      outline: none !important;
+    }
+  </style>
   {block name="style"}
   {/block}
 </head>
 <body>
-  <div class="wrapper wrapper-content animated fadeInRight">
+  <div class="wrapper wrapper-content">
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="container-fluid">
-          <div class="row"> 
-            {block name="content"}
-            {/block}
-          </div>
+          {block name="content"}
+          {/block}
         </div>
       </div>
     </div>

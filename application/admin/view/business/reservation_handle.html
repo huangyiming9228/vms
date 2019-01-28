@@ -1,1 +1,87 @@
 {extend name="base" /}
+
+{block name="content"}
+<div class="row">
+  <form id="search_form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-1 control-label">业务状态:</label>
+      <div class="col-sm-2">
+        <select class="form-control" id="status" name="status">
+          <option value="0">待审核</option>
+          <option value="1">通过审核</option>
+          <option value="2">未通过审核</option>
+          <option value="99">所有</option>
+        </select>
+      </div>
+      <label class="col-sm-1 control-label">员工号:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="emp_no" name="emp_no" >
+      </div>
+      <label class="col-sm-1 control-label">预约人姓名:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="name" name="name" >
+      </div>
+      <div class="col-sm-2" style="text-align:left;">
+        <button type="button" id="btn-query" class="btn btn-default" style="background-color: #EEEEEE"><i class="fa fa-search"></i>&nbsp;查询</button>
+      </div>
+    </div>
+  </form>              
+</div>
+<div class="row">
+  <table id="list"></table>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+$('#list').bootstrapTable({
+  url: "{:url('get_reservation_list')}",
+  pageSize: 10,
+  pageList: [10, 25, 50, 100],
+  pagination: true,
+  columns: [{
+    field: 'name',
+    title: '预约人姓名',
+    align: 'center',
+  }, {
+    field: 'car_no',
+    title: '车牌号',
+    align: 'center',
+  }, {
+    field: 'tel',
+    title: '员工电话',
+    align: 'center',
+  }, {
+    field: 'visit_time',
+    title: '到访时间',
+    align: 'center',
+  }, {
+    field: 'visit_reason',
+    title: '到访事由',
+    align: 'center',
+  }, {
+    field: 'status',
+    title: '预约状态',
+    align: 'center',
+    formatter: (value) => {
+      switch (value) {
+        case 0: return '待审核';
+        case 1: return '审核通过';
+        case 2: return '未通过审核';
+      }
+    },
+  }, {
+    field: 'op',
+    title: '操作',
+    align: 'center',
+    formatter: (value, row) => {
+      if (row.status === 0) {
+        return `<a href="#">审核</a>`;
+      } else {
+        return `<a href="#">查看详情</a>`;
+      }
+    }
+  }]
+})
+</script>
+{/block}
