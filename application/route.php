@@ -12,6 +12,7 @@ use think\Route;
 
 Route::rule([
     'admin' => 'admin/index/index',
+    'welcome' => 'admin/index/welcome',
 ]);
 
 return [

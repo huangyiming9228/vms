@@ -1,10 +1,16 @@
 <?php
 namespace app\admin\controller;
 
-class Index
+use think\Controller;
+use think\Db;
+
+class Index extends Controller
 {
-    public function index()
-    {
-        return '后台';
-    }
+  public function index(){
+    return $this->fetch('index');
+  }
+
+  public function welcome() {
+    return $this->fetch('welcome');
+  }
 }
