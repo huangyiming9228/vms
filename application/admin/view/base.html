@@ -53,6 +53,25 @@
       </div>
     </div>
   </div>
+  <!-- 预约审核模态框 -->
+  {notempty name="modal_reservation_handle"}
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal-reservation-handle">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-title"></h4>
+        </div>
+        <div class="modal-body" id="modal-body">      
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success btn-operation" data-status="1">同意</button>
+          <button type="button" class="btn btn-danger btn-operation" data-status="2">拒绝</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {/notempty}
   {block name="javascript"}
   {/block}
 </body>

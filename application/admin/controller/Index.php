@@ -7,11 +7,11 @@ use think\Session;
 
 class Index extends Controller
 {
-  public function _intialize() {
+  public function _initialize() {
     Session::set('admin_no', 'admin');
     Session::set('admin_name', '开发');
   }
-  
+
   // 渲染首页
   public function index(){
     return $this->fetch('index');
