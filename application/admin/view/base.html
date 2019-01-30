@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>{title}</title>
+  <title>{$title}</title>
   <!-- 引入jquery -->
   <script src="{$Think.STATIC_URL}/libs/jquery/dist/jquery.min.js"></script>
+  <!-- 引入common_alert.js -->
+  <script src="{$Think.STATIC_URL}/js/common_alert.js"></script>
   <!-- 引入bootstrap -->
   <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/bootstrap/dist/css/bootstrap.min.css">
   <script src="{$Think.STATIC_URL}/libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -20,6 +22,10 @@
   <!-- <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/animate.css/animate.min.css"> -->
   <!-- 引入font-awesome -->
   <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/font-awesome/css/font-awesome.min.css">
+  <!-- 引入ladda -->
+  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/ladda/ladda-themeless.min.css">
+  <script src="{$Think.STATIC_URL}/libs/ladda/spin.min.js"></script>
+  <script src="{$Think.STATIC_URL}/libs/ladda/ladda.min.js"></script>
   {block name="private_file"}
   {/block}
   <style>

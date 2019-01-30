@@ -22,18 +22,23 @@
         <input type="text" class="form-control" id="name" name="name" >
       </div>
       <div class="col-sm-2" style="text-align:left;">
-        <button type="button" id="btn-query" class="btn btn-default" style="background-color: #EEEEEE"><i class="fa fa-search"></i>&nbsp;查询</button>
+        <button class="btn btn-default ladda-button" data-style="slide-right" data-spinner-color="#000" id="btn-query">
+          <span class="ladda-label">
+            <i class="fa fa-search"></i>&nbsp;查询
+          </span>
+        </button>
       </div>
     </div>
   </form>              
 </div>
-<div class="row">
+<div class="row" style="margin-top: 20px;">
   <table id="list"></table>
 </div>
 {/block}
 
 {block name="javascript"}
 <script>
+// 绑定表格数据
 $('#list').bootstrapTable({
   url: "{:url('get_reservation_list')}",
   pageSize: 10,
@@ -83,5 +88,15 @@ $('#list').bootstrapTable({
     }
   }]
 })
+
+// 绑定查询按钮事件
+$('#btn-query').on('click', function(e) {
+  e.preventDefault();
+  var l = Ladda.create(this);
+  l.start();
+  setTimeout(() => {
+    l.stop();
+  }, 3000);
+});
 </script>
 {/block}
