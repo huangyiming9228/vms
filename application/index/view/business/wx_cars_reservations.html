@@ -42,18 +42,18 @@
       </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label for="" class="weui-label">到访时间</label>
+        <label for="" class="weui-label">预约时间</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" id="visit_time" name="visit_time" placeholder="选择明天的到访时间" readonly>
+        <input class="weui-input" type="text" id="visit_time" name="visit_time" placeholder="选择明天的预约时间" readonly>
       </div>
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">到访事由</label>
+        <label class="weui-label">预约事由</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="输入到访事由" id="visit_reason" name="visit_reason">
+        <input class="weui-input" type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reason">
       </div>
     </div>
   </form>
@@ -109,8 +109,8 @@ $('#btn-submit').on('click', function() {
     validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
     validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
     validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-    validateFlag && (form.visit_time.value || _alert('请选择到访时间！'));
-    validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
+    validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
+    validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
   }
 
   if(validateFlag) {
