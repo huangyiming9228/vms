@@ -1,0 +1,84 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="row">
+  <!-- <div class="col-md-12">
+    <button class="btn btn-primary" id="btn-add">
+      <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;新增角色
+    </button>
+  </div> -->
+</div>
+<div class="row" style="margin-top: 20px;">
+  <table id="list"></table>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+// 绑定表格数据
+$('#list').bootstrapTable({
+  url: "{:url('get_role_list')}",
+  pageSize: 10,
+  pageList: [10, 25, 50, 100],
+  pagination: true,
+  columns: [{
+    field: 'id',
+    title: '序号',
+    align: 'center',
+  }, {
+    field: 'level_name',
+    title: '角色名称',
+    align: 'center',
+  }, {
+    field: 'reservation_time',
+    title: '预约次数',
+    align: 'center',
+    formatter: (value, row) => row.level === 3 ? '无限次' : value
+  }, {
+    field: 'op',
+    title: '操作',
+    align: 'center',
+    formatter: (value, row) => row.level !== 3 ?
+      `<a href="javascript:void(0);" data-id="${row.id}" data-level-name="${row.level_name}" data-reservation-time="${row.reservation_time}" class="operation">修改预约次数</a>` : '-'
+  }],
+})
+
+// 绑定modal弹窗事件
+$('#list').on('click', '.operation', function() {
+  $('#id').val($(this).attr('data-id'));
+  $('#level_name').val($(this).attr('data-level-name'));
+  $('#reservation_time').val($(this).attr('data-reservation-time'));
+  $('#modal-permission-update').modal('show');
+})
+
+// 绑定保存事件
+$('#btn-save').on('click', function() {
+  const data = {
+    id: $('#id').val(),
+    reservation_time: $('#reservation_time').val(),
+  };
+  const reg = /^[1-9]\d*$/;
+  if (!data.reservation_time) {
+    return ui_alert('请填写预约次数。');
+  }
+  if (!reg.test(data.reservation_time)) {
+    return ui_alert('请填写有效的预约次数。');
+  }
+  $.post("{:url('update_reservation_time')}", data, (response) => {
+    $('#modal-permission-update').modal('hide');
+    if (response.code) {
+      ui_alert(response.msg, () => reload_list());
+    } else {
+      ui_alert(response.msg);
+    }
+  })
+})
+
+// 重载表格数据
+function reload_list() {
+  $.get("{:url('get_role_list')}", {}, (response) => {
+    $('#list').bootstrapTable('load', response);
+  })
+}
+</script>
+{/block}
