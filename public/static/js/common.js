@@ -21,5 +21,40 @@ var Global = {
     } else {
       return false;
     }
+  },
+
+  // 验证身份证号
+  checkIdCard: function(t) {
+    var arr2 = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+    var arr3 = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2];
+    if (t.length == 18) {
+      var arr = t.split('');
+      var s;
+      var reg = /^\d+$/;
+      var pd = 0;
+      for (i = 0; i < 17; i++) {
+        if (reg.test(arr[i])) {
+          s = true;
+          pd = arr[i] * arr2[i] + pd;
+        } else {
+          s = false;
+          break;
+        }
+      }
+      if (s = true) {
+        var r = pd % 11;
+        if (arr[17] == arr3[r]) {
+          //alert("身份证号合法  尾号为："+arr3[r]);
+          return true;
+        } else {
+          //alert("非合法身份证号");
+          return false;
+        }
+      }
+
+    } else {
+      //alert("非合法身份证号");
+      return false;
+    }
   }
 };
