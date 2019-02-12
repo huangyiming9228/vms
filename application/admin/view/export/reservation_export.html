@@ -21,11 +21,16 @@
       <div class="col-sm-2">
         <input type="text" class="form-control datetime-item" id="end_time" name="end_time">
       </div>
-      <div class="col-sm-2" style="text-align:left;">
+      <div class="col-sm-1">
         <button class="btn btn-default ladda-button" data-style="slide-right" data-spinner-color="#000" id="btn-query">
           <span class="ladda-label">
             <i class="fa fa-search"></i>&nbsp;查询
           </span>
+        </button>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn btn-primary" id="btn-export">
+            <i class="fa fa-download"></i>&nbsp;导出当前数据
         </button>
       </div>
     </div>
@@ -103,6 +108,17 @@ $('#btn-query').on('click', function(e) {
   $.get("{:url('query_reservation_list')}", $('#form-query').serializeArray(), (response) => {
     $('#list').bootstrapTable('load', response);
   }).always(() => loading.stop());
+});
+
+// 绑定导出事件
+$('#btn-export').on('click', function(e) {
+  e.preventDefault();
+  if (!$('#start_time').val() || !$('#end_time').val()) {
+    return ui_alert('请选择时间范围！');
+  }
+  const url = "{:url('export_reservation_excel')}?" + $('#form-query').serialize();
+  console.log(url);
+  window.open(url);
 });
 </script>
 {/block}
