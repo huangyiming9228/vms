@@ -13,4 +13,13 @@ class Export extends Controller
       'title' => '导出预约数据',
     ]);
   }
+
+  // 查询预约记录列表
+  public function query_reservation_list($status, $start_time, $end_time) {
+    $conditions = [];
+    if ($status != '99') $conditions['status'] = $status;
+    $conditions['visit_time'] = ['between time', [$start_time, $end_time]];
+    return Db::table('reservation_list')->where($conditions)->order('visit_time', 'asc')->select();
+  }
+
 }

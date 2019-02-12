@@ -15,11 +15,11 @@
       </div>
       <label class="col-sm-1 control-label">开始时间:</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control" id="start_time" name="start_time" >
+        <input type="text" class="form-control datetime-item" id="start_time" name="start_time">
       </div>
       <label class="col-sm-1 control-label">结束时间:</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control" id="end_time" name="end_time" >
+        <input type="text" class="form-control datetime-item" id="end_time" name="end_time">
       </div>
       <div class="col-sm-2" style="text-align:left;">
         <button class="btn btn-default ladda-button" data-style="slide-right" data-spinner-color="#000" id="btn-query">
@@ -38,6 +38,16 @@
 
 {block name="javascript"}
 <script>
+// 绑定时间选择器
+lay('.datetime-item').each(function() {
+  laydate.render({
+    elem: this,
+    type: 'datetime',
+    theme: '#222222',
+    trigger: 'click',
+  });
+});
+
 // 绑定表格数据
 $('#list').bootstrapTable({
   pageSize: 10,
@@ -75,13 +85,24 @@ $('#list').bootstrapTable({
         case 2: return '未通过审核';
       }
     },
+  }, {
+    field: 'submitter_no',
+    title: '员工号',
+    align: 'center',
   }]
 });
 
 // 绑定查询事件
 $('#btn-query').on('click', function(e) {
   e.preventDefault();
-  
+  if (!$('#start_time').val() || !$('#end_time').val()) {
+    return ui_alert('请选择时间范围！');
+  }
+  const loading = Ladda.create(this);
+  loading.start();
+  $.get("{:url('query_reservation_list')}", $('#form-query').serializeArray(), (response) => {
+    $('#list').bootstrapTable('load', response);
+  }).always(() => loading.stop());
 });
 </script>
 {/block}
