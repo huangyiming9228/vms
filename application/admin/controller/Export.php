@@ -68,7 +68,8 @@ class Export extends Controller
       'borders' => $borderStyle,
     ]);
 
-    // 设置列宽
+    // 设置列宽、高度
+    $sheet->getRowDimension('1')->setRowHeight(20);
     $sheet->getColumnDimension('A')->setWidth(17);
     $sheet->getColumnDimension('B')->setWidth(17);
     $sheet->getColumnDimension('C')->setWidth(17);
