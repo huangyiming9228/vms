@@ -33,13 +33,6 @@ class Business extends Controller
     return $rest_time;
   }
 
-  // 渲染微信年审页面
-  public function wx_mot_test() {
-    return $this->fetch('wx_mot_test', [
-      'title' => '年审',
-    ]);
-  }
-
   // 渲染微信查看记录页面
   public function wx_book_record() {
     return $this->fetch('wx_book_record', [
@@ -93,4 +86,13 @@ class Business extends Controller
   public function get_reservation_detail($id) {
     return Db::table('reservation_list')->where('id', $id)->find();
   }
+
+  // 渲染微信年审页面
+  public function wx_mot_test() {
+    return $this->fetch('wx_mot_test', [
+      'title' => '年审',
+      'emp_no' => Session::get('emp_no'),
+    ]);
+  }
+
 }

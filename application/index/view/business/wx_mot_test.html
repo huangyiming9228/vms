@@ -1,0 +1,100 @@
+{extend name="wx_base" /}
+
+{block name="style"}
+<style>
+.weui-label {
+  width: 150px;
+}
+</style>
+{/block}
+{block name="content"}
+<div class="weui-cells__title tips">尊敬的{$emp_no}用户，请填写请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</div>
+<div class="weui-cells weui-cells_form">
+  <form id="form-submit">
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">申请人姓名</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="填写申请人姓名" name="applicant" id="applicant" required emptyTips="请输入申请人姓名">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">车主姓名</label>
+      </div>
+      <div class="weui-cell__bd">
+          <input class="weui-input" type="text" placeholder="填写车主姓名" name="car_owner" id="car_owner">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">申请人与车主关系</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="填写申请人与车主关系" name="relationship" id="relationship">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">车辆号牌</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="例如：川A123456" name="car_no" id="car_no">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">联系方式</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="number" placeholder="填写电话号码" pattern="[0-9]*"  name="tel" id="tel">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">排量（升）</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="填写车辆排量" name="displacement" id="displacement">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">申请人所在单位</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="填写申请人所在单位" name="applicant_unit" id="applicant_unit">
+      </div>
+    </div>
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+      <div class="weui-cell__hd">
+        <label class="weui-label">申请类别</label>
+      </div>
+      <div class="weui-cell__bd">
+        <select class="weui-select" name="apply_type" id="apply_type">
+          <option value="新办">新办</option>
+          <option value="续卡">续卡</option>
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+weui.form.checkIfBlur('#form-submit', {
+  regexp: {
+
+  }
+});
+weui.form.validate('#form-submit', function(error) {
+  console.log(error);
+}, {
+  regexp: {
+
+  }
+})
+</script>
+{/block}
