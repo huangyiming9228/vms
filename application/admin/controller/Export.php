@@ -39,12 +39,12 @@ class Export extends Controller
       'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
     ];
     $titleFontStyle = [
-      'name' => '宋体',
+      'name' => '微软雅黑',
       'size' => 11,
       'bold' => true,
     ];
     $textFontStyle = [
-      'name' => '宋体',
+      'name' => '微软雅黑',
       'size' => 9,
     ];
     $borderStyle = [
