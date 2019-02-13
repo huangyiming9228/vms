@@ -8,6 +8,23 @@
 .required-icon {
   color: red;
 }
+.btn-submit {
+  margin: 20px 30px;
+  /* background-color: #2185D0; */
+}
+.clause-list {
+  margin-left: 15px;
+}
+.weui-dialog__bd {
+  color: #000;
+  text-align: left;
+}
+.weui-dialog__bd > p {
+  font-weight: bold;
+}
+.weui-dialog__btn_primary {
+  color: #2185D0;
+}
 </style>
 {/block}
 {block name="content"}
@@ -51,7 +68,7 @@
         <label class="weui-label">联系方式<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="number" placeholder="填写电话号码" name="tel" id="tel" required emptyTips="请填写联系方式！">
+        <input class="weui-input" type="number" placeholder="填写电话号码" name="tel" id="tel" required pattern="REG_TEL" emptyTips="请填写联系方式！" notMatchTips="请填写长度为11位的手机号！">
       </div>
     </div>
     <div class="weui-cell">
@@ -83,10 +100,140 @@
     </div>
   </form>
 </div>
+<div class="weui-cells__title">资料采集：</div>
+<div class="weui-cells weui-cells_form">
+  <div class="weui-cell" id="driving-license-uploader">
+    <div class="weui-cell__bd">
+      <div class="weui-uploader">
+        <div class="weui-uploader__hd">
+          <p class="weui-uploader__title">车辆行驶证原件<span class="required-icon">*</span></p>
+          <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+          <input type="hidden" class="image-id" name="driving_license_id" id="driving_license_id">
+        </div>
+        <div class="weui-uploader__bd">
+          <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+          <div class="weui-uploader__input-box">
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="weui-cell" id="campus-card-uploader">
+    <div class="weui-cell__bd">
+      <div class="weui-uploader">
+        <div class="weui-uploader__hd">
+          <p class="weui-uploader__title">校园一卡通<span class="required-icon">*</span></p>
+          <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+          <input type="hidden" class="image-id" name="campus_card_id" id="campus_card_id">
+        </div>
+        <div class="weui-uploader__bd">
+          <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+          <div class="weui-uploader__input-box">
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="weui-cells__title">非申请人本人车辆，需提供申请人与车主关系的有效证明资料复印件：</div>
+<div class="weui-cells">
+  <div class="weui-cell" id="relationship-proof-uploader">
+    <div class="weui-cell__bd">
+      <div class="weui-uploader">
+        <div class="weui-uploader__hd">
+          <p class="weui-uploader__title">申请人与车主关系有效证明资料复印件</p>
+          <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+          <input type="hidden" class="image-id" name="relationship_proof_id" id="relationship_proof_id">
+        </div>
+        <div class="weui-uploader__bd">
+          <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+          <div class="weui-uploader__input-box">
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="weui-cells__title">校内有固定停车位的车辆，申请人提供有效缴费凭据原件：</div>
+<div class="weui-cells">
+  <div class="weui-cell" id="payment-proof-uploader">
+    <div class="weui-cell__bd">
+      <div class="weui-uploader">
+        <div class="weui-uploader__hd">
+          <p class="weui-uploader__title">有效缴费凭据原件</p>
+          <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+          <input type="hidden" class="image-id" name="payment_proof_id" id="payment_proof_id">
+        </div>
+        <div class="weui-uploader__bd">
+          <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+          <div class="weui-uploader__input-box">
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="weui-cells__title">租借他人停车位的车辆，申请人提供租借协议原件+复印件：</div>
+<div class="weui-cells">
+  <div class="weui-cell" id="loan-agreement-original-uploader">
+    <div class="weui-cell__bd">
+      <div class="weui-uploader">
+        <div class="weui-uploader__hd">
+          <p class="weui-uploader__title">租借协议原件</p>
+          <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+          <input type="hidden" class="image-id" name="loan_agreement_original_id" id="loan_agreement_original_id">
+        </div>
+        <div class="weui-uploader__bd">
+          <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+          <div class="weui-uploader__input-box">
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="weui-cell" id="loan-agreement-copy-uploader">
+    <div class="weui-cell__bd">
+      <div class="weui-uploader">
+        <div class="weui-uploader__hd">
+          <p class="weui-uploader__title">租借协议复印件</p>
+          <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+          <input type="hidden" class="image-id" name="loan_agreement_copy_id" id="loan_agreement_copy_id">
+        </div>
+        <div class="weui-uploader__bd">
+          <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+          <div class="weui-uploader__input-box">
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<label for="weuiAgree" class="weui-agree">
+  <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+  <span class="weui-agree__text">
+    阅读并同意<a href="javascript:void(0);" id="clause">《车主（驾驶员）承诺条款》</a>
+  </span>
+</label>
+<a href="javascript:;" class="weui-btn weui-btn_primary btn-submit" id="btn-submit">提交</a>
 {/block}
 
 {block name="javascript"}
 <script>
+$(function() {
+  uploadFactory('#driving-license-uploader').init();
+  uploadFactory('#campus-card-uploader').init();
+  uploadFactory('#relationship-proof-uploader').init();
+  uploadFactory('#payment-proof-uploader').init();
+  uploadFactory('#loan-agreement-original-uploader').init();
+  uploadFactory('#loan-agreement-copy-uploader').init();
+});
+
 // 包装车辆号牌校验方法
 const CAR_NO_VALIDATOR = {
   test: (value) => Global.checkCarNo(value),
@@ -95,10 +242,114 @@ const CAR_NO_VALIDATOR = {
 const regExp = {
   regexp: {
     CAR_NO: CAR_NO_VALIDATOR,
+    TEL: /^\d{11}$/,
   }
 };
 // 失去焦点时校验
 weui.form.checkIfBlur('#form-submit', regExp);
 
+// 承诺条款
+const clauseHtml = `<ol class="clause-list">
+  <li>接受并配合门卫（巡查）人员的验证检查，服从指挥，文明行车，不鸣笛、不扰民。</li>
+  <li>进入校园后，限速30公里/小时行驶，避让一切行人和非机动车。</li>
+  <li>按规划的停车位沿指示方向规范停车，不乱停乱放，并保管好车内物品。</li>
+</ol>
+<p>本人郑重声明，已阅知并承诺履行上述条款，如有违犯，相关责任均由本人承担。</p>`;
+// 绑定承诺条款弹出事件
+$('#clause').on('click', function() {
+  weui.dialog({
+    title: '《车主（驾驶员）承诺条款》',
+    content: clauseHtml,
+    className: 'custom-classname',
+    buttons: [{
+      label: '确定',
+      type: 'default',
+      onClick: function () {}
+    }]
+  });
+});
+
+// 图片上传工厂模式
+function uploadFactory(uploadSelector) {
+  let uploadCount = 0;
+  let uploadCountDom = $(uploadSelector + ' #uploadCount');
+  let uploadIdDom = $(uploadSelector + ' input.image-id');
+  let image = null;
+  return {
+    init: function() {
+      // 绑定上传
+      weui.uploader(uploadSelector, {
+        url: "{:url('image_upload')}",
+        auto: true,
+        type: 'file',
+        fileVal: 'image',
+        compress: {
+          width: 1600,
+          height: 1600,
+          quality: 1,
+        },
+        onBeforeQueued: function(files) {
+          if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
+            weui.alert('请上传图片');
+            return false;
+          }
+          if(this.size > 10 * 1024 * 1024){
+            weui.alert('请上传不超过10M的图片');
+            return false;
+          }
+          if (files.length > 1) { // 防止一下子选中过多文件
+            weui.alert('最多只能上传1张图片，请重新选择');
+            return false;
+          }
+          if (uploadCount + 1 > 1) {
+            weui.alert('最多只能上传1张图片');
+            return false;
+          }
+
+          ++uploadCount;
+          uploadCountDom.text(uploadCount);
+        },
+        onQueued: function(){
+          image = this;
+          // console.log(this);
+        },
+        onBeforeSend: function(data, headers){
+          // console.log(this, data, headers);
+          // $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
+          // $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
+          // return false; // 阻止文件上传
+        },
+        onProgress: function(procent){
+          // console.log(this, procent);
+        },
+        onSuccess: function (ret) {
+          uploadIdDom.val(ret);
+        },
+        onError: function(err){
+          // console.log(this, err);
+        }
+      });
+
+      // 绑定图片预览
+      $(uploadSelector + ' #uploaderFiles').on('click', 'li', function() {
+        const self = this;
+        const url = $(this).css('background-image').match(/url\((.*?)\)/)[1].replace(/"/g, '');
+        const id = $(this).attr('data-id');
+        const gallery = weui.gallery(url, {
+          className: 'custom-gallery',
+          onDelete: function() {
+            weui.confirm('确定删除该图片？', function() {
+              uploadCountDom.text(--uploadCount);
+              uploadIdDom.val('');
+              image.stop();
+              $(self).remove();
+              gallery.hide();
+            })
+          }
+        });
+      });
+    }
+  }
+}
 </script>
 {/block}

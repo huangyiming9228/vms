@@ -1830,7 +1830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 				if (typeof reg === 'function') {
 					return reg.test(val) ? null : !$input.val().length ? 'empty' : 'notMatch';
-				} else if (typeof reg === 'string') {
+				} else if (typeof reg === 'string' || typeof reg === 'object') {
 					return new RegExp(reg).test(val) ? null : !$input.val().length ? 'empty' : 'notMatch';
 				} else {
 					return null;
