@@ -1,0 +1,103 @@
+{extend name="wx_base" /}
+
+{block name="style"}
+<style>
+span[success] {
+  color: green;
+}
+span[failure] {
+  color: red;
+}
+</style>
+{/block}
+
+{block name="content"}
+<div class="weui-cells__title">详细信息</div>
+<div class="weui-cells" id="detail">
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+// 获取数据
+$(function() {
+  const loading = weui.loading('获取数据中...');
+  new Promise((resolve) => {
+    $.get("{:url('get_mot_test_detail')}", { id: "{$id}" }, (response) => {
+      if (response) {
+        const html = createDetail(response);
+        $('#detail').append(html);
+      } else {
+        weui.topTips('服务器未知错误！获取失败.', 1500);
+      }
+      loading.hide();
+    })
+  })
+  .catch((error) => {
+    loading.hide();
+    console.log('error', error);
+    weui.topTips('服务器未知错误！获取失败.', 1500);
+  })
+})
+
+// 构建详情html
+function createDetail(detail) {
+  return `<div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>申请人姓名：${detail.applicant}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>车主姓名：${detail.car_owner}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>申请人与车主关系：${detail.relationship ? detail.relationship : '-'}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>车辆号牌：${detail.car_no}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>联系方式：${detail.tel}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>排量（升）：${detail.displacement ? detail.displacement : '-'}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>申请人所在单位：${detail.applicant_unit}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>申请类别：${detail.apply_type}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>审核状态：${(() => {
+          switch(detail.status) {
+            case 0: return '<span normal>待审核</span>';
+            case 1: return '<span success>审核通过</span>';
+            case 2: return '<span failure>未通过审核</span>';
+          }
+        })()}</p>
+    </div>
+  </div>
+  <div class="weui-cell">
+    <div class="weui-cell__bd">
+      <p>审核备注：${detail.audit_remark ? detail.audit_remark : '-'}</p>
+    </div>
+  </div>`;
+}
+</script>
+{/block}
