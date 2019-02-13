@@ -5,6 +5,9 @@
 .weui-label {
   width: 150px;
 }
+.required-icon {
+  color: red;
+}
 </style>
 {/block}
 {block name="content"}
@@ -13,18 +16,18 @@
   <form id="form-submit">
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">申请人姓名</label>
+        <label class="weui-label">申请人姓名<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="填写申请人姓名" name="applicant" id="applicant" required emptyTips="请输入申请人姓名">
+        <input class="weui-input" type="text" placeholder="填写申请人姓名" name="applicant" id="applicant" required emptyTips="请填写申请人姓名！">
       </div>
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">车主姓名</label>
+        <label class="weui-label">车主姓名<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
-          <input class="weui-input" type="text" placeholder="填写车主姓名" name="car_owner" id="car_owner">
+          <input class="weui-input" type="text" placeholder="填写车主姓名" name="car_owner" id="car_owner" required emptyTips="请填写车主姓名！">
       </div>
     </div>
     <div class="weui-cell">
@@ -37,18 +40,18 @@
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">车辆号牌</label>
+        <label class="weui-label">车辆号牌<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="例如：川A123456" name="car_no" id="car_no">
+        <input class="weui-input" type="text" placeholder="例如：川A123456" name="car_no" id="car_no" required pattern="REG_CAR_NO" emptyTips="请填写车辆号牌！" notMatchTips="请填写正确的车牌号！">
       </div>
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">联系方式</label>
+        <label class="weui-label">联系方式<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="number" placeholder="填写电话号码" pattern="[0-9]*"  name="tel" id="tel">
+        <input class="weui-input" type="number" placeholder="填写电话号码" name="tel" id="tel" required emptyTips="请填写联系方式！">
       </div>
     </div>
     <div class="weui-cell">
@@ -61,15 +64,15 @@
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">申请人所在单位</label>
+        <label class="weui-label">申请人所在单位<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="填写申请人所在单位" name="applicant_unit" id="applicant_unit">
+        <input class="weui-input" type="text" placeholder="填写申请人所在单位" name="applicant_unit" id="applicant_unit" required emptyTips="请填写申请人所在单位！">
       </div>
     </div>
     <div class="weui-cell weui-cell_select weui-cell_select-after">
       <div class="weui-cell__hd">
-        <label class="weui-label">申请类别</label>
+        <label class="weui-label">申请类别<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
         <select class="weui-select" name="apply_type" id="apply_type">
@@ -84,17 +87,18 @@
 
 {block name="javascript"}
 <script>
-weui.form.checkIfBlur('#form-submit', {
+// 包装车辆号牌校验方法
+const CAR_NO_VALIDATOR = {
+  test: (value) => Global.checkCarNo(value),
+};
+// 表单校验正则
+const regExp = {
   regexp: {
-
+    CAR_NO: CAR_NO_VALIDATOR,
   }
-});
-weui.form.validate('#form-submit', function(error) {
-  console.log(error);
-}, {
-  regexp: {
+};
+// 失去焦点时校验
+weui.form.checkIfBlur('#form-submit', regExp);
 
-  }
-})
 </script>
 {/block}
