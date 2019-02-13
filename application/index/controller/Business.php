@@ -16,8 +16,8 @@ class Business extends Controller
   }
 
   // 渲染微信预约页面
-  public function wx_cars_reservations() {
-    return $this->fetch('wx_cars_reservations', [
+  public function wx_reservation() {
+    return $this->fetch('wx_reservation', [
       'title' => '车辆预约',
       'emp_no' => Session::get('emp_no'),
       'rest_time' => $this->get_rest_reservation_time()
@@ -34,8 +34,8 @@ class Business extends Controller
   }
 
   // 渲染微信查看记录页面
-  public function wx_book_record() {
-    return $this->fetch('wx_book_record', [
+  public function wx_reservation_record() {
+    return $this->fetch('wx_reservation_record', [
       'title' => '预约记录',
       'emp_no' => Session::get('emp_no'),
     ]);
