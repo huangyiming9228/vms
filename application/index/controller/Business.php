@@ -149,4 +149,33 @@ class Business extends Controller
     }
   }
 
+  // 渲染年审记录页面
+  public function wx_mot_test_record() {
+    return $this->fetch('wx_mot_test_record', [
+      'title' => '年审记录',
+      'emp_no' => Session::get('emp_no'),
+    ]);
+  }
+
+  // 获取年审记录列表
+  public function get_moe_test_list($emp_no) {
+    return Db::table('mot_test_list')
+            ->where('submitter_no', $emp_no)
+            ->order('submit_time', 'desc')
+            ->select();
+  }
+
+  // 渲染年审记录详情页面
+  public function wx_mot_test_detail($id) {
+    return $this->fetch('wx_mot_test_detail', [
+      'title' => '年审记录详情',
+      'id' => $id,
+    ]);
+  }
+
+  // 获取年审记录详情
+  public function get_mot_test_detail($id) {
+    return Db::table('mot_test_list')->where('id', $id)->find();
+  }
+
 }

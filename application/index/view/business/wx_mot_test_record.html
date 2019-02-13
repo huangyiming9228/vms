@@ -1,0 +1,74 @@
+{extend name="wx_base" /}
+
+{block name="style"}
+<style>
+.weui-cell_link {
+  padding: 0;
+  color: #000;
+}
+.weui-panel {
+  margin-top: 0;
+}
+span[success] {
+  color: green;
+}
+span[failure] {
+  color: red;
+}
+</style>
+{/block}
+
+{block name="content"}
+<div class="weui-cells__title tips">点击记录以查看详情</div>
+<div class="weui-panel weui-panel_access">
+  <div class="weui-panel__bd" id="moe_test_list">
+  </div>
+  <div class="weui-panel__ft">
+  </div>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+// 获取数据
+$(function() {
+  const loading = weui.loading('获取数据中...');
+  new Promise((resolve) => {
+    $.get("{:url('get_moe_test_list')}", { emp_no: "{$emp_no}" }, (response) => {
+      if (response.length > 0) {
+        const html = createMotTest(response);
+        $('#moe_test_list').append(html);
+      } else {
+        const html = '<div class="weui-loadmore weui-loadmore_line"><span class="weui-loadmore__tips">暂无年审记录</span></div>';
+        $('#moe_test_list').append(html);
+      }
+      loading.hide();
+    })
+  })
+  .catch((error) => {
+    loading.hide();
+    console.log('error', error);
+    weui.topTips('服务器未知错误！获取失败.', 1500);
+  })
+})
+
+// 构建预约记录html
+function createMotTest(list) {
+  return list.map((item) => `
+    <a href="/vms/index/business/wx_mot_test_detail?id=${item.id}" class="weui-cell weui-cell_access weui-cell_link">
+      <div class="weui-media-box weui-media-box_text">
+        <h4 class="weui-media-box__title">${item.car_no}</h4>
+        <p class="weui-media-box__desc">提交时间：${item.submit_time}</p>
+        <p class="weui-media-box__desc">审核状态：${(() => {
+          switch(item.status) {
+            case 0: return '<span normal>待审核</span>';
+            case 1: return '<span success>审核通过</span>';
+            case 2: return '<span failure>未通过审核</span>';
+          }
+        })()}</p>
+      </div>
+    </a>
+  `);
+}
+</script>
+{/block}
