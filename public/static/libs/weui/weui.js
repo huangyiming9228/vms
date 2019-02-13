@@ -1828,7 +1828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                reg = regexp[reg];
 				}
-				if (typeof reg === 'function') {
+				if (typeof reg.test === 'function') {
 					return reg.test(val) ? null : !$input.val().length ? 'empty' : 'notMatch';
 				} else if (typeof reg === 'string' || typeof reg === 'object') {
 					return new RegExp(reg).test(val) ? null : !$input.val().length ? 'empty' : 'notMatch';

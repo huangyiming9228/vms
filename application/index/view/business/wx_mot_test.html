@@ -100,6 +100,7 @@
     </div>
   </form>
 </div>
+<form id="form-image">
 <div class="weui-cells__title">资料采集：</div>
 <div class="weui-cells weui-cells_form">
   <div class="weui-cell" id="driving-license-uploader">
@@ -214,8 +215,9 @@
     </div>
   </div>
 </div>
+</form>
 <label for="weuiAgree" class="weui-agree">
-  <input id="weuiAgree" type="checkbox" class="weui-agree__checkbox">
+  <input type="checkbox" class="weui-agree__checkbox" id="clause-check">
   <span class="weui-agree__text">
     阅读并同意<a href="javascript:void(0);" id="clause">《车主（驾驶员）承诺条款》</a>
   </span>
@@ -248,6 +250,63 @@ const regExp = {
 // 失去焦点时校验
 weui.form.checkIfBlur('#form-submit', regExp);
 
+// 注册全局校验
+$('#btn-submit').on('click', function() {
+  const isClauseCheck = $('#clause-check').is(':checked');
+  if (!isClauseCheck) {
+    return weui.topTips('请阅读并同意《车主（驾驶员）承诺条款)》!');
+  }
+  weui.form.validate('#form-submit', function(error) {
+    if (!error) {
+      const imageForm = document.querySelector('#form-image');
+      let validateFlag = true;
+      const _alert = function(errMsg) {
+        weui.topTips(errMsg, 1500);
+        validateFlag = false;
+      }
+      if (validateFlag) {
+        validateFlag && (imageForm.driving_license_id.value || _alert('请上传车辆行驶证！'));
+        validateFlag && (imageForm.campus_card_id.value || _alert('请上传校园一卡通！'));
+      }
+      if (validateFlag) {
+        doSubmit();
+      }
+    }
+  }, regExp);
+})
+
+// 提交
+function doSubmit() {
+  const loading = weui.loading('提交中...');
+  new Promise((resolve) => {
+    const formData = $('#form-submit').serializeArray();
+    const imageData = $('#form-image').serializeArray();
+    const data = formData.concat(imageData);
+    const images = imageData.filter((item) => item.value).map((item) => item.value);
+    $.post("{:url('save_mot_test')}", { data, images }, (response) => {
+      if (response.code) {
+        loading.hide();
+        weui.toast(response.msg, {
+          duration: 1000,
+          callback: () => {
+            // window.location.replace(response.url);
+            window.location.href = response.url;
+          }
+        });
+      } else {
+        loading.hide(() => {
+          weui.topTips(response.msg, 3000);
+        });
+      }
+    })
+  })
+  .catch((error) => {
+    loading.hide();
+    console.log('error', error);
+    weui.topTips('服务器未知错误！提交失败。', 1500);
+  })
+}
+
 // 承诺条款
 const clauseHtml = `<ol class="clause-list">
   <li>接受并配合门卫（巡查）人员的验证检查，服从指挥，文明行车，不鸣笛、不扰民。</li>
@@ -263,7 +322,7 @@ $('#clause').on('click', function() {
     className: 'custom-classname',
     buttons: [{
       label: '确定',
-      type: 'default',
+      type: 'primary',
       onClick: function () {}
     }]
   });

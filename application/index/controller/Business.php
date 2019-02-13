@@ -68,7 +68,7 @@ class Business extends Controller
     $data['submit_time'] = Date('Y-m-d H:i:s');
     $res = Db::table('reservation_list')->insert($data);
     if ($res) {
-      $this->success('提交成功，请耐心等待审核。', url('index/index/wx_index'));
+      $this->success('提交成功！请耐心等待审核。', url('index/index/wx_index'));
     } else {
       $this->error('服务器错误，提交失败！');
     }
@@ -112,6 +112,40 @@ class Business extends Controller
     } else {
       Log::record($file->getError());
       return false;
+    }
+  }
+
+  /*
+   * @desc 保存年审数据
+   * @status 0 - 未审核
+   *         1 - 审核通过
+   *         2 - 审核未通过
+   */
+  public function save_mot_test() {
+    $temp_data = $_POST['data'];
+    $data = [];
+    foreach ($temp_data as $key => $value) {
+      $data[$value['name']] = $value['value'];
+    }
+    $images = $_POST['images'];
+    try {
+      foreach ($images as $key => $value) {
+        Db::table('image_list')->where('id', $value)->update(['is_used' => 1]);
+      }
+    } catch (\Throwable $th) {
+      //throw $th;
+      $this->error('服务器错误，提交失败！');
+    }
+
+    $data['status'] = 0;
+    $data['submitter'] = Session::get('emp_name');
+    $data['submitter_no'] = Session::get('emp_no');
+    $data['submit_time'] = date('Y-m-d H:i:s');
+    $res = Db::table('mot_test_list')->insert($data);
+    if ($res) {
+      $this->success('提交成功！请耐心等待审批。', url('index/index/wx_index'));
+    } else {
+      $this->error('服务器错误，提交失败！');
     }
   }
 
