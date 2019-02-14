@@ -8,14 +8,14 @@
       <div class="col-sm-2">
         <select class="form-control" id="status" name="status">
           <option value="0">待审核</option>
-          <option value="1">通过审核</option>
+          <option value="1">审核通过</option>
           <option value="2">未通过审核</option>
           <option value="99">所有</option>
         </select>
       </div>
       <label class="col-sm-1 control-label">员工号:</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control" id="emp_no" name="emp_no" >
+        <input type="text" class="form-control" id="submitter_no" name="submitter_no" >
       </div>
       <label class="col-sm-1 control-label">预约人姓名:</label>
       <div class="col-sm-2">
@@ -40,7 +40,7 @@
 <script>
 // 绑定表格数据
 $('#list').bootstrapTable({
-  url: "{:url('query_reservations')}?status=0&emp_no=&name=",
+  url: "{:url('query_reservations')}?status=0&submitter_no=&name=",
   pageSize: 10,
   pageList: [10, 25, 50, 100],
   pagination: true,

@@ -4,33 +4,28 @@
 <div class="row">
   <form id="form-query" class="form-horizontal">
     <div class="form-group">
-      <label class="col-sm-1 control-label">预约状态:</label>
+      <label class="col-sm-1 control-label">业务状态:</label>
       <div class="col-sm-2">
         <select class="form-control" id="status" name="status">
-          <option value="99">所有</option>
           <option value="0">待审核</option>
-          <option value="1">通过审核</option>
+          <option value="1">审核通过</option>
           <option value="2">未通过审核</option>
+          <option value="99">所有</option>
         </select>
       </div>
-      <label class="col-sm-1 control-label">开始时间:</label>
+      <label class="col-sm-1 control-label">员工号:</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control datetime-item" id="start_time" name="start_time">
+        <input type="text" class="form-control" id="submitter_no" name="submitter_no" >
       </div>
-      <label class="col-sm-1 control-label">结束时间:</label>
+      <label class="col-sm-1 control-label">申请人姓名:</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control datetime-item" id="end_time" name="end_time">
+        <input type="text" class="form-control" id="applicant" name="applicant" >
       </div>
-      <div class="col-sm-1">
+      <div class="col-sm-2" style="text-align:left;">
         <button class="btn btn-default ladda-button" data-style="slide-right" data-spinner-color="#000" id="btn-query">
           <span class="ladda-label">
             <i class="fa fa-search"></i>&nbsp;查询
           </span>
-        </button>
-      </div>
-      <div class="col-sm-1">
-        <button class="btn btn-primary" id="btn-export">
-            <i class="fa fa-download"></i>&nbsp;导出当前数据
         </button>
       </div>
     </div>
@@ -43,24 +38,23 @@
 
 {block name="javascript"}
 <script>
-// 绑定时间选择器
-lay('.datetime-item').each(function() {
-  laydate.render({
-    elem: this,
-    type: 'datetime',
-    theme: '#222222',
-    trigger: 'click',
-  });
-});
-
 // 绑定表格数据
 $('#list').bootstrapTable({
+  url: "{:url('query_mot_test')}?status=0&submitter_no=&applicant=",
   pageSize: 10,
   pageList: [10, 25, 50, 100],
   pagination: true,
   columns: [{
-    field: 'name',
-    title: '预约人姓名',
+    field: 'applicant',
+    title: '申请人姓名',
+    align: 'center',
+  }, {
+    field: 'car_owner',
+    title: '车主姓名',
+    align: 'center',
+  }, {
+    field: 'relationship',
+    title: '申请人与车主关系',
     align: 'center',
   }, {
     field: 'car_no',
@@ -68,16 +62,19 @@ $('#list').bootstrapTable({
     align: 'center',
   }, {
     field: 'tel',
-    title: '员工电话',
+    title: '联系方式',
     align: 'center',
   }, {
-    field: 'visit_time',
-    title: '预约时间',
+    field: 'displacement',
+    title: '排量（升）',
     align: 'center',
-    sortable: true,
   }, {
-    field: 'visit_reason',
-    title: '来校事由',
+    field: 'applicant_unit',
+    title: '申请人所在单位',
+    align: 'center',
+  }, {
+    field: 'apply_type',
+    title: '申请类别',
     align: 'center',
   }, {
     field: 'status',
@@ -91,33 +88,28 @@ $('#list').bootstrapTable({
       }
     },
   }, {
-    field: 'submitter_no',
-    title: '员工号',
+    field: 'op',
+    title: '操作',
     align: 'center',
+    formatter: (value, row) => {
+      return `<a href="javascript:void(0);" data-id="${row.id}" class="operation">${row.status === 0 ? '审核' : '查看详情'}</a>`;
+    }
   }]
-});
+})
 
 // 绑定查询事件
 $('#btn-query').on('click', function(e) {
   e.preventDefault();
-  if (!$('#start_time').val() || !$('#end_time').val()) {
-    return ui_alert('请选择时间范围！');
-  }
   const loading = Ladda.create(this);
   loading.start();
-  $.get("{:url('query_reservation_list')}", $('#form-query').serializeArray(), (response) => {
+  $.get("{:url('query_mot_test')}", $('#form-query').serializeArray(), (response) => {
     $('#list').bootstrapTable('load', response);
   }).always(() => loading.stop());
 });
 
-// 绑定导出事件
-$('#btn-export').on('click', function(e) {
-  e.preventDefault();
-  if (!$('#start_time').val() || !$('#end_time').val()) {
-    return ui_alert('请选择时间范围！');
-  }
-  const url = "{:url('export_reservation_excel')}?" + $('#form-query').serialize();
-  window.open(url);
+// 绑定操作跳转事件
+$('#list').on('click', '.operation', function() {
+  window.location.href = "{:url('mot_test_operation')}?id=" + $(this).attr('data-id');
 });
 </script>
 {/block}

@@ -18,8 +18,8 @@ class Business extends Controller
   // 查询预约列表
   public function query_reservations() {
     $conditions = [];
-    $conditions['status'] = $_GET['status'] != '99' ? $_GET['status'] : ['like', '%%'];
-    if ($_GET['emp_no']) $conditions['emp_no'] = $_GET['emp_no'];
+    if ($_GET['status'] != '99') $conditions['status'] = $_GET['status'];
+    if ($_GET['submitter_no']) $conditions['submitter_no'] = $_GET['submitter_no'];
     if ($_GET['name']) $conditions['name'] = $_GET['name'];
     return Db::table('reservation_list')->where($conditions)->order('submit_time', 'desc')->select();
   }
@@ -38,6 +38,29 @@ class Business extends Controller
     $data['audit_person'] = Session::get('admin_name');
     $data['audit_person_no'] = Session::get('admin_no');
     return Db::table('reservation_list')->where('id', $id)->update($data);
+  }
+
+  // 渲染年审审核页面
+  public function mot_test_handle() {
+    return $this->fetch('mot_test_handle', [
+      'title' => '年审审核',
+    ]);
+  }
+
+  // 查询年审列表
+  public function query_mot_test() {
+    $conditions = [];
+    if ($_GET['status'] != '99') $conditions['status'] = $_GET['status'];
+    if ($_GET['submitter_no']) $conditions['submitter_no'] = $_GET['submitter_no'];
+    if ($_GET['applicant']) $conditions['applicant'] = $_GET['applicant'];
+    return Db::table('mot_test_list')->where($conditions)->order('submit_time', 'desc')->select();
+  }
+
+  // 渲染年审操作页面
+  public function mot_test_operation($id) {
+    return $this->fetch('mot_test_operation', [
+      'title' => '年审操作',
+    ]);
   }
 
 }

@@ -228,12 +228,18 @@
 {block name="javascript"}
 <script>
 $(function() {
+  // 图片上传注册
   uploadFactory('#driving-license-uploader').init();
   uploadFactory('#campus-card-uploader').init();
   uploadFactory('#relationship-proof-uploader').init();
   uploadFactory('#payment-proof-uploader').init();
   uploadFactory('#loan-agreement-original-uploader').init();
   uploadFactory('#loan-agreement-copy-uploader').init();
+});
+
+// 车牌字母转换为大写
+$('#car_no').on('change', function() {
+  $(this).val($(this).val().toUpperCase());
 });
 
 // 包装车辆号牌校验方法
