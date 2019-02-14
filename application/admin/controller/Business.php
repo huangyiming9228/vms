@@ -60,7 +60,42 @@ class Business extends Controller
   public function mot_test_operation($id) {
     return $this->fetch('mot_test_operation', [
       'title' => '年审操作',
+      'id' => $id,
     ]);
+  }
+
+  // 获取年审记录信息
+  public function get_mot_test_detail($id) {
+    $base_data = Db::table('mot_test_list')->where('id', $id)->find();
+
+    // 获取图片
+    $images_url['driving_license_url'] = $base_data['driving_license_id'] ? $this->get_image_url($base_data['driving_license_id']) : $base_data['driving_license_id'];
+    $images_url['campus_card_url'] = $base_data['campus_card_id'] ? $this->get_image_url($base_data['campus_card_id']) : $base_data['campus_card_id'];
+    $images_url['relationship_proof_url'] = $base_data['relationship_proof_id'] ? $this->get_image_url($base_data['relationship_proof_id']) : $base_data['relationship_proof_id'];
+    $images_url['payment_proof_url'] = $base_data['payment_proof_id'] ? $this->get_image_url($base_data['payment_proof_id']) : $base_data['payment_proof_id'];
+    $images_url['loan_agreement_original_url'] = $base_data['loan_agreement_original_id'] ? $this->get_image_url($base_data['loan_agreement_original_id']) : $base_data['loan_agreement_original_id'];
+    $images_url['loan_agreement_copy_url'] = $base_data['loan_agreement_copy_id'] ? $this->get_image_url($base_data['loan_agreement_copy_id']) : $base_data['loan_agreement_copy_id'];
+    return [
+      'base_data' => $base_data,
+      'images_url' => $images_url,
+    ];
+  }
+
+  // 获取图片url
+  public function get_image_url($image_id) {
+    $res = Db::table('image_list')->where('id', $image_id)->field(['concat(save_path, file_name)' => 'url'])->find();
+    return SITE_URL.$res['url'];
+  }
+
+  // 处理年审
+  public function handle_mot_test() {
+    $data = $_POST['auditData'];
+    $id = $data['id'];
+    unset($data['id']);
+    $data['audit_time'] = date('Y-m-d H:i:s');
+    $data['audit_person'] = Session::get('admin_name');
+    $data['audit_person_no'] = Session::get('admin_no');
+    return Db::table('mot_test_list')->where('id', $id)->update($data);
   }
 
 }
