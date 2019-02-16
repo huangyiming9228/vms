@@ -1,0 +1,44 @@
+html, body {
+    height: 100%;
+}
+
+.main {
+    margin: 0 auto;
+    width: 1024px;
+    height: 100%;
+    background-color: #EFEFEF;
+}
+
+header img {
+    width: 1024px;
+}
+
+.contain {
+    text-align: center;
+}
+
+.contain h2 {
+    margin-top: 40px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;   
+    width: 1024px;
+    height: 60px;
+    text-align: center;
+    font-size: 13px;
+    padding-bottom: 65px;
+    border-top: 5px solid #666;
+    background-color: #EFEFEF;
+}
+
+ul li{
+   margin-top: 8px;
+}
+
+#warning {
+    height: 16px;
+    margin: 0 190px 5px 0;
+    color: #f00;
+}

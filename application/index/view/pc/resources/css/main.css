@@ -1,0 +1,25 @@
+.contain {
+    align-items: center;
+}
+
+.part {
+    width: 260px;
+    height: 245px;
+    font-size: 30px;
+    font-weight: 600;
+    padding: 0 30px;
+    border: 1px solid #5F9CF7;
+    color: #5F9CF7;
+}
+
+.part a {
+    display: inline-block;
+    width: 260px;
+    height: 245px;
+}
+
+.part a:hover {
+    border: 1px solid #CAE8FF;
+    border-radius: 10px;
+    background-color: #E3F4FE;
+}

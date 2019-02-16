@@ -1,0 +1,8 @@
+body,ul,li,h1,fieldset,legend,input,select,label,p,table,tr,th,td{
+	margin:0;
+	padding:0;
+	border:0;
+}
+ul{
+	list-style: none;
+}
