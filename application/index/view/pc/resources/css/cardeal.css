@@ -1,0 +1,40 @@
+.main-content {
+    margin: 0 auto;
+    width: 1024px;
+    background-color: #EFEFEF;
+} 
+
+header ol {
+    width: 1024px;
+    opacity: 0.8;
+}
+
+header ol li a{
+    padding: 0 20px;
+    margin-left: 10px;
+}
+
+header img {
+    margin-top: -20px;
+}
+
+.active a{
+    border-radius: 10px;
+    background-color: #88BCF8;
+    color: #000;
+}
+
+ol li a:hover {
+    border-radius: 10px;
+    text-decoration: none;
+    background-color: #88BCF8;
+    color: #000; 
+}
+
+.special {
+    display: none;
+}
+
+footer {
+    position: static;
+} 
