@@ -7,60 +7,15 @@
 	<title>车辆业务-西南石油大学保卫处</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/index.css">
+	<link rel="stylesheet" href="../css/index.css">
+	<link rel="stylesheet" href="../css/yearcheck.css">
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <style  rel="stylesheet">
-        .main-content {
-			width: 100%;
-			margin: 0 auto;
-			background-color: #EFEFEF;
-        }
-
-        .contain {
-			padding-bottom: 60px;
-		}
-		
-		.required-icon {
-			color: #f00;
-			padding: 0 5px;
-		}
-
-		.for-form {
-			width: 1024px;
-			margin: 0 auto;
-			padding: 30px 0;
-			background-color: #fff;
-		}
-
-		input[type="file"] {
-			display: none;
-		}
-
-		.item {
-			width: 500px;
-			text-align: left;
-			padding: 10px;
-			margin-left: 20px;
-			border-radius: 5px;
-			border: 1px solid #cacaca;
-			box-shadow: 0 -1px 1px #ccc;
-		}
-
-		img {
-			width: 110px;
-		}
-
-		#cropedBigImg {
-			width: 64px;
-		}
-    </style>
 </head>
 <body>
 	<div class="main-content">
         <header>
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default"> 
                 <div class="container-fluid">
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
@@ -85,32 +40,32 @@
             </nav>
         </header>
         <section class="contain">
-              <div class="for-form">
-					<p class="msg">尊敬的<span id="user">某某某</span>用户，请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</p>
-                <form class="form-horizontal" id="form-submit">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">申请人姓名<span class="required-icon">*</span>：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="填写申请人姓名" id="applicant" name="applicant" class="form-control" >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">车主姓名<span class="required-icon">*</span>：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="填写车主姓名" id="car_owner" name="car_owner" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">申请人与车主关系：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="填写申请人与车主关系" id="relationship" name="relationship" class="form-control" >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">车辆号牌<span class="required-icon">*</span>：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="例如：川A123456" id="car_no" name="car_nos" class="form-control" >
-                        </div>
+			<p class="msg">尊敬的<span id="user">某某某</span>用户，请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</p>
+			<div class="for-form">
+				<form class="form-horizontal" id="form-submit">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">申请人姓名<span class="required-icon">*</span>：</label>
+						<div class="col-sm-6">
+							<input type="text" placeholder="填写申请人姓名" id="applicant" name="applicant" class="form-control" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车主姓名<span class="required-icon">*</span>：</label>
+						<div class="col-sm-6">
+							<input type="text" placeholder="填写车主姓名" id="car_owner" name="car_owner" class="form-control">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">申请人与车主关系：</label>
+						<div class="col-sm-6">
+							<input type="text" placeholder="填写申请人与车主关系" id="relationship" name="relationship" class="form-control" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车辆号牌<span class="required-icon">*</span>：</label>
+						<div class="col-sm-6">
+							<input type="text" placeholder="例如：川A123456" id="car_no" name="car_nos" class="form-control" >
+						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 control-label">联系方式<span class="required-icon">*</span>：</label>
@@ -139,31 +94,24 @@
 							</select>
 						</div>
 					</div>
-					
-                    <p id="warning"></p>
-                    <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-1">
-                            <button type="submit" class="btn btn-default" id="btn-submit">提交</button>
-                        </div>
-					</div>
 					<p>资料采集：</p>
 					<div class="form-group">
 						<label class="col-sm-4 control-label">车辆行驶证原件<span>(0/1)</span><span class="required-icon">*</span>：</label>
 						<div class="col-sm-6 item">
-							<img id="up-img" src=""/>		
-							<label for="chooseImage">
+							<img id="driving_license_id" src=""/>		
+							<label>
 								<input type="file" id="chooseImage" name="file">
-								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<img class="driving_license_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 control-label">校园一卡通<span>(0/1)</span><span class="required-icon">*</span>:</label>
 						<div class="col-sm-6 item">
-							<img id="up-img" src=""/>		
-							<label for="chooseImage">
+							<img id="campus_card_id" src=""/>		
+							<label>
 								<input type="file" id="chooseImage" name="file">
-								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<img class="campus_card_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
@@ -171,10 +119,10 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label">申请人与车主关系有效证明资料复印件<span>(0/1)</span>：</label>
 						<div class="col-sm-6 item">
-							<img id="up-img" src=""/>		
-							<label for="chooseImage">
+							<img id="relationship_proof_id" src=""/>		
+							<label>
 								<input type="file" id="chooseImage" name="file">
-								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<img class="relationship_proof_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
@@ -182,10 +130,10 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label">有效缴费凭据原件<span>(0/1)</span>：</label>
 						<div class="col-sm-6 item">
-							<img id="up-img" src=""/>		
-							<label for="chooseImage">
+							<img id="payment_proof_id" src=""/>		
+							<label>
 								<input type="file" id="chooseImage" name="file">
-								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<img class="payment_proof_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
@@ -193,43 +141,75 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label">租借协议原件<span>(0/1)</span>：</label>
 						<div class="col-sm-6 item">
-							<img id="up-img" src=""/>		
-							<label for="chooseImage">
+							<img id="loan_agreement_original_id" src=""/>		
+							<label>
 								<input type="file" id="chooseImage" name="file">
-								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<img class="loan_agreement_original_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-4 control-label">租借协议复印件<span>(0/1)</span>：</label>
 						<div class="col-sm-6 item">
-							<img id="up-img" src=""/>		
-							<label for="chooseImage">
+							<img id="loan_agreement_copy_id" src=""/>		
+							<label>
 								<input type="file" id="chooseImage" name="file">
-								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<img class="loan_agreement_copy_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
-					
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10">
+							<div class="checkbox">
+							<label>
+								<input type="checkbox">阅读并同意
+							</label>
+							<span id="deal-file">《车主（驾驶员）承诺条款》</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-10">
+							<button type="submit" class="btn btn-default" id="btn-submit">提交</button>
+						</div>
+					</div>
 				</form>
+				<div class="no-display" id="file-box">
+					<h4>《车主（驾驶员）承诺条款》</h4>
+					<ul>
+						<li>1.接受并配合门卫（巡查）人员的验证检查，服从指挥，文明行车，不鸣笛、不扰民。</li>
+						<li>2.进入校园后，限速30公里/小时行驶，避让一切行人和非机动车。</li>
+						<li>3.按规划的停车位沿指示方向规范停车，不乱停乱放，并保管好车内物品。</li>
+					</ul>
+					<p class="sure">本人郑重声明，已阅知并承诺履行上述条款，如有违犯，相关责任均由本人承担。</p>
+					<button id="btn" class="btn btn-default">确定</button>
+				</div>
 			</div>
         </section>
     </div>
 
 	<script>
 		$('#chooseImage').on('change',function(){
-    	var filePath = $(this).val(),         //获取到input的value，里面是文件的路径
-    		fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
-    		src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
-    		
-    	// 检查是否是图片
-    	if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
-    		error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
-        	return;  
-        }
-  
-        $('#up-img').attr('src',src);
-});
+				var filePath = $(this).val(),         //获取到input的value，里面是文件的路径
+					fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
+					src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
+					
+				// 检查是否是图片
+				if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
+					error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
+					return;  
+				}
+		
+				$('#up-img').attr('src',src);
+		});
+
+		$('#deal-file').on('click',function() {
+			$('#file-box').removeClass('no-display');
+		});
+
+		$('#btn').on('click',function() {
+			$('#file-box').addClass('no-display');
+		});
 
         $(document).ready(function(){ 
             let storage = window.localStorage;
