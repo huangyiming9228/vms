@@ -8,28 +8,41 @@
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/cardeal.css">
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <style  rel="stylesheet">
+        .main {
+            width: 100%;
+        }
+
+        .contain {
+            margin-top: 100px;
+        }
+
+        .special {
+            display: none;
+        } 
+    </style>
 </head>
 <body>
-	<div class="main-content">
+	<div class="main">
         <header>
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">车辆业务办理-西南石油大学保卫处</a>
-                    </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#">车辆预约<span class="sr-only">(current)</span></a></li>
+                            <li><a href="./yearcheck.html">年审</a></li>
+                            <li><a href="./carRecord.html">预约记录</a></li>
+                            <li><a href="./yearRecord.html">年审记录</a></li>
+                        </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#">退出登录</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">修改密码</a></li>
-                                    <li><a href="#">联系我们</a></li>
-                                    <li><a href="#">个人中心</a></li>
-                                    <li><a href="#">个人中心</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">联系我们</a></li>
                                 </ul>
@@ -38,13 +51,8 @@
                     </div>
                 </div>
             </nav>
-            <img src="../images/logo.png">
-            <ol class="breadcrumb">
-                <li><a href="./main.html">首页</a></li>
-                <li class="active"><a href="#">车辆预约</a></li>
-            </ol>
         </header>
-        <section class="contain content">
+        <section class="contain">
             <p class="msg">尊敬的<span id="user">某某某</span>用户，您剩余预约次数为<span id="number">几</span>次，请填写要预约的车辆信息</p>
             <div class="for-form">
                 <form class="form-horizontal" id="form-submit">
@@ -106,12 +114,6 @@
                 </form>
             </div>
         </section>
-        <footer>
-            <ul>
-                <li>西南石油大学保卫部（处）（武装部）&nbsp;&nbsp;&nbsp;地址：四川省成都市新都区新都大道8号</li>
-                <li>电话：028-83032110&nbsp;&nbsp;&nbsp;邮编：610500</li>
-            </ul>
-        </footer>
     </div>
 
 	<script>

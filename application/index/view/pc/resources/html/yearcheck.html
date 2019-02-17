@@ -7,88 +7,264 @@
 	<title>车辆业务-西南石油大学保卫处</title>
 	<link rel="stylesheet" href="../css/reset.css">
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/cardeal.css">
-	<link rel="stylesheet" href="../css/index.css">
-	<!-- <link rel="stylesheet" href="../css/main.css"> -->
-	<script src="../libs/jquery-3.3.1.min.js"></script>
-	<script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../libs/jquery-3.3.1.min.js"></script>
+    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
 
-	<style  rel="stylesheet">
-		.contain a {
-			display: inline-block;
-			width: 260px;
-			height: 245px;
+    <style  rel="stylesheet">
+		html, body {
+			height: auto;
 		}
+        .main-content {
+			width: 100%;
+			margin: 0 auto;
+			background-color: #EFEFEF;
+        }
 
-		.contain a:hover {
-			border: 1px solid #CAE8FF;
-			border-radius: 10px;
-			background-color: #E3F4FE;
+        .contain {
+			margin-top: 50px;
+			padding-bottom: 60px;
 		}
-
-		header img {
-			margin-top: -20px;
+		
+		.required-icon {
+			color: #f00;
+			padding-left: 5px;
 		}
-	</style>
+    </style>
 </head>
 <body>
-	<div class="main">
-		<header>
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="#">车辆业务办理-西南石油大学保卫处</a>
-					</div>
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav navbar-right">
-							<li><a href="#">退出登录</a></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-								   <li><a href="#">修改密码</a></li>
-								   <li><a href="#">联系我们</a></li>
-								   <li><a href="#">个人中心</a></li>
-								   <li><a href="#">个人中心</a></li>
-								   <li role="separator" class="divider"></li>
-								   <li><a href="#">联系我们</a></li>
-								</ul>
-							</li>
+	<div class="main-content">
+        <header>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><a href="./carDeal.html">车辆预约</a></li>
+							<li class="active"><a href="#">年审<span class="sr-only">(current)</span></a></li>
+							<li><a href="./carRecord.html">预约记录</a></li>
+							<li><a href="./yearRecord.html">年审记录</a></li>
 						</ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#">退出登录</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">修改密码</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">联系我们</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <section class="contain">
+            <p class="msg">尊敬的<span id="user">某某某</span>用户，请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</p>
+            <div class="for-form">
+                <form class="form-horizontal" id="form-submit">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请人姓名<span class="required-icon">*</span>：</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="填写申请人姓名" id="applicant" name="applicant" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">车主姓名<span class="required-icon">*</span>：</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="填写车主姓名" id="car_owner" name="car_owner" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">申请人与车主关系：</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="填写申请人与车主关系" id="relationship" name="relationship" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">车辆号牌<span class="required-icon">*</span>：</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="例如：川A123456" id="car_no" name="car_nos" class="form-control" >
+                        </div>
 					</div>
-				</div>
-			</nav>
-			<img src="../images/logo.png">
-			<ol class="breadcrumb">
-                <li><a href="./main.html">首页</a></li>
-                <li class="active"><a href="#">年审</a></li>
-			</ol>
-		</header>
-		<section class="contain row">
-			<div class="col-md-4">
-				<a href="./carDeal.html">
-					<img src="../images/icon-01.png">
-					<div>车辆预约 </div>
-				</a>
-			</div>
-			<div class="col-md-4">
-				<a href="#">
-					<img src="../images/icon-02.png">
-					<div>年审</div>
-				</a>
-			</div>
-			<div class="col-md-4">
-				<a href="#">
-					<img src="../images/icon-03.png">
-					<div>预约记录</div>
-				</a>
-			</div>
-		</section>
-		<footer>
-			<ul>
-				<li>西南石油大学保卫部（处）（武装部）&nbsp;&nbsp;&nbsp;地址：四川省成都市新都区新都大道8号</li>
-				<li>电话：028-83032110&nbsp;&nbsp;&nbsp;邮编：610500</li>
-			</ul>
-		</footer>
-	</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">联系方式<span class="required-icon">*</span>：</label>
+						<div class="col-sm-6">
+							<input type="text" placeholder="填写电话号码" id="tel" name="tel" class="form-control" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">排量（升）：</label>
+						<div class="col-sm-6">
+							<input type="text" placeholder="填写车辆排量" id="displacement" name="displacements" class="form-control" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">申请人所在单位<span class="required-icon">*</span>：</label>
+						<div class="col-sm-6">
+							<input type="text" placeholder="填写申请人所在单位" id="applicant_unit" name="applicant_units" class="form-control" >
+						</div>
+					</div>
+					<div class="form-group">
+							<label class="col-sm-4 control-label">申请类别<span class="required-icon">*</span>：</label>
+							<div class="col-sm-6">
+								<select id="apply_type" name="apply_type" class="form-control">
+									<option value="新办">新办</option>
+									<option value="续卡">续卡</option>
+								</select>
+							</div>
+						</div>
+					<p>资料采集：</p>
+					<p>非申请人本人车辆，需提供申请人与车主关系的有效证明资料复印件：</p>
+					<p>租借他人停车位的车辆，申请人提供租借协议原件 + 复印件：</p>
+                    <p id="warning"></p>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-1">
+                            <button type="submit" class="btn btn-default" id="btn-submit">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+	<script>
+        $(document).ready(function(){ 
+            let storage = window.localStorage;
+            let emp_no = storage.getItem(emp_no);
+            var i = 0;
+            $.get('http://www.huangcongfu.cn/vms/index/index/login_check', function(request){
+                if(i = 0,i < request.length, i ++) {
+                    if(request[i].emp_no == emp_no) {
+                        $('#user').text(request[i].name);
+                        $('#number').text(request[i].number);
+                    }
+                }
+
+                // request.array.forEach(element => {
+                //    if(element.emp_no == emp_no) {
+                //         $('#user').text(element.name);
+                //         $('#number').text(element.number);
+                //    }
+                // });
+            });
+        });
+
+        function getTomorrowDate() {
+            var date = new Date();
+            date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            month = month < 10 ? ('0' + month) : month;
+            day = day < 10 ? ('0' + day) : day;
+            return year + '-' + month + '-' + day;
+        }
+
+        function checkCarNo(carNo) {
+            // 新能源车牌号正则
+            const regNEV = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
+            // 其他汽车正则
+            const regOTC = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
+            if (carNo.length === 7) {
+                return regOTC.test(carNo);
+            } else if (carNo.length === 8) {
+                return regNEV.test(carNo);
+            } else {
+                return false;
+            }
+        }
+
+		$('#btn-submit').on('click', function(e){
+            e.preventDefault();
+            const form = document.querySelector('#form-submit');
+            let validateFlag = true;
+            var visit_time = $('#visit_time option:selected').val();
+
+            function _alert(errormsg) {
+                $('#warning').text(errormsg);
+				validateFlag = false;
+            }
+
+
+            if (validateFlag) {
+                validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
+                validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
+                validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
+                validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
+                validateFlag && (visit_time || _alert('请选择到访时间！'));
+                validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
+            }
+
+            if(validateFlag) {
+                _alert('预约成功！');
+                visit_time = getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
+                var send_data = {
+			        tel: form.tel.value,
+                    car_no: form.car_no.value,
+                    name: form.name.value,
+                    visit_time: visit_time,
+                    visit_reason: form.visit_reason.value,
+			    };
+
+                $.post('http://www.huangcongfu.cn/vms/index/index/login_check',send_data,function(response){
+                    if(response) {
+                        _alert('预约成功！');
+                    }else {
+                        _alert('您今天已经没有预约次数了')
+                    }
+                })
+            }
+        });
+        
+
+        // $('#btn-submit').on('click', function() {
+        //     // var form = document.getElementById('form-submit');
+        //     const form = document.querySelector('#form-submit');
+        //     let validateFlag = true;
+        //     const _alert = (errMsg) => {
+        //         weui.topTips(errMsg, 1500);
+        //         validateFlag = false;
+        //     };
+        //     // function _alert(errMsg) {
+                
+        //     // }
+
+        //     if (validateFlag) {
+        //         validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
+        //         validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
+        //         validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
+        //         validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
+        //         validateFlag && (form.visit_time.value || _alert('请选择到访时间！'));
+        //         validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
+        //     }
+
+        //     if(validateFlag) {
+        //         const loading = weui.loading('提交中...');
+        //         try {
+        //             $.post("{:url('save_reservation')}", $('#form-submit').serializeArray(), (response) => {
+        //                 if (response) {
+        //                 loading.hide(() => {
+        //                     weui.toast(response.msg, {
+        //                     duration: 1000,
+        //                     callback: () => {
+        //                         // window.location.replace(response.url);
+        //                         window.location.href = response.url;
+        //                     }
+        //                     });
+        //                 })
+        //                 } else {
+        //                 loading.hide();
+        //                 weui.topTips('预约失败！您今天已没有预约次数了，请明天再预约。', 3000);
+        //                 }
+        //             });
+        //         } catch (error) {
+        //             loading.hide();
+        //             console.log('erroe', error);
+        //             weui.topTips('网络错误！提交失败。', 1500);
+        //         }
+        //     }
+        // });
+	</script>
 </body>
 </html>
