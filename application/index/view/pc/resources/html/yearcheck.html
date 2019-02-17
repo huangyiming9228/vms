@@ -12,9 +12,6 @@
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <style  rel="stylesheet">
-		html, body {
-			height: auto;
-		}
         .main-content {
 			width: 100%;
 			margin: 0 auto;
@@ -22,13 +19,41 @@
         }
 
         .contain {
-			margin-top: 50px;
 			padding-bottom: 60px;
 		}
 		
 		.required-icon {
 			color: #f00;
-			padding-left: 5px;
+			padding: 0 5px;
+		}
+
+		.for-form {
+			width: 1024px;
+			margin: 0 auto;
+			padding: 30px 0;
+			background-color: #fff;
+		}
+
+		input[type="file"] {
+			display: none;
+		}
+
+		.item {
+			width: 500px;
+			text-align: left;
+			padding: 10px;
+			margin-left: 20px;
+			border-radius: 5px;
+			border: 1px solid #cacaca;
+			box-shadow: 0 -1px 1px #ccc;
+		}
+
+		img {
+			width: 110px;
+		}
+
+		#cropedBigImg {
+			width: 64px;
 		}
     </style>
 </head>
@@ -60,8 +85,8 @@
             </nav>
         </header>
         <section class="contain">
-            <p class="msg">尊敬的<span id="user">某某某</span>用户，请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</p>
-            <div class="for-form">
+              <div class="for-form">
+					<p class="msg">尊敬的<span id="user">某某某</span>用户，请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</p>
                 <form class="form-horizontal" id="form-submit">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">申请人姓名<span class="required-icon">*</span>：</label>
@@ -106,29 +131,106 @@
 						</div>
 					</div>
 					<div class="form-group">
-							<label class="col-sm-4 control-label">申请类别<span class="required-icon">*</span>：</label>
-							<div class="col-sm-6">
-								<select id="apply_type" name="apply_type" class="form-control">
-									<option value="新办">新办</option>
-									<option value="续卡">续卡</option>
-								</select>
-							</div>
+						<label class="col-sm-4 control-label">申请类别<span class="required-icon">*</span>：</label>
+						<div class="col-sm-6">
+							<select id="apply_type" name="apply_type" class="form-control">
+								<option value="新办">新办</option>
+								<option value="续卡">续卡</option>
+							</select>
 						</div>
-					<p>资料采集：</p>
-					<p>非申请人本人车辆，需提供申请人与车主关系的有效证明资料复印件：</p>
-					<p>租借他人停车位的车辆，申请人提供租借协议原件 + 复印件：</p>
+					</div>
+					
                     <p id="warning"></p>
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-1">
                             <button type="submit" class="btn btn-default" id="btn-submit">提交</button>
                         </div>
-                    </div>
-                </form>
-            </div>
+					</div>
+					<p>资料采集：</p>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车辆行驶证原件<span>(0/1)</span><span class="required-icon">*</span>：</label>
+						<div class="col-sm-6 item">
+							<img id="up-img" src=""/>		
+							<label for="chooseImage">
+								<input type="file" id="chooseImage" name="file">
+								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">校园一卡通<span>(0/1)</span><span class="required-icon">*</span>:</label>
+						<div class="col-sm-6 item">
+							<img id="up-img" src=""/>		
+							<label for="chooseImage">
+								<input type="file" id="chooseImage" name="file">
+								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+							</label>
+						</div>
+					</div>
+					<p>非申请人本人车辆，需提供申请人与车主关系的有效证明资料复印件：</p>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">申请人与车主关系有效证明资料复印件<span>(0/1)</span>：</label>
+						<div class="col-sm-6 item">
+							<img id="up-img" src=""/>		
+							<label for="chooseImage">
+								<input type="file" id="chooseImage" name="file">
+								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+							</label>
+						</div>
+					</div>
+					<p>校内有固定停车位的车辆，申请人提供有效缴费凭据原件：</p>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">有效缴费凭据原件<span>(0/1)</span>：</label>
+						<div class="col-sm-6 item">
+							<img id="up-img" src=""/>		
+							<label for="chooseImage">
+								<input type="file" id="chooseImage" name="file">
+								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+							</label>
+						</div>
+					</div>
+					<p>租借他人停车位的车辆，申请人提供租借协议原件 + 复印件：</p>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">租借协议原件<span>(0/1)</span>：</label>
+						<div class="col-sm-6 item">
+							<img id="up-img" src=""/>		
+							<label for="chooseImage">
+								<input type="file" id="chooseImage" name="file">
+								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">租借协议复印件<span>(0/1)</span>：</label>
+						<div class="col-sm-6 item">
+							<img id="up-img" src=""/>		
+							<label for="chooseImage">
+								<input type="file" id="chooseImage" name="file">
+								<img id="cropedBigImg" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+							</label>
+						</div>
+					</div>
+					
+				</form>
+			</div>
         </section>
     </div>
 
 	<script>
+		$('#chooseImage').on('change',function(){
+    	var filePath = $(this).val(),         //获取到input的value，里面是文件的路径
+    		fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
+    		src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
+    		
+    	// 检查是否是图片
+    	if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
+    		error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
+        	return;  
+        }
+  
+        $('#up-img').attr('src',src);
+});
+
         $(document).ready(function(){ 
             let storage = window.localStorage;
             let emp_no = storage.getItem(emp_no);
