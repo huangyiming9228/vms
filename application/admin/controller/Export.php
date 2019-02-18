@@ -12,7 +12,7 @@ class Export extends Controller
   // 渲染预约数据导出页面
   public function reservation_export() {
     return $this->fetch('reservation_export', [
-      'title' => '导出预约数据',
+      'title' => '预约数据统计',
     ]);
   }
 
@@ -132,6 +132,21 @@ class Export extends Controller
     header('Cache-Control: max-age=0');
     $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
     $writer->save('php://output');
+  }
+
+  // 渲染年算你狠数据导出页面
+  public function mot_test_export() {
+    return $this->fetch('mot_test_export', [
+      'title' => '年审数据统计',
+    ]);
+  }
+
+  // 查询年算你狠记录列表
+  public function query_mot_test_list($status, $start_time, $end_time) {
+    $conditions = [];
+    if ($status != '99') $conditions['status'] = $status;
+    $conditions['submit_time'] = ['between time', [$start_time, $end_time]];
+    return Db::table('mot_test_list')->where($conditions)->order('submit_time', 'asc')->select();
   }
 
 }
