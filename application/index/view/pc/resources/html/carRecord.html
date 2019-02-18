@@ -29,10 +29,6 @@
             margin: 0 auto;
             background-color: #fff;
         }
-
-        .msg {
-            font-size: 18px;
-        }
     </style>
 </head>
 <body>
@@ -48,13 +44,11 @@
                             <li><a href="./yearRecord.html">年审记录</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">退出登录</a></li>
+                            <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">修改密码</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">联系我们</a></li>
+                                    <li><a href="./updatepass.html">修改密码</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -65,7 +59,7 @@
         <section class="contain">
             <p class="msg">尊敬的<span id="user">某某某</span>用户,以下是您车辆预约的详细记录</p>
             <div class="for-form">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>序号</th>
@@ -78,148 +72,44 @@
                                 <th>审核备注</th>
                             </tr>
                         </thead>
+                        <tbody id="tbody"></tbody>
                     </table>
             </div>
         </section>
     </div>
 
 	<script>
-        $(document).ready(function(){ 
-            let storage = window.localStorage;
-            let emp_no = storage.getItem(emp_no);
-            var i = 0;
-            $.get('http://www.huangcongfu.cn/vms/index/index/login_check', function(request){
-                if(i = 0,i < request.length, i ++) {
-                    if(request[i].emp_no == emp_no) {
-                        $('#user').text(request[i].name);
-                        $('#number').text(request[i].number);
-                    }
-                }
+        $(document).ready(function(){
+            // //连接到服务器
+            // $.get('url()', function(result){
+            //     let html = '';
+            //     result.forEach(function(item) {
+            //         html += createtd(item);
+            //     });
+            //     $('#tbody').html(html);
+            // });
 
-                // request.array.forEach(element => {
-                //    if(element.emp_no == emp_no) {
-                //         $('#user').text(element.name);
-                //         $('#number').text(element.number);
-                //    }
-                // });
+            const recordArray = [{'id': '1','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
+            'visit_reason':'sdfghjytresdf','type': '通过','more': '无'},{'id': '2','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
+            'visit_reason':'sdfghjytre','type': '通过','more': '无'},{'id': '3','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
+            'visit_reason':'sdfghjytre','type': '通过','more': '无'},{'id': '4','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
+            'visit_reason':'sdfghjytre','type': '通过','more': '无'},{'id': '5','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
+            'visit_reason':'sdfghjytre','type': '通过','more': '无'}];
+            let html = '';
+            recordArray.forEach(function(item) {
+                html += createtd(item);
             });
+            $('#tbody').html(html);
         });
 
-        function getTomorrowDate() {
-            var date = new Date();
-            date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            month = month < 10 ? ('0' + month) : month;
-            day = day < 10 ? ('0' + day) : day;
-            return year + '-' + month + '-' + day;
+        //将获取的数据写入html文档树
+        function createtd(td) {
+            var tr = '<tr><td>' + td.id+ '</td><td>' + td.car_no +  '</td><td>' + td.name +
+                 '</td><td>' + td.tel + '</td><td>' + td.visit_time + '</td><td>' + 
+                    td.visit_reason + '</td><td>' + td.type + '</td><td>' + td.more + '</td></tr>';
+            return tr;
         }
-
-        function checkCarNo(carNo) {
-            // 新能源车牌号正则
-            const regNEV = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
-            // 其他汽车正则
-            const regOTC = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
-            if (carNo.length === 7) {
-                return regOTC.test(carNo);
-            } else if (carNo.length === 8) {
-                return regNEV.test(carNo);
-            } else {
-                return false;
-            }
-        }
-
-		$('#btn-submit').on('click', function(e){
-            e.preventDefault();
-            const form = document.querySelector('#form-submit');
-            let validateFlag = true;
-            var visit_time = $('#visit_time option:selected').val();
-
-            function _alert(errormsg) {
-                $('#warning').text(errormsg);
-				validateFlag = false;
-            }
-
-
-            if (validateFlag) {
-                validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
-                validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
-                validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
-                validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-                validateFlag && (visit_time || _alert('请选择到访时间！'));
-                validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
-            }
-
-            if(validateFlag) {
-                _alert('预约成功！');
-                visit_time = getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
-                var send_data = {
-			        tel: form.tel.value,
-                    car_no: form.car_no.value,
-                    name: form.name.value,
-                    visit_time: visit_time,
-                    visit_reason: form.visit_reason.value,
-			    };
-
-                $.post('http://www.huangcongfu.cn/vms/index/index/login_check',send_data,function(response){
-                    if(response) {
-                        _alert('预约成功！');
-                    }else {
-                        _alert('您今天已经没有预约次数了')
-                    }
-                })
-            }
-        });
-        
-
-        // $('#btn-submit').on('click', function() {
-        //     // var form = document.getElementById('form-submit');
-        //     const form = document.querySelector('#form-submit');
-        //     let validateFlag = true;
-        //     const _alert = (errMsg) => {
-        //         weui.topTips(errMsg, 1500);
-        //         validateFlag = false;
-        //     };
-        //     // function _alert(errMsg) {
-                
-        //     // }
-
-        //     if (validateFlag) {
-        //         validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
-        //         validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
-        //         validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
-        //         validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-        //         validateFlag && (form.visit_time.value || _alert('请选择到访时间！'));
-        //         validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
-        //     }
-
-        //     if(validateFlag) {
-        //         const loading = weui.loading('提交中...');
-        //         try {
-        //             $.post("{:url('save_reservation')}", $('#form-submit').serializeArray(), (response) => {
-        //                 if (response) {
-        //                 loading.hide(() => {
-        //                     weui.toast(response.msg, {
-        //                     duration: 1000,
-        //                     callback: () => {
-        //                         // window.location.replace(response.url);
-        //                         window.location.href = response.url;
-        //                     }
-        //                     });
-        //                 })
-        //                 } else {
-        //                 loading.hide();
-        //                 weui.topTips('预约失败！您今天已没有预约次数了，请明天再预约。', 3000);
-        //                 }
-        //             });
-        //         } catch (error) {
-        //             loading.hide();
-        //             console.log('erroe', error);
-        //             weui.topTips('网络错误！提交失败。', 1500);
-        //         }
-        //     }
-        // });
+      
 	</script>
 </body>
 </html>

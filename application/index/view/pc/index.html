@@ -51,6 +51,7 @@
 
 	<!-- <script src="./resources/scripts/index.js"></script> -->
 	<script>
+		//点击登录完成验证后登录跳转
 		$('#btn-submit').on('click', function(e){
 			e.preventDefault();
 			let emp_no = $('#emp_no').val();
@@ -59,7 +60,6 @@
 				$('#warning').text('员工号或密码为空！');
 			}else {
 				if(emp_no == 'shmily' && psw == '123456') {
-			 		// window.location.href = './resources/html/carDeal.html';
 			 		$(location).attr('href', './resources/html/carDeal.html');
 			 	}else {
 					$('#warning').text('员工号或密码错误！');

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>车辆业务-西南石油大学保卫处</title>
+    <link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../libs/jquery-3.3.1.min.js"></script>
+    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div>
+		<section class="contain">
+			<h3>如果您考虑清楚了，请在此处修改您的密码</h3>
+			<div class="for-form">
+				<form class="form-horizontal" id="form-submit">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">请输入密码：</label>
+						<div class="col-sm-5">
+							<input type="password" placeholder="请输入密码" id="psw" name="psw" class="form-control" >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label">再次确认密码：</label>
+						<div class="col-sm-5">
+							<input type="password" placeholder="请再次输入密码" id="repsw" name="repsw" class="form-control">
+						</div>
+					</div>
+					<p id="warning"></p>
+					<div class="form-group">
+						<div class="col-sm-offset-0 col-sm-9">
+							<button type="submit" class="btn btn-default" id="btn-submit">提交</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+
+	<script>
+		//点击提交验证后跳转
+		$('#btn-submit').on('click', function(e){
+			e.preventDefault();
+			let psw = $('#psw').val();
+			let repsw = $('#repsw').val();
+			if(!psw || !repsw) {
+			}else {
+                if(psw != repsw) {
+                    $('#warning').text('两次输入的密码不同，请重新输入！');
+                }else {
+                    alert('密码修改成功！');
+
+                    $(location).attr('href', 'D:/phpStudy/WWW/vms/application/index/view/pc/index.html');
+				
+                    let send_data = {
+                        psw: psw,
+                    };
+                    $.post('http://www.huangcongfu.cn/vms/index/index/login_check', send_data, function(response) {
+                        // console.log(response);
+                        if(response.code){
+                            alert('密码修改成功！');
+                            $(location).attr('href', './resources/html/carDeal.html');
+                            }else {
+                            $('#warning').text(response.msg);
+                        }
+                    });
+                }
+			}
+		});
+	</script>
+</body>
+</html>

@@ -25,13 +25,11 @@
 							<li><a href="./yearRecord.html">年审记录</a></li>
 						</ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">退出登录</a></li>
+                            <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">修改密码</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">联系我们</a></li>
+                                    <li><a href="./updatepass.html">修改密码</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -56,7 +54,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">申请人与车主关系：</label>
+						<label class="col-sm-4 control-label">申请人与车主关系 ：</label>
 						<div class="col-sm-6">
 							<input type="text" placeholder="填写申请人与车主关系" id="relationship" name="relationship" class="form-control" >
 						</div>
@@ -96,75 +94,75 @@
 					</div>
 					<p>资料采集：</p>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">车辆行驶证原件<span>(0/1)</span><span class="required-icon">*</span>：</label>
+						<label class="col-sm-4 control-label">车辆行驶证原件<span class="driving_license_id">（0/1）</span><span class="required-icon">*</span>：</label>
 						<div class="col-sm-6 item">
 							<img id="driving_license_id" src=""/>		
 							<label>
-								<input type="file" id="chooseImage" name="file">
-								<img class="driving_license_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<input type="file" class="chooseImage" name="driving_license_id">
+								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">校园一卡通<span>(0/1)</span><span class="required-icon">*</span>:</label>
+						<label class="col-sm-4 control-label">校园一卡通<span class="campus_card_id">（0/1）</span><span class="required-icon">*</span>:</label>
 						<div class="col-sm-6 item">
 							<img id="campus_card_id" src=""/>		
 							<label>
-								<input type="file" id="chooseImage" name="file">
-								<img class="campus_card_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<input type="file" class="chooseImage" name="campus_card_id">
+								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<p>非申请人本人车辆，需提供申请人与车主关系的有效证明资料复印件：</p>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">申请人与车主关系有效证明资料复印件<span>(0/1)</span>：</label>
+						<label class="col-sm-4 control-label">申请人与车主关系有效证明资料复印件<span class="relationship_proof_id">（0/1）</span>：</label>
 						<div class="col-sm-6 item">
 							<img id="relationship_proof_id" src=""/>		
 							<label>
-								<input type="file" id="chooseImage" name="file">
-								<img class="relationship_proof_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<input type="file" class="chooseImage" name="relationship_proof_id">
+								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<p>校内有固定停车位的车辆，申请人提供有效缴费凭据原件：</p>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">有效缴费凭据原件<span>(0/1)</span>：</label>
+						<label class="col-sm-4 control-label">有效缴费凭据原件<span class="payment_proof_id">（0/1）</span>：</label>
 						<div class="col-sm-6 item">
 							<img id="payment_proof_id" src=""/>		
 							<label>
-								<input type="file" id="chooseImage" name="file">
-								<img class="payment_proof_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<input type="file" class="chooseImage" name="payment_proof_id">
+								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<p>租借他人停车位的车辆，申请人提供租借协议原件 + 复印件：</p>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">租借协议原件<span>(0/1)</span>：</label>
+						<label class="col-sm-4 control-label">租借协议原件<span class="loan_agreement_original_id">（0/1）</span>：</label>
 						<div class="col-sm-6 item">
 							<img id="loan_agreement_original_id" src=""/>		
 							<label>
-								<input type="file" id="chooseImage" name="file">
-								<img class="loan_agreement_original_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<input type="file" class="chooseImage" name="loan_agreement_original_id">
+								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">租借协议复印件<span>(0/1)</span>：</label>
+						<label class="col-sm-4 control-label">租借协议复印件<span class="loan_agreement_copy_id">（0/1）</span>：</label>
 						<div class="col-sm-6 item">
 							<img id="loan_agreement_copy_id" src=""/>		
 							<label>
-								<input type="file" id="chooseImage" name="file">
-								<img class="loan_agreement_copy_id up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" data-address='' title="点击上传图片"/>	
+								<input type="file" class="chooseImage" name="loan_agreement_copy_id">
+								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
 							</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-10">
 							<div class="checkbox">
-							<label>
-								<input type="checkbox">阅读并同意
-							</label>
-							<span id="deal-file">《车主（驾驶员）承诺条款》</span>
+								<label>
+									<input type="checkbox" id="check">阅读并同意
+								</label>
+								<span id="deal-file">《车主（驾驶员）承诺条款》</span>
 							</div>
 						</div>
 					</div>
@@ -189,60 +187,53 @@
     </div>
 
 	<script>
-		$('#chooseImage').on('change',function(){
-				var filePath = $(this).val(),         //获取到input的value，里面是文件的路径
-					fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
-					src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
-					
-				// 检查是否是图片
-				if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
-					error_prompt_alert('上传错误,文件格式必须为：png/jpg/jpeg');
-					return;  
-				}
-		
-				$('#up-img').attr('src',src);
-		});
-
-		$('#deal-file').on('click',function() {
-			$('#file-box').removeClass('no-display');
-		});
-
-		$('#btn').on('click',function() {
-			$('#file-box').addClass('no-display');
-		});
-
+		//获取到用户名
         $(document).ready(function(){ 
             let storage = window.localStorage;
             let emp_no = storage.getItem(emp_no);
-            var i = 0;
+            let i = 0;
             $.get('http://www.huangcongfu.cn/vms/index/index/login_check', function(request){
                 if(i = 0,i < request.length, i ++) {
                     if(request[i].emp_no == emp_no) {
                         $('#user').text(request[i].name);
-                        $('#number').text(request[i].number);
                     }
                 }
-
-                // request.array.forEach(element => {
-                //    if(element.emp_no == emp_no) {
-                //         $('#user').text(element.name);
-                //         $('#number').text(element.number);
-                //    }
-                // });
             });
-        });
+		});
+		
+		$('.chooseImage').on('change',function(){
+			let filePath = $(this).val(),         //获取到input的value，里面是文件的路径
+			fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
+			src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
+				
+			// 检查是否是图片
+			if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
+				alert('上传错误,文件格式必须为：png/jpg/jpeg');
+				return;  
+			}else {
+				$('#' + $(this).attr('name')).attr('src',src);
+				$('.' + $(this).attr('name')).text('（1/1）')
+				$(this).attr('disabled','disabled');
+			}
 
-        function getTomorrowDate() {
-            var date = new Date();
-            date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            month = month < 10 ? ('0' + month) : month;
-            day = day < 10 ? ('0' + day) : day;
-            return year + '-' + month + '-' + day;
-        }
+			$('.up-img').on('click',function() {
+				if($('#' + $(this).attr('name')).attr('src') != '') {
+					alert('最多可上传一张图片！');
+				}
+			});
+		});
 
+		//显示条约
+		$('#deal-file').on('click',function() {
+			$('#file-box').removeClass('no-display');
+		});
+		//隐藏条约
+		$('#btn').on('click',function() {
+			$('#file-box').addClass('no-display');
+		});
+
+
+		//验证车牌号
         function checkCarNo(carNo) {
             // 新能源车牌号正则
             const regNEV = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
@@ -255,98 +246,76 @@
             } else {
                 return false;
             }
-        }
+		}
+		
+		//验证checkbox
+		function checkbox() {
+			if($('#check').is(':checked')) {
+				return true;
+			}else {
+				return false;
+			}
+		}
 
 		$('#btn-submit').on('click', function(e){
             e.preventDefault();
             const form = document.querySelector('#form-submit');
             let validateFlag = true;
-            var visit_time = $('#visit_time option:selected').val();
+            let apply_type = $('#apply_type option:selected').val();
 
             function _alert(errormsg) {
-                $('#warning').text(errormsg);
+                alert(errormsg);
 				validateFlag = false;
             }
 
-
             if (validateFlag) {
-                validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
-                validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
+                validateFlag && (form.applicant.value || _alert('请填写申请人姓名！'));
+				validateFlag && (form.car_owner.value || _alert('请填写车主姓名！'));
+				//validateFlag && (form.relationship.value || _alert('请填写申请人与车主关系！'));
+				validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
                 validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
-                validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-                validateFlag && (visit_time || _alert('请选择到访时间！'));
-                validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
+				validateFlag && (form.tel.value || _alert('请填写电话号码！'));
+				//validateFlag && (form.displacement.value || _alert('请填写车辆排量！'));
+				validateFlag && (form.applicant_unit.value || _alert('请填写申请人所在单位！'));
+				validateFlag && (form.driving_license_id.value || _alert('请上传车辆行驶证原件！'));
+				validateFlag && (form.campus_card_id.value || _alert('请上传校园一卡通！'));
+				validateFlag && (checkbox() || _alert('请同意《车主（驾驶员）承诺条款》！'));
+
+				// if(form.applicant.value != form.car_owner.value){
+				// 	validateFlag && (form.relationship_proof_id.value || _alert('请上传申请人与车主关系有效证明资料复印件！'));
+				// }
             }
 
             if(validateFlag) {
-                _alert('预约成功！');
-                visit_time = getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
+                _alert('年审信息提交成功！');
                 var send_data = {
-			        tel: form.tel.value,
+			        applicant: form.applicant.value,
+                    car_owner: form.car_owner.value,
+                    relationship: form.relationship.value,
                     car_no: form.car_no.value,
-                    name: form.name.value,
-                    visit_time: visit_time,
-                    visit_reason: form.visit_reason.value,
+					tel: form.tel.value,
+					displacement: form.displacement.value,
+					apply_type: apply_type,
+					applicant_unit: form.applicant_unit.value,
+                    driving_license_id: form.driving_license_id.value,
+                    campus_card_id: form.campus_card_id.value,
+                    relationship_proof_id: form.relationship_proof_id.value,
+					payment_proof_id: form.payment_proof_id.value,
+                    loan_agreement_original_id: form.loan_agreement_original_id.value,
+                    loan_agreement_copy_id: form.loan_agreement_copy_id.value,
 			    };
 
                 $.post('http://www.huangcongfu.cn/vms/index/index/login_check',send_data,function(response){
                     if(response) {
-                        _alert('预约成功！');
+                        _alert('年审信息提交成功！');
                     }else {
-                        _alert('您今天已经没有预约次数了')
+                        _alert('请核对您的年审信息')
                     }
                 })
             }
         });
         
 
-        // $('#btn-submit').on('click', function() {
-        //     // var form = document.getElementById('form-submit');
-        //     const form = document.querySelector('#form-submit');
-        //     let validateFlag = true;
-        //     const _alert = (errMsg) => {
-        //         weui.topTips(errMsg, 1500);
-        //         validateFlag = false;
-        //     };
-        //     // function _alert(errMsg) {
-                
-        //     // }
-
-        //     if (validateFlag) {
-        //         validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
-        //         validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
-        //         validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
-        //         validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-        //         validateFlag && (form.visit_time.value || _alert('请选择到访时间！'));
-        //         validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
-        //     }
-
-        //     if(validateFlag) {
-        //         const loading = weui.loading('提交中...');
-        //         try {
-        //             $.post("{:url('save_reservation')}", $('#form-submit').serializeArray(), (response) => {
-        //                 if (response) {
-        //                 loading.hide(() => {
-        //                     weui.toast(response.msg, {
-        //                     duration: 1000,
-        //                     callback: () => {
-        //                         // window.location.replace(response.url);
-        //                         window.location.href = response.url;
-        //                     }
-        //                     });
-        //                 })
-        //                 } else {
-        //                 loading.hide();
-        //                 weui.topTips('预约失败！您今天已没有预约次数了，请明天再预约。', 3000);
-        //                 }
-        //             });
-        //         } catch (error) {
-        //             loading.hide();
-        //             console.log('erroe', error);
-        //             weui.topTips('网络错误！提交失败。', 1500);
-        //         }
-        //     }
-        // });
 	</script>
 </body>
 </html>
