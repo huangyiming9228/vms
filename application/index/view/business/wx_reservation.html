@@ -9,6 +9,9 @@
 .weui-picker__action {
   color: #2185D0 !important;
 }
+.weui-label {
+  width: 120px;
+}
 </style>
 {/block}
 
@@ -62,6 +65,25 @@
       </div>
       <div class="weui-cell__bd">
         <input class="weui-input" type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reason">
+      </div>
+    </div>
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+      <div class="weui-cell__hd">
+        <label class="weui-label">是否申请免费</label>
+      </div>
+      <div class="weui-cell__bd">
+        <select class="weui-select" name="is_apply_free" id="is_apply_free">
+          <option value="1">是</option>
+          <option value="0">否</option>
+        </select>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">免费理由</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="输入免费理由" id="free_reason" name="free_reason">
       </div>
     </div>
   </form>
@@ -136,6 +158,12 @@ $('#btn-submit').on('click', function() {
     validateFlag && (form.visit_date.value || _alert('请选择预约日期！'));
     validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
     validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
+  }
+
+  if (validateFlag) {
+    if (form.is_apply_free.value == 1 && !form.free_reason.value) {
+      _alert('请填写免费理由！');
+    }
   }
 
   if(validateFlag) {
