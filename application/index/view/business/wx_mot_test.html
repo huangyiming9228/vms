@@ -60,7 +60,7 @@
         <label class="weui-label">车辆号牌<span class="required-icon">*</span></label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="例如：川A123456" name="car_no" id="car_no" required pattern="REG_CAR_NO" emptyTips="请填写车辆号牌！" notMatchTips="请填写正确的车牌号！">
+        <input class="weui-input" type="text" placeholder="例如：川A12345" name="car_no" id="car_no" required pattern="REG_CAR_NO" emptyTips="请填写车辆号牌！" notMatchTips="请填写正确的车牌号！">
       </div>
     </div>
     <div class="weui-cell">
@@ -107,14 +107,14 @@
     <div class="weui-cell__bd">
       <div class="weui-uploader">
         <div class="weui-uploader__hd">
-          <p class="weui-uploader__title">车辆行驶证原件<span class="required-icon">*</span></p>
+          <p class="weui-uploader__title">车辆行驶证扫描件或照片<span class="required-icon">*</span></p>
           <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
           <input type="hidden" class="image-id" name="driving_license_id" id="driving_license_id">
         </div>
         <div class="weui-uploader__bd">
           <ul class="weui-uploader__files" id="uploaderFiles"></ul>
           <div class="weui-uploader__input-box">
-            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
           </div>
         </div>
       </div>
@@ -124,91 +124,74 @@
     <div class="weui-cell__bd">
       <div class="weui-uploader">
         <div class="weui-uploader__hd">
-          <p class="weui-uploader__title">校园一卡通<span class="required-icon">*</span></p>
+          <p class="weui-uploader__title">校园一卡通扫描件或照片<span class="required-icon">*</span></p>
           <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
           <input type="hidden" class="image-id" name="campus_card_id" id="campus_card_id">
         </div>
         <div class="weui-uploader__bd">
           <ul class="weui-uploader__files" id="uploaderFiles"></ul>
           <div class="weui-uploader__input-box">
-            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="weui-cells__title">非申请人本人车辆，需提供申请人与车主关系的有效证明资料复印件：</div>
+<div class="weui-cells__title">非申请人本人车辆，需提供申请人与车主关系的有效证明资料扫描件或照片：</div>
 <div class="weui-cells">
   <div class="weui-cell" id="relationship-proof-uploader">
     <div class="weui-cell__bd">
       <div class="weui-uploader">
         <div class="weui-uploader__hd">
-          <p class="weui-uploader__title">申请人与车主关系有效证明资料复印件</p>
+          <p class="weui-uploader__title">申请人与车主关系有效证明资料扫描件或照片</p>
           <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
           <input type="hidden" class="image-id" name="relationship_proof_id" id="relationship_proof_id">
         </div>
         <div class="weui-uploader__bd">
           <ul class="weui-uploader__files" id="uploaderFiles"></ul>
           <div class="weui-uploader__input-box">
-            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="weui-cells__title">校内有固定停车位的车辆，申请人提供有效缴费凭据原件：</div>
+<div class="weui-cells__title">校内有固定停车位的车辆，申请人提供有效缴费凭据扫描件或照片：</div>
 <div class="weui-cells">
   <div class="weui-cell" id="payment-proof-uploader">
     <div class="weui-cell__bd">
       <div class="weui-uploader">
         <div class="weui-uploader__hd">
-          <p class="weui-uploader__title">有效缴费凭据原件</p>
+          <p class="weui-uploader__title">有效缴费凭据扫描件或照片</p>
           <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
           <input type="hidden" class="image-id" name="payment_proof_id" id="payment_proof_id">
         </div>
         <div class="weui-uploader__bd">
           <ul class="weui-uploader__files" id="uploaderFiles"></ul>
           <div class="weui-uploader__input-box">
-            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="weui-cells__title">租借他人停车位的车辆，申请人提供租借协议原件+复印件：</div>
+<div class="weui-cells__title">租借他人停车位的车辆，申请人提供租借协议扫描件或照片：</div>
 <div class="weui-cells">
-  <div class="weui-cell" id="loan-agreement-original-uploader">
+  <div class="weui-cell" id="loan-agreement-uploader">
     <div class="weui-cell__bd">
       <div class="weui-uploader">
         <div class="weui-uploader__hd">
-          <p class="weui-uploader__title">租借协议原件</p>
+          <p class="weui-uploader__title">租借协议扫描件或照片</p>
           <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
-          <input type="hidden" class="image-id" name="loan_agreement_original_id" id="loan_agreement_original_id">
+          <input type="hidden" class="image-id" name="loan_agreement_id" id="loan_agreement_id">
         </div>
         <div class="weui-uploader__bd">
           <ul class="weui-uploader__files" id="uploaderFiles"></ul>
           <div class="weui-uploader__input-box">
-            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="weui-cell" id="loan-agreement-copy-uploader">
-    <div class="weui-cell__bd">
-      <div class="weui-uploader">
-        <div class="weui-uploader__hd">
-          <p class="weui-uploader__title">租借协议复印件</p>
-          <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
-          <input type="hidden" class="image-id" name="loan_agreement_copy_id" id="loan_agreement_copy_id">
-        </div>
-        <div class="weui-uploader__bd">
-          <ul class="weui-uploader__files" id="uploaderFiles"></ul>
-          <div class="weui-uploader__input-box">
-            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
           </div>
         </div>
       </div>
@@ -233,8 +216,7 @@ $(function() {
   uploadFactory('#campus-card-uploader').init();
   uploadFactory('#relationship-proof-uploader').init();
   uploadFactory('#payment-proof-uploader').init();
-  uploadFactory('#loan-agreement-original-uploader').init();
-  uploadFactory('#loan-agreement-copy-uploader').init();
+  uploadFactory('#loan-agreement-uploader').init();
 });
 
 // 车牌字母转换为大写

@@ -73,8 +73,7 @@ class Business extends Controller
     $images_url['campus_card_url'] = $base_data['campus_card_id'] ? $this->get_image_url($base_data['campus_card_id']) : $base_data['campus_card_id'];
     $images_url['relationship_proof_url'] = $base_data['relationship_proof_id'] ? $this->get_image_url($base_data['relationship_proof_id']) : $base_data['relationship_proof_id'];
     $images_url['payment_proof_url'] = $base_data['payment_proof_id'] ? $this->get_image_url($base_data['payment_proof_id']) : $base_data['payment_proof_id'];
-    $images_url['loan_agreement_original_url'] = $base_data['loan_agreement_original_id'] ? $this->get_image_url($base_data['loan_agreement_original_id']) : $base_data['loan_agreement_original_id'];
-    $images_url['loan_agreement_copy_url'] = $base_data['loan_agreement_copy_id'] ? $this->get_image_url($base_data['loan_agreement_copy_id']) : $base_data['loan_agreement_copy_id'];
+    $images_url['loan_agreement_url'] = $base_data['loan_agreement_id'] ? $this->get_image_url($base_data['loan_agreement_id']) : $base_data['loan_agreement_id'];
     return [
       'base_data' => $base_data,
       'images_url' => $images_url,

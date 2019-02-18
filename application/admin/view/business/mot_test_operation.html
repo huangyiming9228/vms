@@ -163,7 +163,7 @@ function createBaseInfoHtml(data) {
 // 构建图片html
 function createImagesHtml(data) {
   return `<div class="panel panel-default">
-    <div class="panel-heading">行驶证原件</div>
+    <div class="panel-heading">行驶证扫描件或照片</div>
     <div class="panel-body">
       <a href="${data.driving_license_url}" target="_blank">
         <img class="img-dispaly" src="${data.driving_license_url}">
@@ -171,7 +171,7 @@ function createImagesHtml(data) {
     </div>
   </div>
   <div class="panel panel-default">
-    <div class="panel-heading">校园一卡通</div>
+    <div class="panel-heading">校园一卡通扫描件或照片</div>
     <div class="panel-body">
       <a href="${data.campus_card_url}" target="_blank">
         <img class="img-dispaly" src="${data.campus_card_url}">
@@ -179,7 +179,7 @@ function createImagesHtml(data) {
     </div>
   </div>
   <div class="panel panel-default">
-    <div class="panel-heading">申请人与车主关系有效证明资料复印件</div>
+    <div class="panel-heading">申请人与车主关系有效证明资料扫描件或照片</div>
     <div class="panel-body">
       ${(() => {
         if (data.relationship_proof_url) {
@@ -193,7 +193,7 @@ function createImagesHtml(data) {
     </div>
   </div>
   <div class="panel panel-default">
-    <div class="panel-heading">停车缴费凭据原件</div>
+    <div class="panel-heading">停车缴费凭据扫描件或照片</div>
     <div class="panel-body">
       ${(() => {
         if (data.payment_proof_url) {
@@ -207,26 +207,12 @@ function createImagesHtml(data) {
     </div>
   </div>
   <div class="panel panel-default">
-    <div class="panel-heading">停车位租借协议原件</div>
+    <div class="panel-heading">停车位租借协议扫描件或照片</div>
     <div class="panel-body">
       ${(() => {
-        if (data.loan_agreement_original_url) {
-          return `<a href="${data.loan_agreement_original_url}" target="_blank">
-            <img class="img-dispaly" src="${data.loan_agreement_original_url}">
-          </a>`;
-        } else {
-          return '用户没有上传此资料';
-        }
-      })()}
-    </div>
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">停车位租借协议复印件</div>
-    <div class="panel-body">
-      ${(() => {
-        if (data.loan_agreement_copy_url) {
-          return `<a href="${data.loan_agreement_copy_url}" target="_blank">
-            <img class="img-dispaly" src="${data.loan_agreement_copy_url}">
+        if (data.loan_agreement_url) {
+          return `<a href="${data.loan_agreement_url}" target="_blank">
+            <img class="img-dispaly" src="${data.loan_agreement_url}">
           </a>`;
         } else {
           return '用户没有上传此资料';
