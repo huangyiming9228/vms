@@ -29,23 +29,31 @@
         <label class="weui-label">预约车牌号</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="例如：川A123456" name="car_no" id="car_no">
+        <input class="weui-input" type="text" placeholder="例如：川A12345" name="car_no" id="car_no">
       </div>
     </div>
     <div class="weui-cell">
-        <div class="weui-cell__hd">
-          <label class="weui-label">预约人姓名</label>
-        </div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name">
-        </div>
-      </div>
-    <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label for="" class="weui-label">预约时间</label>
+        <label class="weui-label">预约人姓名</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" id="visit_time" name="visit_time" placeholder="选择明天的预约时间" readonly>
+        <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约日期</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择预约日期" readonly>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约时间</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="visit_time" name="visit_time" placeholder="选择预约时间" readonly>
       </div>
     </div>
     <div class="weui-cell">
@@ -73,11 +81,27 @@ $('#visit_time').on('click', function() {
     onChange: function(value) {
       $(self).val(value);
     },
-    onClose: function(value) {
-      $(self).val(Global.getTomorrowDate() + ' ' + $(self).val() + ':00');
+    onConfirm: function() {
+      // $(self).val(Global.getTomorrowDate() + ' ' + $(self).val() + ':00');
     },
     id: 'visit_time',
   })
+});
+// 绑定日期选择器
+$('#visit_date').on('click', function() {
+  const self = this;
+  weui.datePicker({
+    start: Global.getTomorrowDate(),
+    end: 2030,
+    defaultValue: Global.getTomorrowDate().split('-'),
+    onChange: function(result) {
+      const [ { value: year } , { value: month }, { value: day }] = result;
+      const date = year + '-' + (month > 10 ? month : '0' + month) + '-' + (day > 10 ? day : '0' + day);
+      $(self).val(date);
+    },
+    onConfirm: function(result) {console.log(result)},
+    id: 'visit_date',
+  });
 });
 
 // 获取预约时间段
@@ -109,6 +133,7 @@ $('#btn-submit').on('click', function() {
     validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
     validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
     validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
+    validateFlag && (form.visit_date.value || _alert('请选择预约日期！'));
     validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
     validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
   }
@@ -116,7 +141,14 @@ $('#btn-submit').on('click', function() {
   if(validateFlag) {
     const loading = weui.loading('提交中...');
     new Promise((resolve) => {
-      $.post("{:url('save_reservation')}", $('#form-submit').serializeArray(), (response) => {
+      const sendData = $('#form-submit').serializeArray().filter((item) => {
+        return item.name != 'visit_time' && item.name != 'visit_date';
+      });
+      sendData.push({
+        name: 'visit_time',
+        value: $('#visit_date').val() + ' ' + $('#visit_time').val() + ':00',
+      });
+      $.post("{:url('save_reservation')}", sendData, (response) => {
         if (response.code) {
           loading.hide(() => {
             weui.toast(response.msg, {
