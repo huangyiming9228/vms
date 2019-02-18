@@ -128,7 +128,7 @@ $('#btn-export').on('click', function(e) {
   if (!$('#start_time').val() || !$('#end_time').val()) {
     return ui_alert('请选择时间范围！');
   }
-  const url = "{:url('export_reservation_excel')}?" + $('#form-query').serialize();
+  const url = "{:url('export_mot_test_excel')}?" + $('#form-query').serialize();
   window.open(url);
 });
 </script>
