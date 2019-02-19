@@ -45,11 +45,24 @@
 <script>
 // 绑定时间选择器
 lay('.datetime-item').each(function() {
+  const self = this;
   laydate.render({
     elem: this,
     type: 'datetime',
     theme: '#222222',
     trigger: 'click',
+    done: function(value, date) {
+      const { year, month, date: day, hours, minutes, seconds } = date;
+      if (year && month && day) {
+        if (!hours && !minutes && !seconds) {
+          let now = new Date();
+          const nowhours = now.getHours() >= 10 ? now.getHours() : '0' + now.getHours();
+          const nowminutes = now.getMinutes() >= 10 ? now.getMinutes() : '0' + now.getMinutes();
+          const nowseconds = now.getSeconds() >= 10 ? now.getSeconds() : '0' + now.getSeconds();
+          setTimeout(() => $(self).val(value.substr(0, 10) + ' ' + nowhours + ':' + nowminutes + ':' + nowseconds));
+        }
+      }
+    },
   });
 });
 
