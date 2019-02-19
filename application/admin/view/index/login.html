@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>车辆业务系统后台登录</title>
+  <link rel="stylesheet" href="{$Think.STATIC_URL}/libs/bootstrap/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #eee;
+    }
+    .main {
+      margin: 0 auto;
+      margin-top: 150px;
+      width: 300px;
+    }
+    .title {
+      text-align: center;
+    }
+    .feedback {
+      margin-left: 5px;
+      margin-bottom: 10px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <h3 class="title">车辆业务系统后台</h3>
+    <form id="form_login">
+      <div class="form-group">
+        <input type="text" class="form-control" name="admin_no" id="admin_no" placeholder="用户名">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" name="admin_psw" id="admin_psw" placeholder="密码">
+      </div>
+    </form>
+    <div class="feedback" id="error_msg"></div>
+    <button class="btn btn-primary btn-block" id="btn_login">登 录</button>
+  </div>
+  <script src="{$Think.STATIC_URL}/libs/jquery/dist/jquery.min.js"></script>
+  <script src="{$Think.STATIC_URL}/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script>
+    $('#btn_login').on('click', function() {
+      if (!$('#admin_no').val()) {
+        $('#admin_no').parent().addClass('has-error');
+        $('#error_msg').text('请填写用户名！');
+        return;
+      }
+      if (!$('#admin_psw').val()) {
+        $('#admin_psw').parent().addClass('has-error');
+        $('#error_msg').text('请填写密码！');
+        return;
+      }
+      $.post("{:url('login_check')}", $('#form_login').serializeArray(), (response) => {
+        if (response.code) {
+          window.location.href = response.url;
+        } else {
+          $('#error_msg').text(response.msg);
+        }
+      })
+    });
+    $('#form_login').on('focus', 'input', function() {
+      $('#error_msg').text('');
+      $(this).parent().removeClass('has-error');
+    });
+  </script>
+</body>
+</html>

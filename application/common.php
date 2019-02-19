@@ -12,7 +12,7 @@
 // 应用公共文件
 
 // 定义网站网址
-define('SITE_URL', '/vms/');
+define('BACK_LOGIN_URL', '/vms/admin/index/login');
 // 定义静态资源路径
 define('STATIC_URL', '/vms/public/static');
 // 定义图片上传路径
