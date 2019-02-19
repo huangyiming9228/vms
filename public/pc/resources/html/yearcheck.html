@@ -4,318 +4,385 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>车辆业务-西南石油大学保卫处</title>
+	<title>年审</title>
 	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/common.css">
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../css/index.css">
 	<link rel="stylesheet" href="../css/yearcheck.css">
+	<link rel="stylesheet" href="../libs/weui/weui.min.css">
     <script src="../libs/jquery-3.3.1.min.js"></script>
-    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../libs/bootbox/bootbox.min.js"></script>
+	<script src="../scripts/common_alert.js"></script>
+	<script src="../scripts/utils.js"></script>
+	<script src="../libs/weui/weui.min.js"></script>
+	<style>
+		.weui-uploader__hd {
+			padding-bottom: 0;
+		}
+		.weui-uploader__title {
+			margin-top: 8px;
+			margin-bottom: 0;
+		}
+		.weui-uploader__files > li {
+			margin-top: 10px;
+		}
+	</style>
 </head>
 <body>
-	<div class="main-content">
-        <header>
-            <nav class="navbar navbar-default"> 
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-							<li><a href="./carDeal.html">车辆预约</a></li>
-							<li class="active"><a href="#">年审<span class="sr-only">(current)</span></a></li>
-							<li><a href="./carRecord.html">预约记录</a></li>
-							<li><a href="./yearRecord.html">年审记录</a></li>
-						</ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
-                            <!-- <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="./updatepass.html">修改密码</a></li>
-                                </ul>
-                            </li> -->
-                        </ul> 
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <section class="contain">
-			<p class="msg">尊敬的<span id="user">某某某</span>用户，请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</p>
-			<div class="for-form">
-				<form class="form-horizontal" id="form-submit">
-					<div class="form-group">
-						<label class="col-sm-4 control-label">申请人姓名<span class="required-icon">*</span>：</label>
-						<div class="col-sm-6">
-							<input type="text" placeholder="填写申请人姓名" id="applicant" name="applicant" class="form-control" >
+	<header>
+		<nav class="navbar navbar-default navbar-static-top ">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="./carDeal.html">车辆预约</a></li>
+						<li  class="active"><a href="#">年审<span class="sr-only">(current)</span></a></li>
+						<li><a href="./carRecord.html">预约记录</a></li>
+						<li><a href="./yearRecord.html">年审记录</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">退出登录</a></li>
+						<!-- <li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="./updatepass.html">修改密码</a></li>
+									<li role="separator" class="divider"></li>
+								<li><a href="#">联系我们</a></li>
+							</ul>
+						</li> -->
+					</ul> 
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="tips">
+		<p>尊敬的<span id="emp_no"></span>用户，请填写您车辆的年审信息，我们在收到信息后1-2天内会录入：</p>
+	</div>
+	<div class="main">
+		<form class="form-horizontal" id="form-submit">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">申请人姓名<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="填写申请人姓名" id="applicant" name="applicant" class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">车主姓名<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="填写车主姓名" id="car_owner" name="car_owner" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">申请人与车主关系 ：</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="填写申请人与车主关系" id="relationship" name="relationship" class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">车辆号牌<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="例如：川A12345" id="car_no" name="car_no" class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">联系方式<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="填写电话号码" id="tel" name="tel" class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">排量（升）：</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="填写车辆排量" id="displacement" name="displacement" class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">申请人所在单位<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<input type="text" placeholder="填写申请人所在单位" id="applicant_unit" name="applicant_unit" class="form-control" >
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">申请类别<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<select id="apply_type" name="apply_type" class="form-control">
+						<option value="新办">新办</option>
+						<option value="续卡">续卡</option>
+					</select>
+				</div>
+			</div>
+		</form>
+		<form class="form-horizontal" id="form-image">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">车辆行驶证扫描件或照片<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<div class="weui-uploader" id="driving-license-uploader">
+						<div class="weui-uploader__hd">
+							<input type="hidden" class="image-id" name="driving_license_id" id="driving_license_id">
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">车主姓名<span class="required-icon">*</span>：</label>
-						<div class="col-sm-6">
-							<input type="text" placeholder="填写车主姓名" id="car_owner" name="car_owner" class="form-control">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">申请人与车主关系 ：</label>
-						<div class="col-sm-6">
-							<input type="text" placeholder="填写申请人与车主关系" id="relationship" name="relationship" class="form-control" >
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">车辆号牌<span class="required-icon">*</span>：</label>
-						<div class="col-sm-6">
-							<input type="text" placeholder="例如：川A123456" id="car_no" name="car_nos" class="form-control" >
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">联系方式<span class="required-icon">*</span>：</label>
-						<div class="col-sm-6">
-							<input type="text" placeholder="填写电话号码" id="tel" name="tel" class="form-control" >
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">排量（升）：</label>
-						<div class="col-sm-6">
-							<input type="text" placeholder="填写车辆排量" id="displacement" name="displacements" class="form-control" >
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">申请人所在单位<span class="required-icon">*</span>：</label>
-						<div class="col-sm-6">
-							<input type="text" placeholder="填写申请人所在单位" id="applicant_unit" name="applicant_units" class="form-control" >
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">申请类别<span class="required-icon">*</span>：</label>
-						<div class="col-sm-6">
-							<select id="apply_type" name="apply_type" class="form-control">
-								<option value="新办">新办</option>
-								<option value="续卡">续卡</option>
-							</select>
-						</div>
-					</div>
-					<p>资料采集：</p>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">车辆行驶证原件<span class="driving_license_id">（0/1）</span><span class="required-icon">*</span>：</label>
-						<div class="col-sm-6 item">
-							<img id="driving_license_id" src=""/>		
-							<label>
-								<input type="file" class="chooseImage" name="driving_license_id">
-								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
-							</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">校园一卡通<span class="campus_card_id">（0/1）</span><span class="required-icon">*</span>:</label>
-						<div class="col-sm-6 item">
-							<img id="campus_card_id" src=""/>		
-							<label>
-								<input type="file" class="chooseImage" name="campus_card_id">
-								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
-							</label>
-						</div>
-					</div>
-					<p>非申请人本人车辆，需提供申请人与车主关系的有效证明资料复印件：</p>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">申请人与车主关系有效证明资料复印件<span class="relationship_proof_id">（0/1）</span>：</label>
-						<div class="col-sm-6 item">
-							<img id="relationship_proof_id" src=""/>		
-							<label>
-								<input type="file" class="chooseImage" name="relationship_proof_id">
-								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
-							</label>
-						</div>
-					</div>
-					<p>校内有固定停车位的车辆，申请人提供有效缴费凭据原件：</p>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">有效缴费凭据原件<span class="payment_proof_id">（0/1）</span>：</label>
-						<div class="col-sm-6 item">
-							<img id="payment_proof_id" src=""/>		
-							<label>
-								<input type="file" class="chooseImage" name="payment_proof_id">
-								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
-							</label>
-						</div>
-					</div>
-					<p>租借他人停车位的车辆，申请人提供租借协议原件 + 复印件：</p>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">租借协议原件<span class="loan_agreement_original_id">（0/1）</span>：</label>
-						<div class="col-sm-6 item">
-							<img id="loan_agreement_original_id" src=""/>		
-							<label>
-								<input type="file" class="chooseImage" name="loan_agreement_original_id">
-								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
-							</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">租借协议复印件<span class="loan_agreement_copy_id">（0/1）</span>：</label>
-						<div class="col-sm-6 item">
-							<img id="loan_agreement_copy_id" src=""/>		
-							<label>
-								<input type="file" class="chooseImage" name="loan_agreement_copy_id">
-								<img class="up-img" src="../images/up-logo.png" alt="lorem ipsum dolor sit" title="点击上传图片"/>	
-							</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-offset-4 col-sm-10">
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" id="check">阅读并同意
-								</label>
-								<span id="deal-file">《车主（驾驶员）承诺条款》</span>
+						<div class="weui-uploader__bd">
+							<ul class="weui-uploader__files" id="uploaderFiles"></ul>
+							<div class="weui-uploader__input-box">
+								<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-sm-offset-4 col-sm-10">
-							<button type="submit" class="btn btn-default" id="btn-submit">提交</button>
-						</div>
-					</div>
-				</form>
-				<div class="no-display" id="file-box">
-					<h4>《车主（驾驶员）承诺条款》</h4>
-					<ul>
-						<li>1.接受并配合门卫（巡查）人员的验证检查，服从指挥，文明行车，不鸣笛、不扰民。</li>
-						<li>2.进入校园后，限速30公里/小时行驶，避让一切行人和非机动车。</li>
-						<li>3.按规划的停车位沿指示方向规范停车，不乱停乱放，并保管好车内物品。</li>
-					</ul>
-					<p class="sure">本人郑重声明，已阅知并承诺履行上述条款，如有违犯，相关责任均由本人承担。</p>
-					<button id="btn" class="btn btn-default">确定</button>
 				</div>
 			</div>
-        </section>
-    </div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">校园一卡通扫描件或照片<span class="required-icon">*</span>：</label>
+				<div class="col-sm-6">
+					<div class="weui-uploader" id="campus-card-uploader">
+						<div class="weui-uploader__hd">
+							<input type="hidden" class="image-id" name="campus_card_id" id="campus_card_id">
+						</div>
+						<div class="weui-uploader__bd">
+							<ul class="weui-uploader__files" id="uploaderFiles"></ul>
+							<div class="weui-uploader__input-box">
+								<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">关系有效证明资料扫描件或照片：</label>
+				<div class="col-sm-6">
+					<div class="weui-uploader" id="relationship-proof-uploader">
+						<div class="weui-uploader__hd">
+							<p class="weui-uploader__title">非申请人本人车辆，需提供申请人与车主关系的有效证明资料扫描件或照片。</p>
+							<input type="hidden" class="image-id" name="relationship_proof_id" id="relationship_proof_id">
+						</div>
+						<div class="weui-uploader__bd">
+							<ul class="weui-uploader__files" id="uploaderFiles"></ul>
+							<div class="weui-uploader__input-box">
+								<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">有效缴费凭据扫描件或照片：</label>
+				<div class="col-sm-6">
+					<div class="weui-uploader" id="payment-proof-uploader">
+						<div class="weui-uploader__hd">
+							<p class="weui-uploader__title">校内有固定停车位的车辆，申请人提供有效缴费凭据扫描件或照片。</p>
+							<input type="hidden" class="image-id" name="payment_proof_id" id="payment_proof_id">
+						</div>
+						<div class="weui-uploader__bd">
+							<ul class="weui-uploader__files" id="uploaderFiles"></ul>
+							<div class="weui-uploader__input-box">
+								<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">租借协议扫描件或照片：</label>
+				<div class="col-sm-6">
+					<div class="weui-uploader" id="loan-agreement-uploader">
+						<div class="weui-uploader__hd">
+							<p class="weui-uploader__title">租借他人停车位的车辆，申请人提供租借协议扫描件或照片。</p>
+							<input type="hidden" class="image-id" name="loan_agreement_id" id="loan_agreement_id">
+						</div>
+						<div class="weui-uploader__bd">
+							<ul class="weui-uploader__files" id="uploaderFiles"></ul>
+							<div class="weui-uploader__input-box">
+								<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-4">
+					<label>
+						<input type="checkbox" id="clause-check"> 阅读并同意<a id="clause">《车主（驾驶员）承诺条款》</a>
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-1">
+					<button type="submit" class="btn btn-primary" id="btn-submit">提 交</button>
+				</div>
+			</div>
+			<p id="warning"></p>
+		</form>
+	</div>
+	<div class="modal fade" tabindex="-1" role="dialog" id="modal_clause">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modal-title">车主（驾驶员）承诺条款</h4>
+			</div>
+			<div class="modal-body" id="modal-body">
+				<ol class="clause-list">
+					<li>接受并配合门卫（巡查）人员的验证检查，服从指挥，文明行车，不鸣笛、不扰民。</li>
+					<li>进入校园后，限速30公里/小时行驶，避让一切行人和非机动车。</li>
+					<li>按规划的停车位沿指示方向规范停车，不乱停乱放，并保管好车内物品。</li>
+				</ol>
+				<p>本人郑重声明，已阅知并承诺履行上述条款，如有违犯，相关责任均由本人承担。</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">确 定</button>
+			</div>
+			</div>
+		</div>
+	</div>
+<script>
+	// 获取到用户名
+	$(document).ready(function(){ 
+		const emp_no = localStorage.getItem('emp_no');
+		$('#emp_no').text(emp_no);
+		// 图片上传注册
+		uploadFactory('#driving-license-uploader').init();
+		uploadFactory('#campus-card-uploader').init();
+		uploadFactory('#relationship-proof-uploader').init();
+		uploadFactory('#payment-proof-uploader').init();
+		uploadFactory('#loan-agreement-uploader').init();
+	});
 
-	<script>
-		//获取到用户名
-        $(document).ready(function(){ 
-            let storage = window.localStorage;
-            let emp_no = storage.getItem(emp_no);
-            let i = 0;
-            $.get('http://www.huangcongfu.cn/vms/index/index/login_check', function(request){
-                if(i = 0,i < request.length, i ++) {
-                    if(request[i].emp_no == emp_no) {
-                        $('#user').text(request[i].name);
-                    }
-                }
-            });
-		});
-		
-		$('.chooseImage').on('change',function(){
-			let filePath = $(this).val(),         //获取到input的value，里面是文件的路径
-			fileFormat = filePath.substring(filePath.lastIndexOf(".")).toLowerCase(),
-			src = window.URL.createObjectURL(this.files[0]); //转成可以在本地预览的格式
-				
-			// 检查是否是图片
-			if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
-				alert('上传错误,文件格式必须为：png/jpg/jpeg');
-				return;  
-			}else {
-				$('#' + $(this).attr('name')).attr('src',src);
-				$('.' + $(this).attr('name')).text('（1/1）')
-				$(this).attr('disabled','disabled');
-			}
+	$('#clause').on('click', function(e) {
+		$('#modal_clause').modal('show');
+	});
 
-			$('.up-img').on('click',function() {
-				if($('#' + $(this).attr('name')).attr('src') != '') {
-					alert('最多可上传一张图片！');
+	$('#btn-submit').on('click', function(e){
+		e.preventDefault();
+		const isClauseCheck = $('#clause-check').is(':checked');
+		if (!isClauseCheck) {
+			return ui_alert('请阅读并同意《车主（驾驶员）承诺条款》!');
+		}
+		const form = document.querySelector('#form-submit');
+		let validateFlag = true;
+
+		function _alert(errormsg, element) {
+			$('#warning').text(errormsg);
+            $(element).parent().addClass('has-error');
+			validateFlag = false;
+		}
+
+		if (validateFlag) {
+			validateFlag && (form.applicant.value || _alert('请填写申请人姓名！', form.applicant));
+			validateFlag && (form.car_owner.value || _alert('请填写车主姓名！', form.car_owner));
+			validateFlag && (form.car_no.value || _alert('请填写车牌号！', form.car_no));
+			validateFlag && (Utils.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
+			validateFlag && (form.tel.value || _alert('请填写电话号码！', form.tel));
+			validateFlag && (form.applicant_unit.value || _alert('请填写申请人所在单位！', form.applicant_unit));
+		}
+
+		const imageForm = document.querySelector('#form-image');
+		if (validateFlag) {
+			validateFlag && (imageForm.driving_license_id.value || _alert('请上传车辆行驶证！'));
+			validateFlag && (imageForm.campus_card_id.value || _alert('请上传校园一卡通！'));
+		}
+
+		if(validateFlag) {
+			const formData = $('#form-submit').serializeArray();
+			const imageData = $('#form-image').serializeArray();
+			const data = formData.concat(imageData);
+			const images = imageData.filter((item) => item.value).map((item) => item.value);
+			console.log(data, images);
+			$.post('/vms/index/business/save_mot_test', { data, images }, function(response){
+				if(response.code) {
+					ui_alert(response.msg, function() {
+						window.location.reload();
+					});
+				}else {
+					ui_alert(response.msg);
+				}
+			})
+		}
+	});
+
+	// 聚焦元素时清除错误状态
+    $('#form-submit').on('focus', 'input', function() {
+        $(this).parent().removeClass('has-error');
+        $('#warning').text('');
+    });
+
+// 图片上传工厂模式
+function uploadFactory(uploadSelector) {
+	let uploadCount = 0;
+	let uploadIdDom = $(uploadSelector + ' input.image-id');
+	let image = null;
+	return {
+		init: function() {
+			// 绑定上传
+			weui.uploader(uploadSelector, {
+				url: '/vms/index/business/image_upload',
+				auto: true,
+				type: 'file',
+				fileVal: 'image',
+				compress: {
+					width: 1600,
+					height: 1600,
+					quality: 1,
+				},
+				onBeforeQueued: function(files) {
+					if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
+						ui_alert('请上传图片');
+						return false;
+					}
+					if(this.size > 10 * 1024 * 1024){
+						ui_alert('请上传不超过10M的图片');
+						return false;
+					}
+					if (files.length > 1) { // 防止一下子选中过多文件
+						ui_alert('最多只能上传1张图片，请重新选择');
+						return false;
+					}
+					if (uploadCount + 1 > 1) {
+						ui_alert('最多只能上传1张图片');
+						return false;
+					}
+
+					++uploadCount;
+				},
+				onQueued: function(){
+					image = this;
+					// console.log(this);
+				},
+				onBeforeSend: function(data, headers){
+					// console.log(this, data, headers);
+					// $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
+					// $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
+					// return false; // 阻止文件上传
+				},
+				onProgress: function(procent){
+					// console.log(this, procent);
+				},
+				onSuccess: function (ret) {
+					uploadIdDom.val(ret);
+				},
+				onError: function(err){
+					// console.log(this, err);
 				}
 			});
-		});
 
-		//显示条约
-		$('#deal-file').on('click',function() {
-			$('#file-box').removeClass('no-display');
-		});
-		//隐藏条约
-		$('#btn').on('click',function() {
-			$('#file-box').addClass('no-display');
-		});
-
-
-		//验证车牌号
-        function checkCarNo(carNo) {
-            // 新能源车牌号正则
-            const regNEV = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
-            // 其他汽车正则
-            const regOTC = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
-            if (carNo.length === 7) {
-                return regOTC.test(carNo);
-            } else if (carNo.length === 8) {
-                return regNEV.test(carNo);
-            } else {
-                return false;
-            }
+			// 绑定图片预览
+			$(uploadSelector + ' #uploaderFiles').on('click', 'li', function() {
+				const self = this;
+				const url = $(this).css('background-image').match(/url\((.*?)\)/)[1].replace(/"/g, '');
+				const id = $(this).attr('data-id');
+				const gallery = weui.gallery(url, {
+					className: 'custom-gallery',
+					onDelete: function() {
+						ui_alert('确定删除该图片？', function() {
+							uploadCount--;
+							uploadIdDom.val('');
+							image.stop();
+							$(self).remove();
+							gallery.hide();
+						})
+					}
+				});
+			});
 		}
-		
-		//验证checkbox
-		function checkbox() {
-			if($('#check').is(':checked')) {
-				return true;
-			}else {
-				return false;
-			}
-		}
-
-		$('#btn-submit').on('click', function(e){
-            e.preventDefault();
-            const form = document.querySelector('#form-submit');
-            let validateFlag = true;
-            let apply_type = $('#apply_type option:selected').val();
-
-            function _alert(errormsg) {
-                alert(errormsg);
-				validateFlag = false;
-            }
-
-            if (validateFlag) {
-                validateFlag && (form.applicant.value || _alert('请填写申请人姓名！'));
-				validateFlag && (form.car_owner.value || _alert('请填写车主姓名！'));
-				//validateFlag && (form.relationship.value || _alert('请填写申请人与车主关系！'));
-				validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
-                validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
-				validateFlag && (form.tel.value || _alert('请填写电话号码！'));
-				//validateFlag && (form.displacement.value || _alert('请填写车辆排量！'));
-				validateFlag && (form.applicant_unit.value || _alert('请填写申请人所在单位！'));
-				validateFlag && (form.driving_license_id.value || _alert('请上传车辆行驶证原件！'));
-				validateFlag && (form.campus_card_id.value || _alert('请上传校园一卡通！'));
-				validateFlag && (checkbox() || _alert('请同意《车主（驾驶员）承诺条款》！'));
-
-				// if(form.applicant.value != form.car_owner.value){
-				// 	validateFlag && (form.relationship_proof_id.value || _alert('请上传申请人与车主关系有效证明资料复印件！'));
-				// }
-            }
-
-            if(validateFlag) {
-                _alert('年审信息提交成功！');
-                var send_data = {
-			        applicant: form.applicant.value,
-                    car_owner: form.car_owner.value,
-                    relationship: form.relationship.value,
-                    car_no: form.car_no.value,
-					tel: form.tel.value,
-					displacement: form.displacement.value,
-					apply_type: apply_type,
-					applicant_unit: form.applicant_unit.value,
-                    driving_license_id: form.driving_license_id.value,
-                    campus_card_id: form.campus_card_id.value,
-                    relationship_proof_id: form.relationship_proof_id.value,
-					payment_proof_id: form.payment_proof_id.value,
-                    loan_agreement_original_id: form.loan_agreement_original_id.value,
-                    loan_agreement_copy_id: form.loan_agreement_copy_id.value,
-			    };
-
-                $.post('http://www.huangcongfu.cn/vms/index/index/login_check',send_data,function(response){
-                    if(response) {
-                        _alert('年审信息提交成功！');
-                    }else {
-                        _alert('请核对您的年审信息')
-                    }
-                })
-            }
-        });
-        
-
-	</script>
+	}
+}
+</script>
 </body>
 </html>

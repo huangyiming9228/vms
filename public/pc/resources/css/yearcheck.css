@@ -1,82 +1,32 @@
-.main-content {
-    width: 100%;
+.tips {
     margin: 0 auto;
-    background-color: #EFEFEF;
+    width: 800px;
+    color: #666;
 }
 
-.contain {
-    padding-bottom: 60px;
-}
-
-p {
-    font-size: 18px;
-    padding: 10px 0;
-    background-color: #EFEFEF;
+.main {
+    margin: 0 auto;
+    width: 800px;
+    background-color: #F8F8F8;
+    padding: 50px 0;
 }
 
 .required-icon {
-    color: #f00;
-    padding: 0 5px;
+    margin-left: 3px;
+    color: red;
 }
 
-.for-form {
-    position: relative;
-    width: 1024px;
-    margin: 0 auto;
-    text-align: left;
-    padding: 30px 0;
-    background-color: rgb(250, 248, 248);
+#warning {
+    text-align: center;
+    color: red;
 }
 
-input[type="file"] {
-    display: none;
-}
-
-.item {
-    width: 500px;
-    height: 120px;
-    line-height: 120px;
-    text-align: left;
-    margin-left: 20px;
-    border-radius: 5px;
-    border: 1px solid #cacaca;
-    box-shadow: 0 -1px 1px #ccc;
-}
-
-img {
-    width: 110px;
-}
-
-.up-img {
-    width: 64px;
-}
-
-#deal-file {
+#clause:hover {
+    text-decoration: none !important;
     cursor: pointer;
-    color: #7AB0E0;
 }
 
-#file-box {
-    position: absolute;
-    left: 40%;
-    bottom: 80px;
-    width: 300px;
-    padding: 15px 20px;
-    background-color:  #272525;
-    opacity: 0.8;
-    color: #fff;
-}
-
-.sure {
-    font-weight: 600;
-    background-color: #272525;
-}
-
-#btn {
-    margin-left: 100px;
-    color: #000;
-}
-
-.no-display {
-    display: none;
+.modal-body > p {
+    text-align: center;
+    font-weight: bold;
 }

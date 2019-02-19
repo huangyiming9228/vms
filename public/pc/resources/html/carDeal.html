@@ -210,7 +210,7 @@
             };
             $.post('/vms/index/business/save_reservation',send_data,function(response){
                 if(response.code) {
-                    ui_confirm('预约成功！', function() {
+                    ui_alert(response.msg, function() {
                         window.location.reload();
                     });
                 }else {
