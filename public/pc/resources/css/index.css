@@ -2,11 +2,25 @@ html, body {
     height: 100%;
 }
 
+body {
+    background-color: #D2D6DE;
+}
+
 .main {
     margin: 0 auto;
-    width: 1024px;
-    height: 100%;
-    background-color: #EFEFEF;
+    padding: 20px;
+    background-color: #fff;
+    width: 350px;
+}
+
+.title {
+    margin-top: 150px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.tips {
+    text-align: center;
 }
 
 header img {
@@ -33,13 +47,10 @@ footer {
     background-color: #EFEFEF;
 }
 
-ul li{
-   margin-top: 8px;
-}
 
 #warning {
-    height: 16px;
-    margin: 0 190px 5px 0;
+    margin-left: 5px;
+    margin-bottom: 10px;
     color: #f00;
 }
 

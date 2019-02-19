@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>车辆业务-西南石油大学保卫处</title>
+	<title>车辆业务系统</title>
 	<link rel="stylesheet" href="./resources/css/reset.css">
 	<link rel="stylesheet" href="./resources/libs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="./resources/css/index.css">
@@ -12,74 +12,62 @@
 	<script src="./resources/libs/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<h1 class="title">车辆业务系统</h1>
 	<div class="main">
-		<header>
-			<img src="./resources/images/logo.png">
-		</header>
-		<section class="contain">
-			<h2>车辆业务办理</h2>
-			<div class="for-form">
-				<form class="form-horizontal" id="form-submit">
-					<div class="form-group">
-						<label class="col-sm-4 control-label">员工号：</label>
-						<div class="col-sm-5">
-							<input type="text" placeholder="请输入员工号" id="emp_no" name="emp_no" class="form-control" >
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
-						<div class="col-sm-5">
-							<input type="password" placeholder="请输入密码" id="psw" name="psw" class="form-control">
-						</div>
-					</div>
-					<p id="warning"></p>
-					<div class="form-group">
-						<div class="col-sm-offset-0 col-sm-9">
-							<button type="submit" class="btn btn-default" id="btn-submit">登录</button>
-						</div>
-					</div>
-				</form>
+		<p class="tips">请输入账号密码</p>
+		<form id="form-submit">
+			<div class="form-group">
+				<input type="text" placeholder="请输入员工号" id="emp_no" name="emp_no" class="form-control" >
 			</div>
-		</section>
-		<footer>
-			<ul>
-				<li>西南石油大学保卫部（处）（武装部）&nbsp;&nbsp;&nbsp;地址：四川省成都市新都区新都大道8号</li>
-				<li>电话：028-83032110&nbsp;&nbsp;&nbsp;邮编：610500</li>
-			</ul>
-		</footer>
+			<div class="form-group">
+				<input type="password" placeholder="请输入密码" id="psw" name="psw" class="form-control">
+			</div>
+		</form>
+		<div id="warning"></div>
+		<button class="btn btn-primary btn-block" id="btn-submit">登录</button>
 	</div>
 
 	<!-- <script src="./resources/scripts/index.js"></script> -->
 	<script>
 		//点击登录完成验证后登录跳转
 		$('#btn-submit').on('click', function(e){
-			e.preventDefault();
 			let emp_no = $('#emp_no').val();
 			let psw = $('#psw').val();
-			if(!emp_no || !psw) {
-				$('#warning').text('员工号或密码为空！');
-			}else {
-				if(emp_no == 'shmily' && psw == '123456') {
-			 		$(location).attr('href', './resources/html/carDeal.html');
-			 	}else {
-					$('#warning').text('员工号或密码错误！');
-			 	}
-				
-				let send_data = {
-					emp_no: emp_no,
-					psw: psw,
-				};
-				$.post('http://www.huangcongfu.cn/vms/index/index/login_check', send_data, function(response) {
-					// console.log(response);
-					if(response.code){
-						$(location).attr('href', './resources/html/carDeal.html');
-						}else {
-						$('#warning').text(response.msg);
-					}
-				});
-			}
+			if (!emp_no) {
+        $('#emp_no').parent().addClass('has-error');
+        $('#warning').text('请填写员工号！');
+        return;
+      }
+      if (!psw) {
+        $('#psw').parent().addClass('has-error');
+        $('#warning').text('请填写密码！');
+        return;
+      }
+			// if(!emp_no || !psw) {
+			// 	$('#warning').text('员工号或密码为空！');
+			// }else {
+			// 	if(emp_no == 'shmily' && psw == '123456') {
+			//  		$(location).attr('href', './resources/html/carDeal.html');
+			//  	}else {
+			// 		$('#warning').text('员工号或密码错误！');
+			//  	}
+			let send_data = {
+				emp_no: emp_no,
+				psw: psw,
+			};
+			$.post('/vms/index/index/login_check', send_data, function(response) {
+				if(response.code){
+					$(location).attr('href', './resources/html/carDeal.html');
+					}else {
+					$('#warning').text(response.msg);
+				}
+			});
 		});
-		// test
+
+		$('#form-submit').on('focus', 'input', function() {
+      $('#warning').text('');
+      $(this).parent().removeClass('has-error');
+    });
 	</script>
 </body>
 </html>
