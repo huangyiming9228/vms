@@ -52,11 +52,13 @@ $('#list').bootstrapTable({
     field: 'emp_name',
     title: '员工姓名',
     align: 'center',
-  }, {
-    field: 'id_card',
-    title: '身份证号',
-    align: 'center',
-  }, {
+  },
+  // {
+  //   field: 'id_card',
+  //   title: '身份证号',
+  //   align: 'center',
+  // },
+  {
     field: 'tel',
     title: '手机号',
     align: 'center',
@@ -114,9 +116,10 @@ $('#btn-add-save').on('click', function(e) {
   if (validateFlag) {
     validateFlag && (form.emp_no.value || _alert('请填写员工号！'));
     validateFlag && (form.emp_name.value || _alert('请填写员工姓名！'));
-    validateFlag && (form.id_card.value || _alert('请填写身份证号！'));
-    validateFlag && (Global.checkIdCard(form.id_card.value) || _alert('身份证号不合法！'));
-    validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
+    validateFlag && (form.psw.value || _alert('请填写初始密码！'));
+    // validateFlag && (form.id_card.value || _alert('请填写身份证号！'));
+    // validateFlag && (Global.checkIdCard(form.id_card.value) || _alert('身份证号不合法！'));
+    // validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
   }
 
   if (validateFlag) {
@@ -187,12 +190,6 @@ function createModalHtml(data) {
       <label class="col-sm-3 control-label">员工姓名</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" disabled value="${data.emp_name}">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-3 control-label">身份证号</label>
-      <div class="col-sm-9">
-        <input type="text" class="form-control" value="${data.id_card}" id="id_card">
       </div>
     </div>
     <div class="form-group">

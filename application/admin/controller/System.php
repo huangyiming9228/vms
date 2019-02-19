@@ -80,9 +80,6 @@ class System extends Controller
     $data = $_POST;
     $is_emp_no_exist = Db::table('employee_list')->where('emp_no', $data['emp_no'])->find();
     if ($is_emp_no_exist) $this->error('新增失败，该员工号已存在。');
-    $is_id_card_exist = Db::table('employee_list')->where('id_card', $data['id_card'])->find();
-    if ($is_id_card_exist) $this->error('新增失败，该身份证号已存在。');
-    $data['psw'] = 'swpu'.substr($data['id_card'], -4);
     $data['reg_time'] = date('Y-m-d H:i:s');
     $res = Db::table('employee_list')->insert($data);
     if ($res == 1) {
