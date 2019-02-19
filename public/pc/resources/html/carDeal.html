@@ -13,6 +13,7 @@
     <script src="../libs/bootbox/bootbox.min.js"></script>
     <script src="../scripts/common_alert.js"></script>
     <script src="../scripts/utils.js"></script>
+    <script src="../scripts/common.js"></script>
     <script src="../libs/laydate/laydate.js"></script>
 
     <style  rel="stylesheet">
@@ -51,7 +52,7 @@
                         <li><a href="./yearRecord.html">年审记录</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">退出登录</a></li>
+                        <li><a href="javascript:void(0);" onclick="logout()">退出登录</a></li>
                         <!-- <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -163,6 +164,11 @@
     // 获取到用户名,剩余预约次数
     $(document).ready(function(){ 
         const emp_no = localStorage.getItem('emp_no');
+        if (!emp_no) {
+            ui_alert('登录身份失效，请重新登录！', function() {
+                window.location.href = '../../index.html';
+            });
+        }
         $('#emp_no').text(emp_no);
         $.get('/vms/index/business/get_rest_reservation_time', {}, function(response) {
             $('#reservation_time').text(response);
