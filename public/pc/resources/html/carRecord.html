@@ -4,112 +4,125 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>车辆业务-西南石油大学保卫处</title>
-	<link rel="stylesheet" href="../css/reset.css">
+	<title>预约记录</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/common.css">
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/index.css">
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- 引入bootstrap-table -->
+    <link rel="stylesheet" href="../libs/bootstrap-table/dist/bootstrap-table.min.css">
+    <script src="../libs/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../libs/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 
     <style  rel="stylesheet">
         .main {
-            width: 100%;
-        }
-
-        .contain {
-            margin-top: 60px;
-        }
-
-        .special {
-            display: none;
-        } 
-
-        .table {
-            width: 1024px;
             margin: 0 auto;
-            background-color: #fff;
+            width: 1200px;
+            background-color: #F8F8F8;
+            padding: 50px 20px;
+        }
+        .tips {
+            margin: 0 auto;
+            width: 1200px;
+            color: #666;
+        }
+        span[success] {
+            color: green;
+        }
+        span[error] {
+            color: red;
         }
     </style>
 </head>
 <body>
-	<div class="main">
-        <header>
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li><a href="./carDeal.html">车辆预约</a></li>
-                            <li><a href="./yearcheck.html">年审</a></li>
-                            <li class="active"><a href="#">预约记录<span class="sr-only">(current)</span></a></li>
-                            <li><a href="./yearRecord.html">年审记录</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
-                            <!-- <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="./updatepass.html">修改密码</a></li>
-                                </ul>
-                            </li> -->
-                        </ul> 
-                    </div>
+    <header>
+        <nav class="navbar navbar-default navbar-static-top ">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="./carDeal.html">车辆预约</a></li>
+                        <li><a href="./yearcheck.html">年审</a></li>
+                        <li class="active"><a href="#">预约记录<span class="sr-only">(current)</span></a></li>
+                        <li><a href="./yearRecord.html">年审记录</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">退出登录</a></li>
+                        <!-- <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./updatepass.html">修改密码</a></li>
+                                    <li role="separator" class="divider"></li>
+                                <li><a href="#">联系我们</a></li>
+                            </ul>
+                        </li> -->
+                    </ul> 
                 </div>
-            </nav>
-        </header>
-        <section class="contain">
-            <p class="msg">尊敬的<span id="user">某某某</span>用户,以下是您车辆预约的详细记录</p>
-            <div class="for-form">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>预约车牌号</th>
-                                <th>预约人姓名</th>
-                                <th>员工电话</th>
-                                <th>到访时间</th>
-                                <th>到访事由</th>
-                                <th>审核状态</th>
-                                <th>审核备注</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody"></tbody>
-                    </table>
             </div>
-        </section>
+        </nav>
+    </header>
+    <div class="tips">
+        <p>尊敬的<span id="emp_no"></span>用户，以下是您的预约记录列表：</p>
     </div>
-
+    <div class="main">
+        <table id="list"></table>
+    </div>
 	<script>
-        $(document).ready(function(){
-            // //连接到服务器
-            // $.get('url()', function(result){
-            //     let html = '';
-            //     result.forEach(function(item) {
-            //         html += createtd(item);
-            //     });
-            //     $('#tbody').html(html);
-            // });
-
-            const recordArray = [{'id': '1','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
-            'visit_reason':'sdfghjytresdf','type': '通过','more': '无'},{'id': '2','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
-            'visit_reason':'sdfghjytre','type': '通过','more': '无'},{'id': '3','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
-            'visit_reason':'sdfghjytre','type': '通过','more': '无'},{'id': '4','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
-            'visit_reason':'sdfghjytre','type': '通过','more': '无'},{'id': '5','car_no': '黑AF4567','name': '韦德鑫','tel': '15882023622','visit_time': '2019-02-20 17:00:00',
-            'visit_reason':'sdfghjytre','type': '通过','more': '无'}];
-            let html = '';
-            recordArray.forEach(function(item) {
-                html += createtd(item);
-            });
-            $('#tbody').html(html);
+        const emp_no = localStorage.getItem('emp_no');
+        $('#emp_no').text(emp_no);
+        $('#list').bootstrapTable({
+            url: "/vms/index/business/get_reservation_list?emp_no=" + emp_no,
+            pageSize: 10,
+            pageList: [10, 25, 50, 100],
+            pagination: true,
+            columns: [{
+                field: 'name',
+                title: '预约人姓名',
+                align: 'center',
+            }, {
+                field: 'car_no',
+                title: '车牌号',
+                align: 'center',
+            }, {
+                field: 'tel',
+                title: '员工电话',
+                align: 'center',
+            }, {
+                field: 'visit_time',
+                title: '预约时间',
+                align: 'center',
+                sortable: true,
+            }, {
+                field: 'visit_reason',
+                title: '来校事由',
+                align: 'center',
+            }, {
+                field: 'is_apply_free',
+                title: '是否申请免费',
+                align: 'center',
+                formatter: (value) => value === 0 ? '否': '是',
+            }, {
+                field: 'free_reason',
+                title: '免费理由',
+                align: 'center',
+            }, {
+                field: 'status',
+                title: '预约状态',
+                align: 'center',
+                formatter: (value) => {
+                    switch (value) {
+                        case 0: return '待审核';
+                        case 1: return '<span success>审核通过</span>';
+                        case 2: return '<span error>未通过审核</span>';
+                    }
+                },
+            }, {
+                field: 'audit_remark',
+                title: '审核备注',
+                align: 'center',
+                formatter: (value) => value ? value : '-'
+            }]
         });
-
-        //将获取的数据写入html文档树
-        function createtd(td) {
-            var tr = '<tr><td>' + td.id+ '</td><td>' + td.car_no +  '</td><td>' + td.name +
-                 '</td><td>' + td.tel + '</td><td>' + td.visit_time + '</td><td>' + 
-                    td.visit_reason + '</td><td>' + td.type + '</td><td>' + td.more + '</td></tr>';
-            return tr;
-        }
-      
 	</script>
 </body>
 </html>
