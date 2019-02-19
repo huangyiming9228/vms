@@ -4,210 +4,244 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>车辆业务-西南石油大学保卫处</title>
-	<link rel="stylesheet" href="../css/reset.css">
+	<title>车辆预约</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/common.css">
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/index.css">
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../libs/bootbox/bootbox.min.js"></script>
+    <script src="../libs/common_alert.js"></script>
+    <script src="../libs/laydate/laydate.js"></script>
 
     <style  rel="stylesheet">
         .main {
-            width: 100%;
-        }
-
-        .contain {
-            margin-top: 60px;
-        }
-
-        .for-form {
-            width: 1024px;
             margin: 0 auto;
-            padding: 30px 0;
-            background-color: rgb(250, 248, 248);
+            width: 800px;
+            background-color: #F8F8F8;
+            padding: 50px 0;
         }
-
+        .tips {
+            margin: 0 auto;
+            width: 800px;
+            color: #666;
+        }
         .special {
             display: none;
-        } 
-
+        }
+        #warning {
+            color: red;
+            text-align: center;
+        }
+        .laydate-footer-btns span:hover {
+            color: #337AB7 !important;
+        }
     </style>
 </head>
 <body>
-	<div class="main">
-        <header>
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">车辆预约<span class="sr-only">(current)</span></a></li>
-                            <li><a href="./yearcheck.html">年审</a></li>
-                            <li><a href="./carRecord.html">预约记录</a></li>
-                            <li><a href="./yearRecord.html">年审记录</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
-                            <!-- <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="./updatepass.html">修改密码</a></li>
-                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">联系我们</a></li>
-                                </ul>
-                            </li> -->
-                        </ul> 
-                    </div>
+    <header>
+        <nav class="navbar navbar-default navbar-static-top ">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">车辆预约<span class="sr-only">(current)</span></a></li>
+                        <li><a href="./yearcheck.html">年审</a></li>
+                        <li><a href="./carRecord.html">预约记录</a></li>
+                        <li><a href="./yearRecord.html">年审记录</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
+                        <!-- <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./updatepass.html">修改密码</a></li>
+                                    <li role="separator" class="divider"></li>
+                                <li><a href="#">联系我们</a></li>
+                            </ul>
+                        </li> -->
+                    </ul> 
                 </div>
-            </nav>
-        </header>
-        <section class="contain">
-            <p class="msg">尊敬的<span id="user">某某某</span>用户，您剩余预约次数为<span id="number">几</span>次，请填写要预约的车辆信息</p>
-            <div class="for-form">
-                <form class="form-horizontal" id="form-submit">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">员工电话：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="输入员工电话" id="tel" name="tel" class="form-control" >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">预约车牌号：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="例如：川A123456" id="car_no" name="car_no" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">预约人姓名：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="输入预约人姓名" id="name" name="name" class="form-control" >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">到访时间：</label>
-                        <div class="col-sm-6">
-                            <select id="visit_time" name="visit_time" class="form-control">
-                                <option class="special">选择明天的到访时间</option>
-                                <option>07:00</option>
-                                <option>08:00</option>
-                                <option>09:00</option>
-                                <option>10:00</option>
-                                <option>11:00</option>
-                                <option>12:00</option>
-                                <option>13:00</option>
-                                <option>14:00</option>
-                                <option>15:00</option>
-                                <option>16:00</option>
-                                <option>17:00</option>
-                                <option>18:00</option>
-                                <option>19:00</option>
-                                <option>20:00</option>
-                                <option>21:00</option>
-                                <option>22:00</option>
-                                <option>23:00</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">到访事由：</label>
-                        <div class="col-sm-6">
-                            <input type="text" placeholder="输入到访事由" id="visit_reason" name="visit_reasons" class="form-control" >
-                        </div>
-                    </div>
-                    <p id="warning"></p>
-                    <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-1">
-                            <button type="submit" class="btn btn-default" id="btn-submit">预约</button>
-                        </div>
-                    </div>
-                </form>
             </div>
-        </section>
+        </nav>
+    </header>
+    <div class="tips">
+        <p>尊敬的<span id="emp_no"></span>用户，请填写要预约的车辆信息：</p>
+        <p>您当前剩余的预约次数为：<span id="reservation_time"></span>次</p>
+    </div>
+	<div class="main">
+        <p id="warning"></p>
+        <form class="form-horizontal" id="form-submit">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">员工电话：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入员工电话" id="tel" name="tel" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">预约车牌号：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="例如：川A12345" id="car_no" name="car_no" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">预约人姓名：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入预约人姓名" id="name" name="name" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">预约日期：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="选择预约日期" id="visit_date" name="visit_date" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">预约时间：</label>
+                <div class="col-sm-6">
+                    <select id="visit_time" name="visit_time" class="form-control">
+                        <option class="special">选择预约时间</option>
+                        <option>07:00</option>
+                        <option>08:00</option>
+                        <option>09:00</option>
+                        <option>10:00</option>
+                        <option>11:00</option>
+                        <option>12:00</option>
+                        <option>13:00</option>
+                        <option>14:00</option>
+                        <option>15:00</option>
+                        <option>16:00</option>
+                        <option>17:00</option>
+                        <option>18:00</option>
+                        <option>19:00</option>
+                        <option>20:00</option>
+                        <option>21:00</option>
+                        <option>22:00</option>
+                        <option>23:00</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">预约事由：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reasons" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">是否申请免费：</label>
+                <div class="col-sm-6">
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1"> 是
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0"> 否
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">免费理由：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入免费理由" id="free_reason" name="free_reasons" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-1">
+                    <button type="submit" class="btn btn-primary" id="btn-submit">预 约</button>
+                </div>
+            </div>
+        </form>
     </div>
 
-	<script>
-        //获取到用户名
-        $(document).ready(function(){ 
-            let storage = window.localStorage;
-            let emp_no = storage.getItem(emp_no);
-            var i = 0;
-            $.get('http://www.huangcongfu.cn/vms/index/index/login_check', function(request){
-                if(i = 0,i < request.length, i ++) {
-                    if(request[i].emp_no == emp_no) {
-                        $('#user').text(request[i].name);
-                        $('#number').text(request[i].number);
-                    }
+<script>
+    laydate.render({
+        elem: '#visit_date',
+        theme: '#337AB7',
+        value: getTomorrowDate(),
+        min: getTomorrowDate(),
+        btns: ['clear', 'confirm'],
+    });
+    // 获取到用户名,剩余预约次数
+    $(document).ready(function(){ 
+        let emp_no = localStorage.getItem('emp_no');
+        $('#emp_no').text(emp_no);
+        $.get('/vms/index/business/get_rest_reservation_time', {}, function(response) {
+            $('#reservation_time').text(response);
+        });
+    });
+
+    //得到格式为0000-00-00的后一天日期
+    function getTomorrowDate() {
+        var date = new Date();
+        date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        month = month < 10 ? ('0' + month) : month;
+        day = day < 10 ? ('0' + day) : day;
+        return year + '-' + month + '-' + day;
+    }
+
+    //验证车牌号是否合格
+    function checkCarNo(carNo) {
+        // 新能源车牌号正则
+        const regNEV = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
+        // 其他汽车正则
+        const regOTC = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
+        if (carNo.length === 7) {
+            return regOTC.test(carNo);
+        } else if (carNo.length === 8) {
+            return regNEV.test(carNo);
+        } else {
+            return false;
+        }
+    }
+
+    //单击提交按钮验证表单信息并向服务器上传数据
+    $('#btn-submit').on('click', function(e){
+        e.preventDefault();
+        const form = document.querySelector('#form-submit');
+        let validateFlag = true;
+        var visit_time = $('#visit_time option:selected').val();
+
+        function _alert(errormsg, element) {
+            $('#warning').text(errormsg);
+            $(element).parent().addClass('has-error');
+            validateFlag = false;
+        }
+
+        if (validateFlag) {
+            validateFlag && (form.tel.value || _alert('请填写员工手机号！', form.tel));
+            validateFlag && (form.car_no.value || _alert('请填写车牌号！', form.car_no));
+            validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
+            validateFlag && (form.name.value || _alert('请填写预约人姓名！', form.name));
+            validateFlag && (visit_time || _alert('请选择到访时间！', form.visit_time));
+            validateFlag && (form.visit_reason.value || _alert('请填写到访事由！', form.visit_reason));
+        }
+
+        if(validateFlag) {
+            visit_time = getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
+            var send_data = {
+                tel: form.tel.value,
+                car_no: form.car_no.value,
+                name: form.name.value,
+                visit_time: visit_time,
+                visit_reason: form.visit_reason.value,
+            };
+
+            $.post('http://www.huangcongfu.cn/vms/index/index/login_check',send_data,function(response){
+                if(response) {
+                    _alert('预约成功！');
+                }else {
+                    _alert('您今天已经没有预约次数了')
                 }
-            });
-        });
-
-        //得到格式为0000-00-00的后一天日期
-        function getTomorrowDate() {
-            var date = new Date();
-            date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            month = month < 10 ? ('0' + month) : month;
-            day = day < 10 ? ('0' + day) : day;
-            return year + '-' + month + '-' + day;
+            })
         }
+    });
 
-        //验证车牌号是否合格
-        function checkCarNo(carNo) {
-            // 新能源车牌号正则
-            const regNEV = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
-            // 其他汽车正则
-            const regOTC = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
-            if (carNo.length === 7) {
-                return regOTC.test(carNo);
-            } else if (carNo.length === 8) {
-                return regNEV.test(carNo);
-            } else {
-                return false;
-            }
-        }
-
-        //单击提交按钮验证表单信息并向服务器上传数据
-		$('#btn-submit').on('click', function(e){
-            e.preventDefault();
-            const form = document.querySelector('#form-submit');
-            let validateFlag = true;
-            var visit_time = $('#visit_time option:selected').val();
-
-            function _alert(errormsg) {
-                $('#warning').text(errormsg);
-				validateFlag = false;
-            }
-
-            if (validateFlag) {
-                validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
-                validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
-                validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
-                validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-                validateFlag && (visit_time || _alert('请选择到访时间！'));
-                validateFlag && (form.visit_reason.value || _alert('请填写到访事由！'));
-            }
-
-            if(validateFlag) {
-                _alert('预约成功！');
-                visit_time = getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
-                var send_data = {
-			        tel: form.tel.value,
-                    car_no: form.car_no.value,
-                    name: form.name.value,
-                    visit_time: visit_time,
-                    visit_reason: form.visit_reason.value,
-			    };
-
-                $.post('http://www.huangcongfu.cn/vms/index/index/login_check',send_data,function(response){
-                    if(response) {
-                        _alert('预约成功！');
-                    }else {
-                        _alert('您今天已经没有预约次数了')
-                    }
-                })
-            }
-        });
-	</script>
+    // 聚焦元素时清除错误状态
+    $('#form-submit').on('focus', 'input', function() {
+        $(this).parent().removeClass('has-error');
+        $('#warning').text('');
+    });
+</script>
 </body>
 </html>

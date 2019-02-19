@@ -1,0 +1,16 @@
+html, body {
+  height: 100vh;
+  background-color: #eee !important;
+}
+.navbar-nav > .active > a {
+  color: #fff !important;
+  background-color: #337AB7 !important;
+}
+.navbar-nav > li > a:hover {
+  color: #fff !important;
+  background-color: #337AB7 !important;
+  transition: all .2s;
+}
+.navbar-custom {
+  background-color: #337AB7 !important;
+}

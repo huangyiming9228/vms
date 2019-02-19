@@ -25,7 +25,7 @@ class Business extends Controller
   }
 
   // 获取用户剩余预约次数
-  private function get_rest_reservation_time() {
+  public function get_rest_reservation_time() {
     $emp_level = Session::get('emp_level');
     $availabel_time = Db::table('reservation_permission_list')->where('level', $emp_level)->value('reservation_time');
     $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))->count();

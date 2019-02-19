@@ -57,6 +57,7 @@
 			};
 			$.post('/vms/index/index/login_check', send_data, function(response) {
 				if(response.code){
+					localStorage.setItem('emp_no', emp_no);
 					$(location).attr('href', './resources/html/carDeal.html');
 					}else {
 					$('#warning').text(response.msg);
