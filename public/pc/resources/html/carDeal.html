@@ -11,7 +11,8 @@
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../libs/bootbox/bootbox.min.js"></script>
-    <script src="../libs/common_alert.js"></script>
+    <script src="../scripts/common_alert.js"></script>
+    <script src="../scripts/utils.js"></script>
     <script src="../libs/laydate/laydate.js"></script>
 
     <style  rel="stylesheet">
@@ -50,7 +51,7 @@
                         <li><a href="./yearRecord.html">年审记录</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
+                        <li><a href="#">退出登录</a></li>
                         <!-- <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -99,7 +100,6 @@
                 <label class="col-sm-4 control-label">预约时间：</label>
                 <div class="col-sm-6">
                     <select id="visit_time" name="visit_time" class="form-control">
-                        <option class="special">选择预约时间</option>
                         <option>07:00</option>
                         <option>08:00</option>
                         <option>09:00</option>
@@ -130,17 +130,17 @@
                 <label class="col-sm-4 control-label">是否申请免费：</label>
                 <div class="col-sm-6">
                     <label class="radio-inline">
-                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1"> 是
+                        <input type="radio" name="radio" id="inlineRadio1" value="1" checked> 是
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0"> 否
+                        <input type="radio" name="radio" id="inlineRadio2" value="0"> 否
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-4 control-label">免费理由：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="输入免费理由" id="free_reason" name="free_reasons" class="form-control" >
+                    <input type="text" placeholder="输入免费理由" id="free_reason" name="free_reason" class="form-control" >
                 </div>
             </div>
             <div class="form-group">
@@ -152,55 +152,28 @@
     </div>
 
 <script>
+    // 渲染日期选择器
     laydate.render({
         elem: '#visit_date',
         theme: '#337AB7',
-        value: getTomorrowDate(),
-        min: getTomorrowDate(),
-        btns: ['clear', 'confirm'],
+        value: Utils.getTomorrowDate(),
+        min: Utils.getTomorrowDate(),
+        btns: ['confirm'],
     });
     // 获取到用户名,剩余预约次数
     $(document).ready(function(){ 
-        let emp_no = localStorage.getItem('emp_no');
+        const emp_no = localStorage.getItem('emp_no');
         $('#emp_no').text(emp_no);
         $.get('/vms/index/business/get_rest_reservation_time', {}, function(response) {
             $('#reservation_time').text(response);
         });
     });
 
-    //得到格式为0000-00-00的后一天日期
-    function getTomorrowDate() {
-        var date = new Date();
-        date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-        month = month < 10 ? ('0' + month) : month;
-        day = day < 10 ? ('0' + day) : day;
-        return year + '-' + month + '-' + day;
-    }
-
-    //验证车牌号是否合格
-    function checkCarNo(carNo) {
-        // 新能源车牌号正则
-        const regNEV = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}(([0-9]{5}[DF]$)|([DF][A-HJ-NP-Z0-9][0-9]{4}$))/;
-        // 其他汽车正则
-        const regOTC = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/;
-        if (carNo.length === 7) {
-            return regOTC.test(carNo);
-        } else if (carNo.length === 8) {
-            return regNEV.test(carNo);
-        } else {
-            return false;
-        }
-    }
-
     //单击提交按钮验证表单信息并向服务器上传数据
     $('#btn-submit').on('click', function(e){
         e.preventDefault();
         const form = document.querySelector('#form-submit');
         let validateFlag = true;
-        var visit_time = $('#visit_time option:selected').val();
 
         function _alert(errormsg, element) {
             $('#warning').text(errormsg);
@@ -211,27 +184,37 @@
         if (validateFlag) {
             validateFlag && (form.tel.value || _alert('请填写员工手机号！', form.tel));
             validateFlag && (form.car_no.value || _alert('请填写车牌号！', form.car_no));
-            validateFlag && (checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
+            validateFlag && (Utils.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
             validateFlag && (form.name.value || _alert('请填写预约人姓名！', form.name));
-            validateFlag && (visit_time || _alert('请选择到访时间！', form.visit_time));
-            validateFlag && (form.visit_reason.value || _alert('请填写到访事由！', form.visit_reason));
+            validateFlag && (form.visit_reason.value || _alert('请填写预约事由！', form.visit_reason));
+        }
+
+        const is_apply_free = $("input[name='radio']:checked").val();
+
+        if (validateFlag) {
+            if (is_apply_free == 1 && !form.free_reason.value) {
+                _alert('请填写免费理由！', form.free_reason);
+            }
         }
 
         if(validateFlag) {
-            visit_time = getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
-            var send_data = {
+            visit_time = Utils.getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
+            const send_data = {
                 tel: form.tel.value,
                 car_no: form.car_no.value,
                 name: form.name.value,
-                visit_time: visit_time,
+                visit_time: form.visit_date.value + ' ' + form.visit_time.value + ':00',
                 visit_reason: form.visit_reason.value,
+                is_apply_free: is_apply_free,
+                free_reason: form.free_reason.value,
             };
-
-            $.post('http://www.huangcongfu.cn/vms/index/index/login_check',send_data,function(response){
-                if(response) {
-                    _alert('预约成功！');
+            $.post('/vms/index/business/save_reservation',send_data,function(response){
+                if(response.code) {
+                    ui_confirm('预约成功！', function() {
+                        window.location.reload();
+                    });
                 }else {
-                    _alert('您今天已经没有预约次数了')
+                    ui_alert(response.msg);
                 }
             })
         }
