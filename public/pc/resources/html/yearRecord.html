@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>车辆业务-西南石油大学保卫处</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../libs/jquery-3.3.1.min.js"></script>
+    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <style  rel="stylesheet">
+        .main {
+            width: 100%;
+        }
+
+        .contain {
+            margin-top: 60px;
+        }
+
+        .special {
+            display: none;
+        } 
+
+        .table {
+            width: 1024px;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+	<div class="main">
+        <header>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="./carDeal.html">车辆预约</a></li>
+                            <li><a href="./yearcheck.html">年审</a></li>
+                            <li><a href="./carRecord.html">预约记录<span class="sr-only">(current)</span></a></li>
+                            <li class="active"><a href="#">年审记录</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="D:/phpStudy/WWW/vms/application/index/view/pc/index.html">退出登录</a></li>
+                            <!-- <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人设置 <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="./updatepass.html">修改密码</a></li>
+                                </ul>
+                            </li> -->
+                        </ul> 
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <section class="contain">
+            <p class="msg">尊敬的<span id="user">某某某</span>用户,以下是您车辆年审的详细记录</p>
+            <div class="for-form">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>申请人姓名</th>
+                                <th>车主姓名</th>
+                                <th>申请人与车主关系</th>
+                                <th>车辆号牌</th>
+                                <th>联系方式</th>
+                                <th>排量（升）</th>
+                                <th>申请人所在单位</th>
+                                <th>申请类别</th>
+                                <th>审核状态</th>
+                                <th>审核备注</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+            </div>
+        </section>
+    </div>
+
+	<script>
+        $(document).ready(function(){
+            // //连接到服务器
+            // $.get('url()', function(result){
+            //     let html = '';
+            //     result.forEach(function(item) {
+            //         html += createtd(item);
+            //     });
+            //     $('#tbody').html(html);
+            // });
+
+        const recordArray = [{'id': '1','applicant': '韦德鑫','car_owner': 'smily','relationship': '同学','car_no': '黑AF4567',
+        'tel': '15882023622','displacement': '89','applicant_unit': '西南石油大学','apply_type': '新办','type': '通过','more': '无'},
+        {'id': '2','applicant': 'www','car_owner': 'smily','relationship': '同学','car_no': '黑AF4567',
+        'tel': '15882023622','displacement': '89','applicant_unit': '西南石油大学','apply_type': '新办','type': '通过','more': '无'},
+        {'id': '3','applicant': 'dfg','car_owner': 'smily','relationship': '同学','car_no': '黑AF4567',
+        'tel': '15882023622','displacement': '89','applicant_unit': '西南石油大学','apply_type': '新办','type': '通过','more': '无'},
+        {'id': '4','applicant': '韦德鑫','car_owner': 'smily','relationship': '同学','car_no': '黑AF4567',
+        'tel': '15882023622','displacement': '89','applicant_unit': '西南石油大学','apply_type': '新办','type': '通过','more': '无'},
+        {'id': '5','applicant': '韦德鑫','car_owner': 'smily','relationship': '同学','car_no': '黑AF4567',
+        'tel': '15882023622','displacement': '89','applicant_unit': '西南石油大学','apply_type': '新办','type': '通过','more': '无'},
+        {'id': '6','applicant': '韦德鑫','car_owner': 'smily','relationship': '同学','car_no': '黑AF4567',
+        'tel': '15882023622','displacement': '89','applicant_unit': '西南石油大学','apply_type': '新办','type': '通过','more': '无'}];
+        let html = '';
+        recordArray.forEach(function(item) {
+            html += createtd(item);
+        });
+        $('#tbody').html(html);
+    });
+
+    //将获取的数据写入html文档树
+    function createtd(td) {
+        var tr = '<tr><td>' + td.id+ '</td><td>' + td.applicant + '</td><td>'+ td.car_owner + '</td><td>' + td.relationship + '</td><td>' +
+             td.car_no + '</td><td>' + td.tel + '</td><td>' + td.displacement + '</td><td>' + td.applicant_unit + 
+            '</td><td>' + td.apply_type +'</td><td>' + td.type + '</td><td>' + td.more + '</td></tr>';
+        return tr;
+    }
+	</script>
+</body>
+</html>
