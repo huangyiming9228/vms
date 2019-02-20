@@ -22,6 +22,14 @@
 			<div class="form-group">
 				<input type="password" placeholder="请输入密码" id="psw" name="psw" class="form-control">
 			</div>
+			<div class="form-group" style="height: 34px;">
+				<div class="col-sm-6" style="padding-left: 0;">
+					<input type="text" placeholder="请输入验证码" id="captcha" name="captcha" class="form-control">
+				</div>
+				<div class="col-sm-6">
+					<img id="captcha_img" height="35" width="125" src="/vms/index/verification/get_captcha_img" />
+				</div>
+			</div>
 		</form>
 		<div id="warning"></div>
 		<button class="btn btn-primary btn-block" id="btn-submit">登录</button>
@@ -33,6 +41,7 @@
 		$('#btn-submit').on('click', function(e){
 			let emp_no = $('#emp_no').val();
 			let psw = $('#psw').val();
+			let captcha = $('#captcha').val();
 			if (!emp_no) {
         $('#emp_no').parent().addClass('has-error');
         $('#warning').text('请填写员工号！');
@@ -41,6 +50,11 @@
       if (!psw) {
         $('#psw').parent().addClass('has-error');
         $('#warning').text('请填写密码！');
+        return;
+      }
+			if (!captcha) {
+        $('#captcha').parent().addClass('has-error');
+        $('#warning').text('请填写验证码！');
         return;
       }
 			// if(!emp_no || !psw) {
@@ -55,20 +69,33 @@
 				emp_no: emp_no,
 				psw: psw,
 			};
-			$.post('/vms/index/index/login_check', send_data, function(response) {
-				if(response.code){
-					localStorage.setItem('emp_no', emp_no);
-					$(location).attr('href', './resources/html/carDeal.html');
-					}else {
-					$('#warning').text(response.msg);
+			$.post('/vms/index/verification/check_captcha', { captcha: captcha }, (isSuccess) => {
+				if (isSuccess) {
+					$.post('/vms/index/index/login_check', send_data, function(response) {
+						if(response.code){
+							localStorage.setItem('emp_no', emp_no);
+							$(location).attr('href', './resources/html/carDeal.html');
+						}else {
+							$('#warning').text(response.msg);
+							$('#captcha_img').trigger('click');
+						}
+					});
+				} else {
+					$('#warning').text('验证码错误！');
 				}
 			});
 		});
 
+		// 元素聚焦清楚错误状态
 		$('#form-submit').on('focus', 'input', function() {
       $('#warning').text('');
       $(this).parent().removeClass('has-error');
     });
+
+		// 刷新验证码
+		$('#captcha_img').on('click', function() {
+			$(this).attr('src', '/vms/index/verification/get_captcha_img');
+		});
 	</script>
 </body>
 </html>

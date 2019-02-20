@@ -6,18 +6,22 @@ use think\Session;
 use think\Db;
 use think\captcha\Captcha;
 
-class Code extends Controller
+class Verification extends Controller
 {
   public function test() {
     return $this->fetch('test');
   }
 
   public function check_captcha() {
-    return captcha_check($_POST['value']);
+    return captcha_check($_POST['captcha']);
   }
 
   public function get_captcha_img() {
-    $captcha = new Captcha();
+    $config = [
+      'length' => 4,
+      'reset' => false,
+    ];
+    $captcha = new Captcha($config);
     return $captcha->entry();
   }
 }
