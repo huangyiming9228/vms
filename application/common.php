@@ -12,6 +12,8 @@
 // 应用公共文件
 
 // 定义网站网址
+define('SITE_URL', '/vms/');
+// 定义后台网站网址
 define('BACK_LOGIN_URL', '/vms/admin/index/login');
 // 定义静态资源路径
 define('STATIC_URL', '/vms/public/static');
