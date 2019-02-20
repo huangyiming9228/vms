@@ -35,6 +35,14 @@
       <div class="form-group">
         <input type="password" class="form-control" name="admin_psw" id="admin_psw" placeholder="密码">
       </div>
+      <div class="form-group" style="height: 34px;">
+				<div class="col-sm-6" style="padding-left: 0;">
+					<input type="text" placeholder="请输入验证码" id="captcha" name="captcha" class="form-control">
+				</div>
+				<div class="col-sm-6">
+					<img id="captcha_img" height="35" width="125" src="/vms/index/verification/get_captcha_img" />
+				</div>
+			</div>
     </form>
     <div class="feedback" id="error_msg"></div>
     <button class="btn btn-primary btn-block" id="btn_login">登 录</button>
@@ -53,18 +61,37 @@
         $('#error_msg').text('请填写密码！');
         return;
       }
-      $.post("{:url('login_check')}", $('#form_login').serializeArray(), (response) => {
-        if (response.code) {
-          window.location.href = response.url;
+      const captcha = $('#captcha').val();
+      if (!captcha) {
+        $('#captcha').parent().addClass('has-error');
+        $('#error_msg').text('请填写验证码！');
+        return;
+      }
+      $.post('/vms/index/verification/check_captcha', { captcha }, (isSuccess) => {
+        if (isSuccess) {
+          $.post("{:url('login_check')}", $('#form_login').serializeArray(), (response) => {
+            if (response.code) {
+              window.location.href = response.url;
+            } else {
+              $('#error_msg').text(response.msg);
+              $('#captcha_img').trigger('click');
+            }
+          })
         } else {
-          $('#error_msg').text(response.msg);
+          $('#error_msg').text('验证码错误！');
         }
-      })
+      });
     });
+
     $('#form_login').on('focus', 'input', function() {
       $('#error_msg').text('');
       $(this).parent().removeClass('has-error');
     });
+
+    // 刷新验证码
+		$('#captcha_img').on('click', function() {
+			$(this).attr('src', '/vms/index/verification/get_captcha_img');
+		});
   </script>
 </body>
 </html>

@@ -19,7 +19,6 @@ class Verification extends Controller
   public function get_captcha_img() {
     $config = [
       'length' => 4,
-      'reset' => false,
     ];
     $captcha = new Captcha($config);
     return $captcha->entry();
