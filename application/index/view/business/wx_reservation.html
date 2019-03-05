@@ -173,8 +173,6 @@ $('#btn-submit').on('click', function() {
     validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
     validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
   }
-  console.log(new Date(form.visit_date.value).getTime(), form.visit_date.value.valueOf());
-  console.log(new Date(form.leave_date.value).getTime(), form.leave_date.value.valueOf());
 
   if (new Date(form.visit_date.value).getTime() > new Date(form.leave_date.value).getTime()) {
     return _alert('离校日期不能小于预约日期！');

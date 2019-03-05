@@ -155,7 +155,6 @@
             const start_date = new Date(arr[0]).getTime();
             const end_date = new Date(arr[2]).getTime();
             const days_diff = (end_date - start_date) / (24*60*60*1000);
-            console.log(days_diff, variable['reservation_days'])
             if (days_diff + 1 > variable['reservation_days']) {
                 ui_alert(`您最多可预约${variable['reservation_days']}天！请重新选择日期范围。`, () => {
                     $('#visit_date').val('');
