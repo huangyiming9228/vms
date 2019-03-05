@@ -94,7 +94,7 @@
             <div class="form-group">
                 <label class="col-sm-4 control-label">预约日期：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="选择预约日期" id="visit_date" name="visit_date" class="form-control" >
+                    <input type="text" placeholder="选择预约日期范围" id="visit_date" name="visit_date" class="form-control" >
                 </div>
             </div>
             <div class="form-group">
@@ -136,13 +136,32 @@
     </div>
 
 <script>
+    var variable = {};
+    $(function() {
+        $.get('/vms/index/business/get_reservation_days', {}, (data) => {
+            variable['reservation_days'] = data;
+        })
+    });
     // 渲染日期选择器
     laydate.render({
         elem: '#visit_date',
         theme: '#337AB7',
-        value: Utils.getTomorrowDate(),
+        range: true,
+        // value: Utils.getTomorrowDate(),
         min: Utils.getTomorrowDate(),
         btns: ['confirm'],
+        done: function(value, date, endDate) {
+            const arr = value.split(' ')
+            const start_date = new Date(arr[0]).getTime();
+            const end_date = new Date(arr[2]).getTime();
+            const days_diff = (end_date - start_date) / (24*60*60*1000);
+            console.log(days_diff, variable['reservation_days'])
+            if (days_diff + 1 > variable['reservation_days']) {
+                ui_alert(`您最多可预约${variable['reservation_days']}天！请重新选择日期范围。`, () => {
+                    $('#visit_date').val('');
+                });
+            }
+        }
     });
     // 获取到用户名,剩余预约次数
     $(document).ready(function(){ 
@@ -175,6 +194,7 @@
             validateFlag && (form.car_no.value || _alert('请填写车牌号！', form.car_no));
             validateFlag && (Utils.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
             validateFlag && (form.name.value || _alert('请填写预约人姓名！', form.name));
+            validateFlag && (form.visit_date.value || _alert('请选择日期范围！', form.visit_date));
             validateFlag && (form.visit_reason.value || _alert('请填写预约事由！', form.visit_reason));
         }
 
@@ -184,7 +204,8 @@
                 tel: form.tel.value,
                 car_no: form.car_no.value,
                 name: form.name.value,
-                visit_time: form.visit_date.value + ' ' + form.visit_time.value + ':00',
+                visit_time: form.visit_date.value.split(' ')[0] + ' ' + form.visit_time.value + ':00',
+                leave_date: form.visit_date.value.split(' ')[2],
                 visit_reason: form.visit_reason.value,
             };
             $.post('/vms/index/business/save_reservation',send_data,function(response){

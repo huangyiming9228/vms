@@ -5,7 +5,20 @@ var Global = {
     date.setTime(date.getTime() + 24*60*60*1000);
     var month = date.getMonth()+1;
     month = month < 10 ? ('0' + month) : month;
-    return date.getFullYear() + '-' + month + '-' + date.getDate();
+    var day = date.getDate();
+    day = day < 10 ? ('0' + day) : day;
+    return date.getFullYear() + '-' + month + '-' + day;
+  },
+
+  // 获取特定日期未来几天的日期
+  getFutureDate: function(start_date, n) {
+    var date = new Date(start_date);
+    date.setTime(date.getTime() + 24*60*60*1000*(n - 1));
+    var month = date.getMonth()+1;
+    month = month < 10 ? ('0' + month) : month;
+    var day = date.getDate();
+    day = day < 10 ? ('0' + day) : day;
+    return date.getFullYear() + '-' + month + '-' + day;
   },
 
   // 验证车牌号

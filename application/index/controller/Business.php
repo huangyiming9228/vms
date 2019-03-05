@@ -33,6 +33,13 @@ class Business extends Controller
     return $rest_time;
   }
 
+  // 获取用户可预约天数
+  public function get_reservation_days() {
+    $emp_level = Session::get('emp_level');
+    $reservation_days = Db::table('reservation_permission_list')->where('level', $emp_level)->value('reservation_days');
+    return $reservation_days;
+  }
+
   // 渲染微信查看记录页面
   public function wx_reservation_record() {
     return $this->fetch('wx_reservation_record', [

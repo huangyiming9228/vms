@@ -53,6 +53,14 @@
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
+        <label class="weui-label">离校日期</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="leave_date" name="leave_date" placeholder="选择离校日期" readonly>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
         <label class="weui-label">预约时间</label>
       </div>
       <div class="weui-cell__bd">
@@ -75,6 +83,12 @@
 
 {block name="javascript"}
 <script>
+var variable = {};
+$(function() {
+  $.get("{:url('get_reservation_days')}", {}, (data) => {
+    variable['reservation_days'] = data;
+  })
+});
 // 绑定时间选择器
 $('#visit_time').on('click', function() {
   const self = this;
@@ -90,7 +104,7 @@ $('#visit_time').on('click', function() {
     id: 'visit_time',
   })
 });
-// 绑定日期选择器
+// 绑定预约日期选择器
 $('#visit_date').on('click', function() {
   const self = this;
   weui.datePicker({
@@ -99,11 +113,29 @@ $('#visit_date').on('click', function() {
     defaultValue: Global.getTomorrowDate().split('-'),
     onChange: function(result) {
       const [ { value: year } , { value: month }, { value: day }] = result;
-      const date = year + '-' + (month > 10 ? month : '0' + month) + '-' + (day > 10 ? day : '0' + day);
+      const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
       $(self).val(date);
+      variable['visit_date'] = date;
     },
     onConfirm: function(result) {console.log(result)},
     id: 'visit_date',
+  });
+});
+
+// 绑定离校日期选择器
+$('#leave_date').on('click', function() {
+  const self = this;
+  weui.datePicker({
+    start: variable['visit_date'],
+    end: Global.getFutureDate(variable['visit_date'], variable['reservation_days']),
+    defaultValue: variable['visit_date'].split('-'),
+    onChange: function(result) {
+      const [ { value: year } , { value: month }, { value: day }] = result;
+      const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
+      $(self).val(date);
+    },
+    onConfirm: function(result) {console.log(result)},
+    id: 'leave_date',
   });
 });
 
@@ -137,8 +169,15 @@ $('#btn-submit').on('click', function() {
     validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
     validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
     validateFlag && (form.visit_date.value || _alert('请选择预约日期！'));
+    validateFlag && (form.leave_date.value || _alert('请选择离校日期！'));
     validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
     validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
+  }
+  console.log(new Date(form.visit_date.value).getTime(), form.visit_date.value.valueOf());
+  console.log(new Date(form.leave_date.value).getTime(), form.leave_date.value.valueOf());
+
+  if (new Date(form.visit_date.value).getTime() > new Date(form.leave_date.value).getTime()) {
+    return _alert('离校日期不能小于预约日期！');
   }
 
   if(validateFlag) {

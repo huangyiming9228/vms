@@ -35,11 +35,16 @@ $('#list').bootstrapTable({
     align: 'center',
     formatter: (value, row) => row.level === 3 ? '无限次' : value
   }, {
+    field: 'reservation_days',
+    title: '可预约天数',
+    align: 'center',
+    formatter: (value, row) => row.level === 3 ? '无限次' : value
+  }, {
     field: 'op',
     title: '操作',
     align: 'center',
     formatter: (value, row) => row.level !== 3 ?
-      `<a href="javascript:void(0);" data-id="${row.id}" data-level-name="${row.level_name}" data-reservation-time="${row.reservation_time}" class="operation">修改预约次数</a>` : '-'
+      `<a href="javascript:void(0);" data-id="${row.id}" data-level-name="${row.level_name}" data-reservation-time="${row.reservation_time}" data-reservation-days="${row.reservation_days}" class="operation">修改</a>` : '-'
   }],
 })
 
@@ -48,6 +53,7 @@ $('#list').on('click', '.operation', function() {
   $('#id').val($(this).attr('data-id'));
   $('#level_name').val($(this).attr('data-level-name'));
   $('#reservation_time').val($(this).attr('data-reservation-time'));
+  $('#reservation_days').val($(this).attr('data-reservation-days'));
   $('#modal-permission-update').modal('show');
 })
 
@@ -56,6 +62,7 @@ $('#btn-save').on('click', function() {
   const data = {
     id: $('#id').val(),
     reservation_time: $('#reservation_time').val(),
+    reservation_days: $('#reservation_days').val(),
   };
   const reg = /^[1-9]\d*$/;
   if (!data.reservation_time) {
@@ -63,6 +70,9 @@ $('#btn-save').on('click', function() {
   }
   if (!reg.test(data.reservation_time)) {
     return ui_alert('请填写有效的预约次数。');
+  }
+  if (!reg.test(data.reservation_days)) {
+    return ui_alert('请填写有效的可预约天数。');
   }
   $.post("{:url('update_reservation_time')}", data, (response) => {
     $('#modal-permission-update').modal('hide');

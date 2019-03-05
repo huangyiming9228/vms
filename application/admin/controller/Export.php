@@ -59,10 +59,11 @@ class Export extends Controller
     $sheet->setCellValue('B1', '预约车牌号');
     $sheet->setCellValue('C1', '员工电话');
     $sheet->setCellValue('D1', '预约时间');
-    $sheet->setCellValue('E1', '来校事由');
-    $sheet->setCellValue('F1', '预约状态');
-    $sheet->setCellValue('G1', '员工号');
-    $sheet->getStyle('A1:G1')->applyFromArray([
+    $sheet->setCellValue('E1', '离校日期');
+    $sheet->setCellValue('F1', '来校事由');
+    $sheet->setCellValue('G1', '预约状态');
+    $sheet->setCellValue('H1', '员工号');
+    $sheet->getStyle('A1:H1')->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $titleFontStyle,
       'borders' => $borderStyle,
@@ -77,6 +78,7 @@ class Export extends Controller
     $sheet->getColumnDimension('E')->setWidth(17);
     $sheet->getColumnDimension('F')->setWidth(17);
     $sheet->getColumnDimension('G')->setWidth(17);
+    $sheet->getColumnDimension('H')->setWidth(17);
 
     // 添加数据
     $row_index = 2;
@@ -85,7 +87,8 @@ class Export extends Controller
       $sheet->setCellValue('B'.$row_index, $value['car_no']);
       $sheet->setCellValue('C'.$row_index, $value['tel']);
       $sheet->setCellValue('D'.$row_index, $value['visit_time']);
-      $sheet->setCellValue('E'.$row_index, $value['visit_reason']);
+      $sheet->setCellValue('E'.$row_index, $value['leave_date']);
+      $sheet->setCellValue('F'.$row_index, $value['visit_reason']);
       switch ($value['status']) {
         case 0:
           $value['status'] = '待审核';
@@ -99,12 +102,12 @@ class Export extends Controller
         default:
           break;
       }
-      $sheet->setCellValue('F'.$row_index, $value['status']);
-      $sheet->setCellValue('G'.$row_index, $value['submitter_no']);
+      $sheet->setCellValue('G'.$row_index, $value['status']);
+      $sheet->setCellValue('H'.$row_index, $value['submitter_no']);
       $row_index++;
     }
     $row_index--;
-    $sheet->getStyle('A2:G'.$row_index)->applyFromArray([
+    $sheet->getStyle('A2:H'.$row_index)->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $textFontStyle,
       'borders' => $borderStyle,

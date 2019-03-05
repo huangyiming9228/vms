@@ -22,11 +22,14 @@ class System extends Controller
 
   // 更新角色预约次数
   public function update_reservation_time() {
-    $res = Db::table('reservation_permission_list')->where('id', $_POST['id'])->update(['reservation_time' => $_POST['reservation_time']]);
+    $res = Db::table('reservation_permission_list')->where('id', $_POST['id'])->update([
+      'reservation_time' => $_POST['reservation_time'],
+      'reservation_days' => $_POST['reservation_days'],
+    ]);
     if ($res == 1) {
       $this->success('操作成功！');
     } else {
-      $this->error('未修改预约次数。');
+      $this->error('未修改。');
     }
   }
   
