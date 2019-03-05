@@ -1,0 +1,127 @@
+{extend name="base" /}
+
+{block name="private_file"}
+<script src="{$Think.STATIC_URL}/js/xlsx.full.min.js"></script>
+{/block}
+
+{block name="content"}
+<div class="row">
+  <form id="form-query" class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-2">
+        <button class="btn btn-primary" id="btn-add">
+            <i class="fa fa-add"></i>&nbsp;新增活动
+        </button>
+      </div>
+      <div class="col-sm-2">
+        <a target="_blank" href="/vms/downloadFile/司机名单模板.xlsx">下载司机名单模板</a>
+      </div>
+    </div>
+  </form>              
+</div>
+<div class="row" style="margin-top: 20px;">
+  <table id="list"></table>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+lay('.datetime-item').each(function() {
+  const self = this;
+  laydate.render({
+    elem: this,
+    theme: '#222222',
+    trigger: 'click',
+  });
+});
+// 绑定表格数据
+$('#list').bootstrapTable({
+  url: "{:url('query_activitys')}",
+  pageSize: 10,
+  pageList: [10, 25, 50, 100],
+  pagination: true,
+  columns: [{
+    field: 'activity_name',
+    title: '会议名称',
+    align: 'center',
+  }, {
+    field: 'start_date',
+    title: '开始时间',
+    align: 'center',
+  }, {
+    field: 'end_date',
+    title: '结束时间',
+    align: 'center',
+  }, {
+    field: 'file',
+    title: '附件',
+    align: 'center',
+    formatter: (value, row) => {
+      return `<a target="_blank" href="{:url('admin/export/driver_list')}?activity_id=${row.id}">下载</a>`
+    }
+  }, {
+    field: 'status',
+    title: '状态',
+    align: 'center',
+    formatter: (value) => {
+      switch (value) {
+        case 0: return '待审核';
+        case 1: return '审核通过';
+        case 2: return '未通过审核';
+      }
+    },
+  }]
+})
+
+$('#btn-add').on('click', function(e) {
+  e.preventDefault();
+  $('#modal-activity-add').modal('show');
+});
+
+var tel_arr = null;
+$('#file').on('change', function() {
+  Global.import_excel_data(this).then(function(data) {
+    console.log(data);
+    const real_data = data.map((item) => {
+      const { 手机号: tel } = item;
+      return { tel };
+    });
+    tel_arr = real_data;
+  }, function(err) {
+    console.log(err);
+  });
+})
+
+$('#btn-save').on('click', function(e) {
+  e.preventDefault();
+  var send_data = {
+    activity_name: $('#activity_name').val(),
+    start_date: $('#start_date').val(),
+    end_date: $('#end_date').val(),
+    tel_arr: tel_arr,
+  };
+  // if ($('#start_date').val() > $('#end_date').val()) {
+  //   return ui_alert('结束时间不能大于开始时间！');
+  // }
+  for (const key in send_data) {
+    if (send_data.hasOwnProperty(key)) {
+      const element = send_data[key];
+      if (!element) {
+        return ui_alert('请填写完整的活动信息！');
+      }
+    }
+  }
+  $.post("{:url('save_activity')}", send_data, (data) => {
+    if (data) {
+      ui_alert('提交成功！', () => {
+        window.location.reload();
+      });
+    } else {
+      ui_alert('提交失败！', () => {
+        window.location.reload();
+      });
+    }
+  })
+});
+</script>
+{/block}

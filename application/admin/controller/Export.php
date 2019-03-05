@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Db;
 use think\Session;
+use think\Log;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -242,6 +243,70 @@ class Export extends Controller
     }
     $row_index--;
     $sheet->getStyle('A2:J'.$row_index)->applyFromArray([
+      'alignment' => $centerStyle,
+      'font' => $textFontStyle,
+      'borders' => $borderStyle,
+    ]);
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');//浏览器输出07Excel文件
+    // header('Content-Type:application/vnd.ms-excel');//浏览器输出Excel03版本文件
+    header('Content-Disposition: attachment;filename="'.$file_name.'.xlsx"');//浏览器输出文件名称
+    header('Cache-Control: max-age=0');//禁止缓存
+    $writer = new Xlsx($spreadsheet);
+    $writer->save('php://output');
+    $spreadsheet->disconnectWorksheets();
+    unset($spreadsheet);
+    exit;
+  }
+
+  public function driver_list($activity_id) {
+    // 获取数据
+    $data = Db::table('driver_list')->where('activity_id', $activity_id)->select();
+    $file_name = '司机名单';
+
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    // 单元格样式
+    $centerStyle = [
+      'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+      'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+    ];
+    $titleFontStyle = [
+      'name' => '微软雅黑',
+      'size' => 11,
+      'bold' => true,
+    ];
+    $textFontStyle = [
+      'name' => '微软雅黑',
+      'size' => 9,
+    ];
+    $borderStyle = [
+      'allBorders' => [
+          'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+          'color' => ['argb' => 'OOOOOO'],
+      ],
+    ];
+
+    // 设置表头
+    $sheet->setCellValue('A1', '手机号');
+    $sheet->getStyle('A1')->applyFromArray([
+      'alignment' => $centerStyle,
+      'font' => $titleFontStyle,
+      'borders' => $borderStyle,
+    ]);
+
+    // 设置列宽、高度
+    $sheet->getRowDimension('1')->setRowHeight(20);
+    $sheet->getColumnDimension('A')->setWidth(17);
+
+    // 添加数据
+    $row_index = 2;
+    foreach ($data as $key => $value) {
+      $sheet->setCellValue('A'.$row_index, $value['emp_no']);
+      $row_index++;
+    }
+    $row_index--;
+    $sheet->getStyle('A2:A'.$row_index)->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $textFontStyle,
       'borders' => $borderStyle,

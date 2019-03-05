@@ -69,5 +69,31 @@ var Global = {
       //alert("非合法身份证号");
       return false;
     }
+  },
+
+  // 利用xlsx解析excel
+  // 利用promise异步解析
+  // @2018-10-25
+  // @return array
+  import_excel_data: function(file_obj) {
+    return new Promise(function (resolve, reject) {
+      let real_data;
+      let excel_data;
+      if (!file_obj.files) {
+        reject('not a files');
+        return;
+      }
+      var file = file_obj.files[0];
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var data = e.target.result;
+        excel_data = XLSX.read(data, {
+          type: 'binary'
+        });
+        real_data = XLSX.utils.sheet_to_json(excel_data.Sheets[excel_data.SheetNames[0]]);
+        resolve(real_data);
+      };
+      reader.readAsBinaryString(file);
+    });
   }
 };

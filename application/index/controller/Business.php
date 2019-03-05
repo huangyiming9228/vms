@@ -28,10 +28,13 @@ class Business extends Controller
   public function get_rest_reservation_time() {
     $emp_level = Session::get('emp_level');
     $availabel_time = Db::table('reservation_permission_list')->where('level', $emp_level)->value('reservation_time');
+    $start_time = date('Y-m-d').' 00:00:00';
+    $end_time = date('Y-md').' 24:00:00';
     $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))
-                                                 ->where('status', '<>', 0)
+                                                 ->where('submit_time', '>', $start_time)
+                                                 ->where('submit_time', '<', $end_time)
                                                  ->count();
-    $rest_time = $emp_level == 3 ? '无限': ($availabel_time - $already_time < 0 ? 0 : ($availabel_time - $already_time));
+    $rest_time = $emp_level == 3 ? '无限': ($availabel_time - $already_time);
     return $rest_time;
   }
 
@@ -65,8 +68,13 @@ class Business extends Controller
    *         2 - 审核未通过
    */
   public function save_reservation() {
+    $start_time = date('Y-m-d').' 00:00:00';
+    $end_time = date('Y-md').' 24:00:00';
     $availabel_time = Db::table('reservation_permission_list')->where('level', Session::get('emp_level'))->value('reservation_time');
-    $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))->where('status', '<>', 0)->count();
+    $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))
+      ->where('submit_time', '>', $start_time)
+      ->where('submit_time', '<', $end_time)
+      ->count();
     if ($already_time >= $availabel_time) {
       return $this->error('预约失败！您今天的预约次数已用完，请明天再预约。');
     }

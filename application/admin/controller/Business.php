@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Db;
 use think\Session;
+use think\Log;
 
 class Business extends Controller
 {
@@ -95,6 +96,46 @@ class Business extends Controller
     $data['audit_person'] = Session::get('admin_name');
     $data['audit_person_no'] = Session::get('admin_no');
     return Db::table('mot_test_list')->where('id', $id)->update($data);
+  }
+
+  // 新增活动
+  public function activity_apply() {
+    return $this->fetch('activity_apply', [
+      'title' => '新增活动',
+      'modal_activity_add' => 1,
+    ]);
+  }
+
+  // 查询活动
+  public function query_activitys() {
+    return Db::table('activity_list')->where('submitter_no', Session::get('admin_no'))
+      ->order('submit_time', 'desc')
+      ->select();
+  }
+
+  // 保存活动
+  public function save_activity() {
+    $data = $_POST;
+    $tel_arr = $data['tel_arr'];
+    unset($data['tel_arr']);
+    $data['submitter'] = Session::get('admin_name');
+    $data['submitter_no'] = Session::get('admin_no');
+    $data['submit_time'] = date('Y-m-d H:i:s');
+    $data['status'] = 0;
+    $activity_id = Db::table('activity_list')->insertGetId($data);
+
+    foreach ($tel_arr as $key => $value) {
+      $tel_arr[$key]['emp_no'] = $value['tel'];
+      $tel_arr[$key]['emp_name'] = $value['tel'];
+      $tel_arr[$key]['psw'] = substr($value['tel'], 5, 6);
+      $tel_arr[$key]['emp_level'] = 1;
+      $tel_arr[$key]['activity_id'] = $activity_id;
+    }
+    $res = Db::table('driver_list')->insertAll($tel_arr);
+    if (!$res) {
+      Db::table('activity_list')->where('id', $activity_id)->delete();
+    }
+    return $res;
   }
 
 }

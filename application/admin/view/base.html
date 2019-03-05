@@ -216,7 +216,7 @@
             <div class="form-group">
               <label class="col-sm-3 control-label">初始密码</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" name="admin_psw" id="psw">
+                <input type="text" class="form-control" name="admin_psw" id="admin_psw">
               </div>
             </div>
             <div class="form-group">
@@ -231,6 +231,51 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
           <button type="button" class="btn btn-primary" id="btn-add-save">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {/notempty}
+  <!-- 新增活动模态框 -->
+  {notempty name="modal_activity_add"}
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal-activity-add">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-title">新增活动</h4>
+        </div>
+        <div class="modal-body" id="modal-body">   
+          <form class="form-horizontal" id="form-add">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">会议名称</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="activity_name" id="activity_name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">开始时间</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control datetime-item" name="start_date" id="start_date">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">结束时间</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control datetime-item" name="end_date" id="end_date">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">司机名单</label>
+              <div class="col-sm-9">
+                <input type="file" class="form-control" id="file">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="btn-save">保存</button>
         </div>
       </div>
     </div>
