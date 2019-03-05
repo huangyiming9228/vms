@@ -1,0 +1,205 @@
+{extend name="base" /}
+
+{block name="content"}
+<div class="row">
+  <form id="form-query" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-1 control-label">账号:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="admin_no" name="admin_no" >
+      </div>
+      <label class="col-sm-1 control-label">姓名:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="admin_name" name="admin_name" >
+      </div>
+      <div class="col-sm-1">
+        <button class="btn btn-default ladda-button" data-style="slide-right" data-spinner-color="#000" id="btn-query">
+          <span class="ladda-label">
+            <i class="fa fa-search"></i>&nbsp;查询
+          </span>
+        </button>
+      </div>
+      <div class="col-sm-1">
+        <button class="btn btn-primary" id="btn-add">
+          <i class="fa fa-plus"></i>&nbsp;新增
+        </button>
+      </div>
+    </div>
+  </form>  
+</div>
+<div class="row" style="margin-top: 20px;">
+  <table id="list"></table>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+$(function() {
+  $.get("{:url('get_admin_role_list')}", {}, (data) => {
+    const html = data.map((item) => {
+      return `<option value="${item.station_id}">${item.name}</option>`;
+    });
+    $('#station_id').append(html);
+  })
+});
+$('#list').bootstrapTable({
+  url: "{:url('query_admin_users')}?admin_no=&admin_name=",
+  pageSize: 10,
+  pageList: [10, 25, 50, 100],
+  pagination: true,
+  columns: [{
+    field: 'id',
+    title: '序号',
+    align: 'center',
+    sortable: true,
+  }, {
+    field: 'admin_no',
+    title: '账号',
+    align: 'center',
+  }, {
+    field: 'admin_name',
+    title: '姓名',
+    align: 'center',
+  }, {
+    field: 'station',
+    title: '角色',
+    align: 'center',
+  }, {
+    field: 'op',
+    title: '操作',
+    align: 'center',
+    formatter: (value, row) => {
+      return [
+        // `<a href="javascript:void(0);" data-id="${row.id}" class="opreation-edit"><i class="fa fa-pencil-square-o"></i>编辑</a>`,
+        // `<span>&nbsp;&nbsp;</span>`,
+        `<a href="javascript:void(0);" data-id="${row.id}" class="opreation-delete"><i class="fa fa-trash-o"></i>删除</a>`,
+      ].join('');
+    }
+  }]
+});
+
+// 绑定查询事件
+$('#btn-query').on('click', function(e) {
+  e.preventDefault();
+  const loading = Ladda.create(this);
+  loading.start();
+  $.get("{:url('query_admin_users')}", $('#form-query').serializeArray(), (response) => {
+    $('#list').bootstrapTable('load', response);
+  }).always(() => loading.stop());
+});
+
+// 绑定新增模态框
+$('#btn-add').on('click', function(e) {
+  e.preventDefault();
+  $('#modal-admin-user-add').modal('show');
+});
+
+// 绑定新增事件
+$('#btn-add-save').on('click', function(e) {
+  e.preventDefault();
+  const form = document.querySelector('#form-add');
+  let validateFlag = true;
+  const _alert = (errMsg) => {
+    ui_alert(errMsg);
+    validateFlag = false;
+  };
+
+  if (validateFlag) {
+    validateFlag && (form.admin_no.value || _alert('请填写账号！'));
+    validateFlag && (form.admin_name.value || _alert('请填写姓名！'));
+    validateFlag && (form.admin_psw.value || _alert('请填写初始密码！'));
+    // validateFlag && (form.id_card.value || _alert('请填写身份证号！'));
+    // validateFlag && (Global.checkIdCard(form.id_card.value) || _alert('身份证号不合法！'));
+    // validateFlag && (form.tel.value || _alert('请填写员工手机号！'));
+  }
+
+  if (validateFlag) {
+    $.post("{:url('add_admin_user')}", $('#form-add').serializeArray(), (response) => {
+      $('#modal-user-add').modal('hide');
+      if (response.code) {
+        ui_alert(response.msg, () => window.location.reload());
+      } else {
+        ui_alert(response.msg);
+      }
+    });
+  }
+});
+
+// 绑定删除事件
+$('#list').on('click', '.opreation-delete', function() {
+  const id = $(this).attr('data-id');
+  ui_confirm('确定删除？', () => {
+    $.post("{:url('delete_admin_user')}", { id }, (response) => {
+      if (response.code) {
+        ui_alert(response.msg, () => $('#btn-query').trigger('click'));
+      } else {
+        ui_alert(response.msg);
+      }
+    });
+  });
+});
+
+// 绑定编辑模态框
+$('#list').on('click', '.opreation-edit', function() {
+  const id = $(this).attr('data-id');
+  $.get("{:url('get_user_data')}", { id }, (response) => {
+    const html = createModalHtml(response);
+    $('#modal-body').html(html);
+    $('#modal-user-edit').modal('show');
+  });
+});
+
+// 绑定保存事件
+$('#btn-save').on('click', function() {
+  const updateData = {
+    id: $('#id').val(),
+    id_card: $('#id_card').val(),
+    tel: $('#tel').val(),
+    emp_level: $('#emp_level').val(),
+  };
+  $.post("{:url('update_user_info')}", updateData, (response) => {
+    $('#modal-user-edit').modal('hide');
+    if (response.code) {
+      ui_alert(response.msg, () => $('#btn-query').trigger('click'));
+    } else {
+      ui_alert(response.msg);
+    }
+  })
+});
+
+// 构建用户详细信息
+function createModalHtml(data) {
+  return `<form class="form-horizontal">
+    <input type="hidden" value="${data.id}" id="id">
+    <div class="form-group">
+      <label class="col-sm-3 control-label">员工号</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" disabled value="${data.emp_no}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">员工姓名</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" disabled value="${data.emp_name}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">手机号</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" value="${data.tel}" id="tel">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">员工级别</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="emp_level">
+          <option value="1" ${data.emp_level === 1 ? 'selected' : ''}>普通员工</option>
+          <option value="2" ${data.emp_level === 2 ? 'selected' : ''}>部门授权人</option>
+          <option value="3" ${data.emp_level === 3 ? 'selected' : ''}>保卫处授权人</option>
+        </select>
+      </div>
+    </div>
+  </form>`;
+}
+</script>
+{/block}

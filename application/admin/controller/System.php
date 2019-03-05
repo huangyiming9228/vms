@@ -92,4 +92,53 @@ class System extends Controller
     }
   }
 
+  // 后台账号管理
+  public function admin_user_manage() {
+    return $this->fetch('admin_user_manage', [
+      'title' => '后台账号管理',
+      'modal_admin_user_add' => 1,
+      'station_list' => $this->get_admin_role_list(),
+    ]);
+  }
+
+  // 获取角色列表
+  public function get_admin_role_list() {
+    return Db::table('menu_station')->select();
+  }
+
+  // 新增后台用户
+  public function add_admin_user() {
+    $data = $_POST;
+    $is_admin_no_exist = Db::table('admin_user')->where('admin_no', $data['admin_no'])->find();
+    if ($is_admin_no_exist) $this->error('新增失败，该账号已存在。');
+    $res = Db::table('admin_user')->insert($data);
+    if ($res == 1) {
+      $this->success('新增成功！');
+    } else {
+      $this->error('新增失败，请刷新页面重试。');
+    }
+  }
+
+  // 查询后台用户列表
+  public function query_admin_users() {
+    $conditions = [];
+    if ($_GET['admin_no']) $conditions['admin_no'] = $_GET['admin_no'];
+    if ($_GET['admin_name']) $conditions['admin_name'] = $_GET['admin_name'];
+    $list = Db::table('admin_user')->where($conditions)->select();
+    foreach ($list as $key => $value) {
+      $list[$key]['station'] = Db::table('menu_station')->where('station_id', $value['station_id'])->value('name');
+    }
+    return $list;
+  }
+
+  // 删除后台用户
+  public function delete_admin_user() {
+    $res = Db::table('admin_user')->where('id', $_POST['id'])->delete();
+    if ($res) {
+      $this->success('删除成功！');
+    } else {
+      $this->error('删除失败，请刷新页面重试。');
+    }
+  }
+
 }

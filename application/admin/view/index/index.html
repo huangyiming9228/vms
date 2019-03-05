@@ -56,7 +56,7 @@
 </header>
 <aside class="Hui-aside">
 	<div class="menu_dropdown bk_2">
-		<dl id="menu-article">
+		<!-- <dl id="menu-article">
 			<dt><i class="Hui-iconfont">&#xe613;</i> 业务审批<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
@@ -82,7 +82,19 @@
           <li><a data-href="{:url('admin/system/permission_manage')}" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
 				</ul>
 			</dd>
+		</dl> -->
+		{foreach $menu_list as $menu}
+		<dl id="menu-article">
+			<dt><i class="Hui-iconfont">{$menu.data.icon}</i> {$menu.data.name}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					{foreach $menu.sub_menu as $sub_menu}
+						<li><a data-href="{$sub_menu.data.url}" data-title="{$sub_menu.data.name}" href="javascript:void(0)">{$sub_menu.data.name}</a></li>
+					{/foreach}
+				</ul>
+			</dd>
 		</dl>
+		{/foreach}
 </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

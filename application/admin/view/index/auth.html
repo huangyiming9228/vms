@@ -1,0 +1,289 @@
+{extend name="base" /}
+{block name="content"}
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">角色列表</div>
+                    <div class="panel-body">
+                        <div class="row" style="padding: 5px">
+                            <div class="col-sm-3">
+                            <button onclick="add_station()" type="button"  class="btn btn-primary" ><i class=""></i> 添加角色</button>
+                            </div>
+                        </div>
+                        <table id="tb_station"></table>
+                    </div>
+                </div> 
+                <div class="panel panel-default">
+                    <div class="panel-heading">已经配置菜单</div>
+                    <div class="panel-body">
+                        <div class="row" style="padding: 5px">
+                            <div class="col-sm-3">
+                            <button onclick="remove_menu_iterm()" type="button"  class="btn btn-primary" ><i class=""></i> 移除菜单</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="selected_station_id" id="selected_station_id" value="0">
+                        <table id="tb_iterm_select"></table>
+                    </div>
+                </div> 
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">可选菜单</div>
+                    <div class="panel-body">
+                        <div class="row" style="padding: 5px">
+                            <div class="col-sm-3">
+                            <button onclick="add_menu_iterm()" type="button"  class="btn btn-primary" ><i class=""></i> 添加菜单</button>
+                            </div>
+                        </div>
+                        <table id="tb_able_select_menu"></table>
+                    </div>
+                </div> 
+            </div>
+        </div>      
+    </div>
+    <div class="modal fade" id="addStationModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
+                        添加角色
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="station_form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">角色名称：</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="name" name="name" class="form-control">
+                            </div>
+                            <input type="hidden" name="station_id" id="station_id" value="0">
+                        </div>
+                    </form>          
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button onclick="save_station()" type="button"  class="btn btn-primary" ><i class="fa fa-save"></i> 保存</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div> 
+{/block}
+{block name="javascript"}
+<script type="text/javascript">
+    $(document).ready(function(){
+        init_station_tb();
+        init_iterm_select_tb();
+        init_able_select_tb();
+    });
+/********************等级****************/
+    function init_station_tb(){
+        var stationTable = new StationTableInit();
+        stationTable.Init();
+    }
+    var StationTableInit = function () {
+        var stationTableInit = new Object();
+        //初始化Table
+        stationTableInit.Init = function () {
+            $('#tb_station').bootstrapTable({
+                url: "{:url('get_station_list')}",         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                striped: false,                      //是否显示行间隔色
+                pageSize: 5,                       //每页的记录行数（*）
+                pageList: [5, 10],        //可供选择的每页的行数（*）       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                queryParams: stationTableInit.queryParams,//传递参数（*）
+                uniqueId: "station_id",
+                onClickRow:onClickFunction,
+                columns: [
+                {
+                    field: 'station_id',
+                    title: '编号',
+                },{
+                    field: 'name',
+                    title: '名称',
+                },{
+                    field: 'operation',
+                    title: '操作',
+                    align: 'center',
+                    formatter:deleteFormatter
+                }
+                ]
+            });
+        };
+        return stationTableInit;
+    };
+    function refresh_station_tb(){
+        $('#tb_station').bootstrapTable('refresh');
+        $('#tb_station').bootstrapTable('selectPage', 1);
+    }
+    function deleteFormatter(value, row, index) {
+        return [
+            '<a class="add" title="删除" onclick="delete_iterm('+row['station_id']+')">',
+            '<i class="fa fa-close"></i>删除',
+            '</a>  ',
+        ].join('');
+    }
+    function delete_iterm(id){
+        ui_confirm("确定删除？",delete_iterm_sure,id);
+    }
+    function delete_iterm_sure(id){
+        $.get("{:url('delete_station')}",{'id':id},function(data){
+            ui_alert(data['msg']);
+            refresh_station_tb();
+        });
+    }
+    function add_station(){
+        empty_station_form();
+        $("#addStationModal").modal('show');
+    }
+    function empty_station_form(){
+        $("#station_form #station_id").val('0');
+        $("#station_form #name").val('');  
+    }
+    function save_station(){
+        var send_data = $("#station_form").serializeArray();
+        $.post("{:url('save_station')}",send_data,function(data){
+            ui_alert(data['msg']);
+            if(data['code']){
+                $("#addStationModal").modal('hide');
+                refresh_station_tb();
+            }
+        });
+    }
+    function onClickFunction(row){
+        $("#selected_station_id").val(row.station_id);
+        refresh_iterm_select_tb();
+        refresh_able_select_menu_tb();
+    }
+/********************已选项目****************/
+    function init_iterm_select_tb(){
+        var selectTable = new SelectTableInit();
+        selectTable.Init();
+    }
+    function refresh_iterm_select_tb(){
+        $('#tb_iterm_select').bootstrapTable('refresh');
+        $('#tb_iterm_select').bootstrapTable('selectPage', 1);        
+    }
+    var SelectTableInit = function () {
+        var selectTableInit = new Object();
+        //初始化Table
+        selectTableInit.Init = function () {
+            $('#tb_iterm_select').bootstrapTable({
+                url: "{:url('get_menu_list_by_station_id')}",         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                striped: false,                      //是否显示行间隔色
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20],        //可供选择的每页的行数（*）       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                queryParams: selectTableInit.queryParams,//传递参数（*）
+                uniqueId: "seek_id",
+                columns: [
+                {
+                    checkbox: true
+                },{
+                    field: 'page_id',
+                    title: '序号',
+                },{
+                    field: 'name',
+                    title: '名称',
+                }
+                ]
+            });
+        };
+        selectTableInit.queryParams = function (params) {
+            var data = {'station_id':$("#selected_station_id").val()};
+            return data;
+        };
+        return selectTableInit;
+    };
+    function remove_menu_iterm(){
+        var selections=[];
+        selections = getSeekIdSelections('tb_iterm_select');
+        console.log(selections);
+        var send_data={
+            'id_list':selections,
+            'station_id':$("#selected_station_id").val(),
+        }
+        $.post("{:url('station_remove_menu')}",send_data,function(data){
+            ui_alert(data['msg']);
+            if(data['code']){
+                refresh_iterm_select_tb();
+                refresh_able_select_menu_tb();
+            }
+        });
+    }
+    function getSeekIdSelections(table_id) {
+        return $.map($('#'+table_id).bootstrapTable('getSelections'), function (row) {
+            return row.seek_id
+        });
+    }
+/***********************可选项目***************/
+    function init_able_select_tb(){
+        var oTable = new TableInit();
+        oTable.Init();
+    }
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#tb_able_select_menu').bootstrapTable({
+                url: "{:url('get_able_select_by_station_id')}",         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                striped: false,                      //是否显示行间隔色
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20],        //可供选择的每页的行数（*）       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                uniqueId: "id",
+                columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '编号',
+                },
+                {
+                    field: 'name',
+                    title: '名称',
+                }]
+            });
+        };
+        oTableInit.queryParams = function (params) {
+            var data = {'station_id':$("#selected_station_id").val()};
+            return data;
+        };
+        return oTableInit;
+    };
+    function refresh_able_select_menu_tb(){
+        $('#tb_able_select_menu').bootstrapTable('refresh');
+        $('#tb_able_select_menu').bootstrapTable('selectPage', 1);
+    }
+    function add_menu_iterm(){
+        var selections=[];
+        selections = getMenuIdSelections('tb_able_select_menu');
+        console.log(selections);
+        var send_data={
+            'id_list':selections,
+            'station_id':$("#selected_station_id").val(),
+        }
+        $.post("{:url('station_add_menu_iterm')}",send_data,function(data){
+            ui_alert(data['msg']);
+            if(data['code']){
+                refresh_iterm_select_tb();
+                refresh_able_select_menu_tb();
+            }
+        });
+    }
+    function getMenuIdSelections(table_id) {
+        return $.map($('#'+table_id).bootstrapTable('getSelections'), function (row) {
+            return row.id;
+        });
+    }
+
+</script>
+{/block}
