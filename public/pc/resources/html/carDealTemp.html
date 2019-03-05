@@ -218,7 +218,9 @@
             });
         }
         $('#emp_no').text(emp_no);
-        $('#tel').val(emp_no);
+        if (emp_no.length == 11) {
+            $('#tel').val(emp_no);
+        }
         $.get('/vms/index/business/get_rest_reservation_time', {}, function(response) {
             $('#reservation_time').text(response);
         });
