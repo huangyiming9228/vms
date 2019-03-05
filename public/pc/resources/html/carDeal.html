@@ -127,28 +127,6 @@
                     <input type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reasons" class="form-control" >
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">是否申请免费：</label>
-                <div class="col-sm-6">
-                    <label class="radio-inline">
-                        <input type="radio" name="radio" id="inlineRadio1" value="1" checked> 是
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="radio" id="inlineRadio2" value="0"> 否
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-4 control-label">免费理由：</label>
-                <div class="col-sm-6">
-                    <input type="text" placeholder="输入免费理由" id="free_reason" name="free_reason" class="form-control" >
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-1">
-                    <button type="submit" class="btn btn-primary" id="btn-submit">预 约</button>
-                </div>
-            </div>
         </form>
     </div>
 
@@ -195,14 +173,6 @@
             validateFlag && (form.visit_reason.value || _alert('请填写预约事由！', form.visit_reason));
         }
 
-        const is_apply_free = $("input[name='radio']:checked").val();
-
-        if (validateFlag) {
-            if (is_apply_free == 1 && !form.free_reason.value) {
-                _alert('请填写免费理由！', form.free_reason);
-            }
-        }
-
         if(validateFlag) {
             visit_time = Utils.getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
             const send_data = {
@@ -211,8 +181,6 @@
                 name: form.name.value,
                 visit_time: form.visit_date.value + ' ' + form.visit_time.value + ':00',
                 visit_reason: form.visit_reason.value,
-                is_apply_free: is_apply_free,
-                free_reason: form.free_reason.value,
             };
             $.post('/vms/index/business/save_reservation',send_data,function(response){
                 if(response.code) {
