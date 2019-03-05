@@ -1,0 +1,350 @@
+{extend name="wx_base" /}
+
+{block name="style"}
+<style>
+.btn-submit {
+  margin: 40px 30px 0 30px;
+  /* background-color: #2185D0; */
+}
+.weui-picker__action {
+  color: #2185D0 !important;
+}
+.weui-label {
+  width: 120px;
+}
+</style>
+{/block}
+
+{block name="content"}
+<div class="weui-cells__title tips">尊敬的{$emp_no}用户，请填写要预约的车辆信息：</div>
+<div class="weui-cells weui-cells_form">
+  <form id="form-submit">
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">司机电话</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="number" value="{$emp_no}" pattern="[0-9]*" placeholder="输入司机电话" name="tel">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约车牌号</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="例如：川A12345" name="car_no" id="car_no">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约人姓名</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约日期</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择预约日期" readonly>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">离校日期</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="leave_date" name="leave_date" placeholder="选择离校日期" readonly>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约时间</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="visit_time" name="visit_time" placeholder="选择预约时间" readonly>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约事由</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reason">
+      </div>
+    </div>
+  </form>
+</div>
+<form id="form-image">
+  <div class="weui-cells__title">资料采集：</div>
+  <div class="weui-cells weui-cells_form">
+    <div class="weui-cell" id="campus-card-uploader">
+      <div class="weui-cell__bd">
+        <div class="weui-uploader">
+          <div class="weui-uploader__hd">
+            <p class="weui-uploader__title">校内员工一卡通<span class="required-icon">*</span></p>
+            <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+            <input type="hidden" class="image-id" name="campus_card_id" id="campus_card_id">
+          </div>
+          <div class="weui-uploader__bd">
+            <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+            <div class="weui-uploader__input-box">
+              <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="weui-cell" id="driving-license-uploader">
+      <div class="weui-cell__bd">
+        <div class="weui-uploader">
+          <div class="weui-uploader__hd">
+            <p class="weui-uploader__title">车主行驶证<span class="required-icon">*</span></p>
+            <div class="weui-uploader__info"><span id="uploadCount">0</span>/1</div>
+            <input type="hidden" class="image-id" name="driving_license_id" id="driving_license_id">
+          </div>
+          <div class="weui-uploader__bd">
+            <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+            <div class="weui-uploader__input-box">
+              <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="weui-cells__tips">您当前剩余的预约次数为：{$rest_time}次。</div>
+<a href="javascript:;" class="weui-btn weui-btn_primary btn-submit" id="btn-submit">预约</a>
+{/block}
+
+{block name="javascript"}
+<script>
+var variable = {};
+$(function() {
+  $.get("{:url('get_reservation_days')}", {}, (data) => {
+    variable['reservation_days'] = data;
+  })
+
+  // 图片上传注册
+  uploadFactory('#driving-license-uploader').init();
+  uploadFactory('#campus-card-uploader').init();
+});
+// 绑定时间选择器
+$('#visit_time').on('click', function() {
+  const self = this;
+  weui.picker(getHours(), {
+    container: 'body',
+    defaultValue: ['07:00'],
+    onChange: function(value) {
+      $(self).val(value);
+    },
+    onConfirm: function() {
+      // $(self).val(Global.getTomorrowDate() + ' ' + $(self).val() + ':00');
+    },
+    id: 'visit_time',
+  })
+});
+// 绑定预约日期选择器
+$('#visit_date').on('click', function() {
+  const self = this;
+  weui.datePicker({
+    start: new Date(),
+    end: 2030,
+    // defaultValue: Global.getTomorrowDate().split('-'),
+    onChange: function(result) {
+      const [ { value: year } , { value: month }, { value: day }] = result;
+      const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
+      $(self).val(date);
+      variable['visit_date'] = date;
+    },
+    onConfirm: function(result) {console.log(result)},
+    id: 'visit_date',
+  });
+});
+
+// 绑定离校日期选择器
+$('#leave_date').on('click', function() {
+  const self = this;
+  weui.datePicker({
+    start: variable['visit_date'],
+    end: Global.getFutureDate(variable['visit_date'], variable['reservation_days']),
+    defaultValue: variable['visit_date'].split('-'),
+    onChange: function(result) {
+      const [ { value: year } , { value: month }, { value: day }] = result;
+      const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
+      $(self).val(date);
+    },
+    onConfirm: function(result) {console.log(result)},
+    id: 'leave_date',
+  });
+});
+
+// 获取预约时间段
+const getHours = () => {
+  let hours = [];
+  for (let i = 7; i < 24; i++) {
+    hours.push(i < 10 ? ('0' + i + ':00') : (i + ':00'));
+  }
+  return hours;
+};
+
+// 车牌字母转换为大写
+$('#car_no').on('change', function() {
+  $(this).val($(this).val().toUpperCase());
+});
+
+// 绑定提交事件
+$('#btn-submit').on('click', function() {
+  const form = document.querySelector('#form-submit');
+  let validateFlag = true;
+  const _alert = (errMsg) => {
+    weui.topTips(errMsg, 1500);
+    validateFlag = false;
+  };
+
+  if (validateFlag) {
+    validateFlag && (form.tel.value || _alert('请填写司机手机号！'));
+    validateFlag && (form.tel.value.length === 11 || _alert('请填写长度为11位的手机号！'));
+    validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
+    validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
+    validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
+    validateFlag && (form.visit_date.value || _alert('请选择预约日期！'));
+    validateFlag && (form.leave_date.value || _alert('请选择离校日期！'));
+    validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
+    validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
+  }
+
+  if (new Date(form.visit_date.value).getTime() > new Date(form.leave_date.value).getTime()) {
+    return _alert('离校日期不能小于预约日期！');
+  }
+
+  // if(validateFlag) {
+  //   const loading = weui.loading('提交中...');
+  //   const emp_no = "{$emp_no}";
+  //   let url = '';
+  //   new Promise((resolve) => {
+  //     const sendData = $('#form-submit').serializeArray().filter((item) => {
+  //       return item.name != 'visit_time' && item.name != 'visit_date';
+  //     });
+  //     sendData.push({
+  //       name: 'visit_time',
+  //       value: $('#visit_date').val() + ' ' + $('#visit_time').val() + ':00',
+  //     });
+  //     if (emp_no.length === 11) {
+  //       url = "{:url('save_reservation_driver')}";
+  //     } else {
+  //       url = "{:url('save_reservation')}";
+  //     }
+  //     $.post(url, sendData, (response) => {
+  //       if (response.code) {
+  //         loading.hide(() => {
+  //           weui.toast(response.msg, {
+  //             duration: 1000,
+  //             callback: () => {
+  //               window.location.replace(response.url);
+  //               // window.location.href = response.url;
+  //             }
+  //           });
+  //         })
+  //       } else {
+  //         loading.hide(() => {
+  //           weui.topTips(response.msg, 3000);
+  //         });
+  //       }
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     loading.hide();
+  //     console.log('error', error);
+  //     weui.topTips('服务器未知错误！提交失败。', 1500);
+  //   })
+  // }
+});
+
+// 图片上传工厂模式
+function uploadFactory(uploadSelector) {
+  let uploadCount = 0;
+  let uploadCountDom = $(uploadSelector + ' #uploadCount');
+  let uploadIdDom = $(uploadSelector + ' input.image-id');
+  let image = null;
+  return {
+    init: function() {
+      // 绑定上传
+      weui.uploader(uploadSelector, {
+        url: "{:url('image_upload')}",
+        auto: true,
+        type: 'file',
+        fileVal: 'image',
+        compress: {
+          width: 1600,
+          height: 1600,
+          quality: 1,
+        },
+        onBeforeQueued: function(files) {
+          if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
+            weui.alert('请上传图片');
+            return false;
+          }
+          if(this.size > 10 * 1024 * 1024){
+            weui.alert('请上传不超过10M的图片');
+            return false;
+          }
+          if (files.length > 1) { // 防止一下子选中过多文件
+            weui.alert('最多只能上传1张图片，请重新选择');
+            return false;
+          }
+          if (uploadCount + 1 > 1) {
+            weui.alert('最多只能上传1张图片');
+            return false;
+          }
+
+          ++uploadCount;
+          uploadCountDom.text(uploadCount);
+        },
+        onQueued: function(){
+          image = this;
+          // console.log(this);
+        },
+        onBeforeSend: function(data, headers){
+          // console.log(this, data, headers);
+          // $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
+          // $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
+          // return false; // 阻止文件上传
+        },
+        onProgress: function(procent){
+          // console.log(this, procent);
+        },
+        onSuccess: function (ret) {
+          uploadIdDom.val(ret);
+        },
+        onError: function(err){
+          // console.log(this, err);
+        }
+      });
+
+      // 绑定图片预览
+      $(uploadSelector + ' #uploaderFiles').on('click', 'li', function() {
+        const self = this;
+        const url = $(this).css('background-image').match(/url\((.*?)\)/)[1].replace(/"/g, '');
+        const id = $(this).attr('data-id');
+        const gallery = weui.gallery(url, {
+          className: 'custom-gallery',
+          onDelete: function() {
+            weui.confirm('确定删除该图片？', function() {
+              uploadCountDom.text(--uploadCount);
+              uploadIdDom.val('');
+              image.stop();
+              $(self).remove();
+              gallery.hide();
+            })
+          }
+        });
+      });
+    }
+  }
+}
+</script>
+{/block}

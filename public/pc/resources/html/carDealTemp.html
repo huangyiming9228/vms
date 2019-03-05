@@ -7,7 +7,8 @@
 	<title>车辆预约</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/common.css">
-	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../libs/weui/weui.min.css">
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../libs/bootbox/bootbox.min.js"></script>
@@ -15,6 +16,7 @@
     <script src="../scripts/utils.js"></script>
     <script src="../scripts/common.js"></script>
     <script src="../libs/laydate/laydate.js"></script>
+    <script src="../libs/weui/weui.min.js"></script>
 
     <style  rel="stylesheet">
         .main {
@@ -46,11 +48,11 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">车辆预约<span class="sr-only">(current)</span></a></li>
+                        <li><a href="./carDeal.html">车辆预约</a></li>
                         <li><a href="./yearcheck.html">年审</a></li>
                         <li><a href="./carRecord.html">预约记录</a></li>
                         <li><a href="./yearRecord.html">年审记录</a></li>
-                        <li><a href="./carDealTemp.html">临时出入</a></li>
+                        <li class="active"><a href="./carDealTemp.html">临时出入<span class="sr-only">(current)</span></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="javascript:void(0);" onclick="logout()">退出登录</a></li>
@@ -128,12 +130,52 @@
                     <input type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reasons" class="form-control" >
                 </div>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-1">
                     <button type="submit" class="btn btn-primary" id="btn-submit">预 约</button>
                 </div>
-            </div>
+            </div> -->
         </form>
+        <form class="form-horizontal" id="form-image">
+            <div class="form-group">
+              <label class="col-sm-4 control-label">校内员工一卡通<span class="required-icon">*</span>：</label>
+              <div class="col-sm-6">
+                <div class="weui-uploader" id="campus-card-uploader">
+                  <div class="weui-uploader__hd">
+                    <input type="hidden" class="image-id" name="campus_card_id" id="campus_card_id">
+                  </div>
+                  <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+                    <div class="weui-uploader__input-box">
+                      <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">车主行驶证<span class="required-icon">*</span>：</label>
+              <div class="col-sm-6">
+                <div class="weui-uploader" id="driving-license-uploader">
+                  <div class="weui-uploader__hd">
+                    <input type="hidden" class="image-id" name="driving_license_id" id="driving_license_id">
+                  </div>
+                  <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+                    <div class="weui-uploader__input-box">
+                      <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-1">
+                <button type="submit" class="btn btn-primary" id="btn-submit">提 交</button>
+              </div>
+            </div>
+            <p id="warning"></p>
+          </form>
     </div>
 
 <script>
@@ -142,6 +184,10 @@
         $.get('/vms/index/business/get_reservation_days', {}, (data) => {
             variable['reservation_days'] = data;
         })
+
+        // 图片上传注册
+        uploadFactory('#driving-license-uploader').init();
+        uploadFactory('#campus-card-uploader').init();
     });
     // 渲染日期选择器
     laydate.render({
@@ -149,7 +195,7 @@
         theme: '#337AB7',
         range: true,
         // value: Utils.getTomorrowDate(),
-        min: Utils.getTomorrowDate(),
+        min: 0,
         btns: ['confirm'],
         done: function(value, date, endDate) {
             const arr = value.split(' ')
@@ -204,33 +250,33 @@
             validateFlag && (form.visit_reason.value || _alert('请填写预约事由！', form.visit_reason));
         }
 
-        if(validateFlag) {
-            visit_time = Utils.getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
-            const send_data = {
-                tel: form.tel.value,
-                car_no: form.car_no.value,
-                name: form.name.value,
-                visit_time: form.visit_date.value.split(' ')[0] + ' ' + form.visit_time.value + ':00',
-                leave_date: form.visit_date.value.split(' ')[2],
-                visit_reason: form.visit_reason.value,
-            };
-            let url = '';
-            const emp_no = localStorage.getItem('emp_no');
-            if (emp_no.length === 11) {
-                url = '/vms/index/business/save_reservation_driver';
-            } else {
-                url = '/vms/index/business/save_reservation';
-            }
-            $.post(url, send_data, function(response){
-                if(response.code) {
-                    ui_alert(response.msg, function() {
-                        window.location.reload();
-                    });
-                }else {
-                    ui_alert(response.msg);
-                }
-            })
-        }
+        // if(validateFlag) {
+        //     visit_time = Utils.getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
+        //     const send_data = {
+        //         tel: form.tel.value,
+        //         car_no: form.car_no.value,
+        //         name: form.name.value,
+        //         visit_time: form.visit_date.value.split(' ')[0] + ' ' + form.visit_time.value + ':00',
+        //         leave_date: form.visit_date.value.split(' ')[2],
+        //         visit_reason: form.visit_reason.value,
+        //     };
+        //     let url = '';
+        //     const emp_no = localStorage.getItem('emp_no');
+        //     if (emp_no.length === 11) {
+        //         url = '/vms/index/business/save_reservation_driver';
+        //     } else {
+        //         url = '/vms/index/business/save_reservation';
+        //     }
+        //     $.post(url, send_data, function(response){
+        //         if(response.code) {
+        //             ui_alert(response.msg, function() {
+        //                 window.location.reload();
+        //             });
+        //         }else {
+        //             ui_alert(response.msg);
+        //         }
+        //     })
+        // }
     });
 
     // 聚焦元素时清除错误状态
@@ -238,6 +284,87 @@
         $(this).parent().removeClass('has-error');
         $('#warning').text('');
     });
+
+    // 图片上传工厂模式
+function uploadFactory(uploadSelector) {
+	let uploadCount = 0;
+	let uploadIdDom = $(uploadSelector + ' input.image-id');
+	let image = null;
+	return {
+		init: function() {
+			// 绑定上传
+			weui.uploader(uploadSelector, {
+				url: '/vms/index/business/image_upload',
+				auto: true,
+				type: 'file',
+				fileVal: 'image',
+				compress: {
+					width: 1600,
+					height: 1600,
+					quality: 1,
+				},
+				onBeforeQueued: function(files) {
+					if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
+						ui_alert('请上传图片');
+						return false;
+					}
+					if(this.size > 10 * 1024 * 1024){
+						ui_alert('请上传不超过10M的图片');
+						return false;
+					}
+					if (files.length > 1) { // 防止一下子选中过多文件
+						ui_alert('最多只能上传1张图片，请重新选择');
+						return false;
+					}
+					if (uploadCount + 1 > 1) {
+						ui_alert('最多只能上传1张图片');
+						return false;
+					}
+
+					++uploadCount;
+				},
+				onQueued: function(){
+					image = this;
+					// console.log(this);
+				},
+				onBeforeSend: function(data, headers){
+					// console.log(this, data, headers);
+					// $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
+					// $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
+					// return false; // 阻止文件上传
+				},
+				onProgress: function(procent){
+					// console.log(this, procent);
+				},
+				onSuccess: function (ret) {
+					uploadIdDom.val(ret);
+				},
+				onError: function(err){
+					// console.log(this, err);
+				}
+			});
+
+			// 绑定图片预览
+			$(uploadSelector + ' #uploaderFiles').on('click', 'li', function() {
+				const self = this;
+				const url = $(this).css('background-image').match(/url\((.*?)\)/)[1].replace(/"/g, '');
+				const id = $(this).attr('data-id');
+				const gallery = weui.gallery(url, {
+					className: 'custom-gallery',
+					onDelete: function() {
+						ui_alert('确定删除该图片？', function() {
+							uploadCount--;
+							uploadIdDom.val('');
+							image.stop();
+							$(self).remove();
+							gallery.hide();
+						})
+					}
+				});
+			});
+		}
+	}
+}
 </script>
 </body>
 </html>

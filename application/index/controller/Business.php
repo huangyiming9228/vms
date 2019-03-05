@@ -24,6 +24,15 @@ class Business extends Controller
     ]);
   }
 
+  // 渲染微信临时预约页面
+  public function wx_temp_reservation() {
+    return $this->fetch('wx_temp_reservation', [
+      'title' => '车辆预约',
+      'emp_no' => Session::get('emp_no'),
+      'rest_time' => $this->get_rest_reservation_time()
+    ]);
+  }
+
   // 获取用户剩余预约次数
   public function get_rest_reservation_time() {
     $emp_level = Session::get('emp_level');
