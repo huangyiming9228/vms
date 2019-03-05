@@ -69,9 +69,15 @@
 				emp_no: emp_no,
 				psw: psw,
 			};
+			let url = ''
+			if (emp_no.length === 11) {
+				url = '/vms/index/index/login_check_driver';
+			} else {
+				url = '/vms/index/index/login_check';
+			}
 			$.post('/vms/index/verification/check_captcha', { captcha: captcha }, (isSuccess) => {
 				if (isSuccess) {
-					$.post('/vms/index/index/login_check', send_data, function(response) {
+					$.post(url, send_data, function(response) {
 						if(response.code){
 							localStorage.setItem('emp_no', emp_no);
 							$(location).attr('href', './resources/html/carDeal.html');

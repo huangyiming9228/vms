@@ -91,6 +91,34 @@ class Business extends Controller
     }
   }
 
+  public function save_reservation_driver() {
+    $start_time = date('Y-m-d').' 00:00:00';
+    $end_time = date('Y-md').' 24:00:00';
+    $availabel_time = Db::table('reservation_permission_list')->where('level', Session::get('emp_level'))->value('reservation_time');
+    $already_time = Db::table('reservation_list')->where('submitter_no', Session::get('emp_no'))
+      ->where('submit_time', '>', $start_time)
+      ->where('submit_time', '<', $end_time)
+      ->count();
+    if ($already_time >= $availabel_time) {
+      return $this->error('预约失败！您今天的预约次数已用完，请明天再预约。');
+    }
+    $data = $_POST;
+    $data['status'] = 1;
+    $data['submitter_no'] = Session::get('emp_no');
+    $data['submitter'] = Session::get('emp_name');
+    $data['submit_time'] = Date('Y-m-d H:i:s');
+    $data['audit_time'] = Date('Y-m-d H:i:s');
+    $data['audit_person'] = 'system';
+    $data['audit_person_no'] = 'system';
+    $data['audit_remark'] = '通过';
+    $res = Db::table('reservation_list')->insert($data);
+    if ($res) {
+      $this->success('提交成功！', url('index/business/wx_reservation'));
+    } else {
+      $this->error('服务器错误，提交失败！');
+    }
+  }
+
   // 获取预约记录列表
   public function get_reservation_list($emp_no) {
     return Db::table('reservation_list')

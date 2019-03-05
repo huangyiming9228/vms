@@ -74,9 +74,9 @@
         <p id="warning"></p>
         <form class="form-horizontal" id="form-submit">
             <div class="form-group">
-                <label class="col-sm-4 control-label">员工电话：</label>
+                <label class="col-sm-4 control-label">司机电话：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="输入员工电话" id="tel" name="tel" class="form-control" >
+                    <input type="text" placeholder="输入司机电话" id="tel" name="tel" class="form-control" >
                 </div>
             </div>
             <div class="form-group">
@@ -171,9 +171,15 @@
             });
         }
         $('#emp_no').text(emp_no);
+        $('#tel').val(emp_no);
         $.get('/vms/index/business/get_rest_reservation_time', {}, function(response) {
             $('#reservation_time').text(response);
         });
+    });
+
+    // 车牌字母转换为大写
+    $('#car_no').on('change', function() {
+        $(this).val($(this).val().toUpperCase());
     });
 
     //单击提交按钮验证表单信息并向服务器上传数据
@@ -189,7 +195,7 @@
         }
 
         if (validateFlag) {
-            validateFlag && (form.tel.value || _alert('请填写员工手机号！', form.tel));
+            validateFlag && (form.tel.value || _alert('请填写司机手机号！', form.tel));
             validateFlag && (form.car_no.value || _alert('请填写车牌号！', form.car_no));
             validateFlag && (Utils.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
             validateFlag && (form.name.value || _alert('请填写预约人姓名！', form.name));
@@ -207,7 +213,15 @@
                 leave_date: form.visit_date.value.split(' ')[2],
                 visit_reason: form.visit_reason.value,
             };
-            $.post('/vms/index/business/save_reservation',send_data,function(response){
+            let url = '';
+            const emp_no = localStorage.getItem('emp_no');
+            if (emp_no.length === 11) {
+                url = '/vms/index/business/save_reservation_driver';
+            } else {
+                url = '/vms/index/business/save_reservation';
+            }
+            console.log(url);
+            $.post(url, send_data, function(response){
                 if(response.code) {
                     ui_alert(response.msg, function() {
                         window.location.reload();

@@ -38,21 +38,39 @@ $('#btn-login').on('click', (e) => {
   if (!emp_no || !psw) {
     return weui.topTips('账号或密码不能为空！', 1500);
   }
-  new Promise((resolve, reject) => {
-    $.post("{:url('login_check')}", { emp_no, psw }, (response) => {
-      response.code ? weui.toast(response.msg, {
-        duration: 800,
-        callback: () => {
-          // window.location.replace(response.url);
-          window.location.href = response.url;
-        }
-      }) : weui.topTips(response.msg, 1500);
+  if (emp_no.length === 11) {
+    new Promise((resolve, reject) => {
+      $.post("{:url('login_check_driver')}", { emp_no, psw }, (response) => {
+        response.code ? weui.toast(response.msg, {
+          duration: 800,
+          callback: () => {
+            // window.location.replace(response.url);
+            window.location.href = response.url;
+          }
+        }) : weui.topTips(response.msg, 1500);
+      })
+      .catch((error) => {
+        console.log('error:', error);
+        weui.topTips('服务器未知错误，登录失败！', 1500);
+      })
     })
-    .catch((error) => {
-      console.log('error:', error);
-      weui.topTips('服务器未知错误，登录失败！', 1500);
+  } else {
+    new Promise((resolve, reject) => {
+      $.post("{:url('login_check')}", { emp_no, psw }, (response) => {
+        response.code ? weui.toast(response.msg, {
+          duration: 800,
+          callback: () => {
+            // window.location.replace(response.url);
+            window.location.href = response.url;
+          }
+        }) : weui.topTips(response.msg, 1500);
+      })
+      .catch((error) => {
+        console.log('error:', error);
+        weui.topTips('服务器未知错误，登录失败！', 1500);
+      })
     })
-  })
+  }
 })
 </script>
 {/block}

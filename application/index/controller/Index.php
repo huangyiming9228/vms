@@ -4,6 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Session;
 use think\Db;
+use think\Log;
 
 class Index extends Controller
 {
@@ -47,6 +48,28 @@ class Index extends Controller
       Session::set('emp_name', $emp_info['emp_name']);
       Session::set('emp_level', $emp_info['emp_level']);
       $this->success('登录成功！', url('wx_index'));
+    } else {
+      $this->error('密码错误！');
+    }
+  }
+
+  public function login_check_driver() {
+    $emp_no = $_POST['emp_no'];
+    $psw = $_POST['psw'];
+    $emp_info = Db::table('driver_list')->where('emp_no', $emp_no)->find();
+    $activity_status = Db::table('activity_list')->where('id', $emp_info['activity_id'])->value('status');
+    if (!$emp_info) {
+      return $this->error('账号不存在！');
+    }
+    Log::record($activity_status);
+    if ($activity_status != 1) {
+      return $this->error('账号不存在！');
+    }
+    if ($psw == $emp_info['psw']) {
+      Session::set('emp_no', $emp_no);
+      Session::set('emp_name', $emp_info['emp_name']);
+      Session::set('emp_level', $emp_info['emp_level']);
+      $this->success('登录成功！', url('index/business/wx_reservation'));
     } else {
       $this->error('密码错误！');
     }
