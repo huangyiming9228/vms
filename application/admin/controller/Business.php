@@ -138,4 +138,27 @@ class Business extends Controller
     return $res;
   }
 
+  // 活动审批
+  public function activity_audit() {
+    return $this->fetch('activity_audit', [
+      'title' => '活动审批',
+    ]);
+  }
+
+  // 查询所有活动
+  public function query_all_activiitys() {
+    return Db::table('activity_list')->order('submit_time', 'desc')->select();
+  }
+
+  // 审批活动
+  public function audit_activity() {
+    $data = $_POST;
+    $id = $data['id'];
+    unset($data['id']);
+    $data['audit_time'] = date('Y-m-d H:i:s');
+    $data['audit_person'] = Session::get('admin_name');
+    $data['audit_person_no'] = Session::get('admin_no');
+    return Db::table('activity_list')->where('id', $id)->update($data);
+  }
+
 }

@@ -1,0 +1,144 @@
+{extend name="base" /}
+
+{block name="content"}
+<!-- <div class="row">
+  <form id="form-query" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-1 control-label">业务状态:</label>
+      <div class="col-sm-2">
+        <select class="form-control" id="status" name="status">
+          <option value="0">待审核</option>
+          <option value="1">审核通过</option>
+          <option value="2">未通过审核</option>
+          <option value="99">所有</option>
+        </select>
+      </div>
+      <label class="col-sm-1 control-label">账号:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="submitter_no" name="submitter_no" >
+      </div>
+      <label class="col-sm-1 control-label">姓名:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="submitter" name="submitter" >
+      </div>
+      <div class="col-sm-2" style="text-align:left;">
+        <button class="btn btn-default ladda-button" data-style="slide-right" data-spinner-color="#000" id="btn-query">
+          <span class="ladda-label">
+            <i class="fa fa-search"></i>&nbsp;查询
+          </span>
+        </button>
+      </div>
+    </div>
+  </form>              
+</div> -->
+<div class="row" style="margin-top: 20px;">
+  <table id="list"></table>
+</div>
+{/block}
+
+{block name="javascript"}
+<script>
+// 绑定表格数据
+$('#list').bootstrapTable({
+  url: "{:url('query_all_activiitys')}",
+  pageSize: 10,
+  pageList: [10, 25, 50, 100],
+  pagination: true,
+  columns: [{
+    field: 'id',
+    title: '序号',
+    align: 'center',
+  },{
+    field: 'activity_name',
+    title: '会议名称',
+    align: 'center',
+  }, {
+    field: 'start_date',
+    title: '开始时间',
+    align: 'center',
+  }, {
+    field: 'end_date',
+    title: '结束时间',
+    align: 'center',
+  }, {
+    field: 'file',
+    title: '附件',
+    align: 'center',
+    formatter: (value, row) => {
+      return `<a target="_blank" href="{:url('admin/export/driver_list')}?activity_id=${row.id}">下载</a>`
+    }
+  }, {
+    field: 'status',
+    title: '状态',
+    align: 'center',
+    formatter: (value) => {
+      switch (value) {
+        case 0: return '待审核';
+        case 1: return '审核通过';
+        case 2: return '未通过审核';
+      }
+    },
+  }, {
+    field: 'op',
+    title: '操作',
+    align: 'center',
+    formatter: (value, row) => {
+      if (row.status === 0) {
+        return [
+          `<a href="javascript:void(0);" data-id="${row.id}" status="1" class="opreation-op">通过</a>`,
+          `<span>&nbsp;&nbsp;</span>`,
+          `<a href="javascript:void(0);" data-id="${row.id}" status="2" class="opreation-op">不通过</a>`,
+        ].join('');
+      } else {
+        return '-';
+      }
+    }
+  }]
+})
+
+// 绑定查询事件
+// $('#btn-query').on('click', function(e) {
+//   e.preventDefault();
+//   const loading = Ladda.create(this);
+//   loading.start();
+//   $.get("{:url('query_reservations')}", $('#form-query').serializeArray(), (response) => {
+//     $('#list').bootstrapTable('load', response);
+//   }).always(() => loading.stop());
+// });
+
+// 绑定modal弹窗事件
+// $('#list').on('click', '.operation', function() {
+//   const id = $(this).attr('data-id');
+//   $.get("{:url('get_reservation_data')}", { id }, (response) => {
+//     const html = createModalHtml(response);
+//     $('#modal-body').html(html);
+//     if (response.status === 0) {
+//       $('#modal-title').text('预约审核');
+//       $('.btn-operation').removeAttr('disabled');
+//     } else {
+//       $('#modal-title').text('查看详情');
+//       $('.btn-operation').attr('disabled', 'disabled');
+//     }
+//     $('#modal-reservation-handle').modal('show');
+//   });
+// })
+
+$(function() {
+  // 绑定审核事件
+  $('#list').on('click', '.opreation-op',function() {
+    var send_data = {
+      id: $(this).attr('data-id'),
+      status: $(this).attr('status'),
+    };
+    $.post("{:url('audit_activity')}", send_data, (data) => {
+      if (data) {
+        ui_alert('操作成功！', () => { window.location.reload() });
+      } else {
+        ui_alert('操作失败！', () => { window.location.reload() });
+      }
+    })
+  })
+});
+
+</script>
+{/block}
