@@ -281,6 +281,22 @@
     </div>
   </div>
   {/notempty}
+  <!-- 新增后台用户模态框 -->
+  {notempty name="modal_look_drivers"}
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" id="modal-look-drivers">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-title">预约名单</h4>
+        </div>
+        <div class="modal-body" id="modal-body">   
+          <table id="driver-list"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {/notempty}
   {block name="javascript"}
   {/block}
 </body>

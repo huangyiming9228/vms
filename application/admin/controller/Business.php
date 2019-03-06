@@ -142,12 +142,17 @@ class Business extends Controller
   public function activity_audit() {
     return $this->fetch('activity_audit', [
       'title' => '活动审批',
+      'modal_look_drivers' => 1,
     ]);
   }
 
-  // 查询所有活动
-  public function query_all_activiitys() {
-    return Db::table('activity_list')->order('submit_time', 'desc')->select();
+  // 查询活动列表
+  public function query_conditions_activiity() {
+    $conditions = [];
+    if ($_GET['status'] != '99') $conditions['status'] = $_GET['status'];
+    if ($_GET['start_time']) $conditions['start_date'] = ['>= time', $_GET['start_time']];
+    if ($_GET['end_time']) $conditions['end_date'] = ['<= time', $_GET['end_time']];
+    return Db::table('activity_list')->where($conditions)->order('submit_time', 'desc')->select();
   }
 
   // 审批活动
@@ -159,6 +164,25 @@ class Business extends Controller
     $data['audit_person'] = Session::get('admin_name');
     $data['audit_person_no'] = Session::get('admin_no');
     return Db::table('activity_list')->where('id', $id)->update($data);
+  }
+
+  // 获取活动下预约名单
+  public function get_activity_drivers($id) {
+    $driver_list = Db::table('driver_list')->where('activity_id', $id)->select();
+    $activity_name = Db::table('activity_list')->where('id', $id)->value('activity_name');
+    $result = [];
+    foreach ($driver_list as $key => $value) {
+      $res = Db::table('reservation_list')->where('submitter_no', $value['emp_no'])->find();
+      $result[$key]['driver_tel'] = $value['tel'];
+      $result[$key]['activity_name'] = $activity_name;
+      $result[$key]['name'] = $res['name'];
+      $result[$key]['car_no'] = $res['car_no'];
+      $result[$key]['visit_time'] = $res['visit_time'];
+      $result[$key]['leave_date'] = $res['leave_date'];
+      $result[$key]['visit_reason'] = $res['visit_reason'];
+      $result[$key]['status'] = $res['status'];
+    }
+    return $result;
   }
 
 }
