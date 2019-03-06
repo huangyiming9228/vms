@@ -389,20 +389,7 @@ class Export extends Controller
       $sheet->setCellValue('E'.$row_index, $value['visit_time']);
       $sheet->setCellValue('F'.$row_index, $value['leave_date']);
       $sheet->setCellValue('G'.$row_index, $value['visit_reason']);
-      switch ($value['status']) {
-        case 0:
-          $value['status'] = '待审核';
-          break;
-        case 1:
-          $value['status'] = '审核通过';
-          break;
-        case 2:
-          $value['status'] = '未通过审核';
-          break;
-        default:
-          break;
-      }
-      $sheet->setCellValue('H'.$row_index, $value['status']);
+      $sheet->setCellValue('H'.$row_index, '审核通过');
       $row_index++;
     }
     $row_index--;
