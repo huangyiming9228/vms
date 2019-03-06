@@ -28,6 +28,9 @@
 		.weui-uploader__files > li {
 			margin-top: 10px;
 		}
+		.clause-list {
+			padding-left: 30px;
+		}
 	</style>
 </head>
 <body>
@@ -308,6 +311,11 @@
     $('#form-submit').on('focus', 'input', function() {
         $(this).parent().removeClass('has-error');
         $('#warning').text('');
+    });
+
+		// 车牌字母转换为大写
+    $('#car_no').on('change', function() {
+        $(this).val($(this).val().toUpperCase());
     });
 
 // 图片上传工厂模式
