@@ -7,6 +7,6 @@ use think\Db;
 
 class Pc extends Controller {
   public function index() {
-    return $this->fetch('index');
+    $this->redirect('http://clgl.swpu.edu.cn/public/pc');
   }
 }

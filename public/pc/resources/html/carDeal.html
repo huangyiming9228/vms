@@ -50,7 +50,7 @@
                         <li><a href="./yearcheck.html">年审</a></li>
                         <li><a href="./carRecord.html">预约记录</a></li>
                         <li><a href="./yearRecord.html">年审记录</a></li>
-                        <li><a href="./carDealTemp.html">临时出入</a></li>
+                        <!-- <li><a href="./carDealTemp.html">临时出入</a></li> -->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="javascript:void(0);" onclick="logout()">退出登录</a></li>
@@ -190,6 +190,9 @@
             $('#warning').text('预约时间7:00-23:00!');
         };
         $('#visit_date').val(Utils.getTomorrowDate());
+    });
+    $('#visit_date').on('click', function() {
+        $('#warning').text('仅能预约下一天！');
     });
     // 渲染日期选择器
     // laydate.render({
