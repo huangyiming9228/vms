@@ -21,8 +21,16 @@ class Export extends Controller
   public function query_reservation_list($status, $start_time, $end_time) {
     $conditions = [];
     if ($status != '99') $conditions['status'] = $status;
-    $conditions['visit_time'] = ['between time', [$start_time, $end_time]];
-    return Db::table('reservation_list')->where($conditions)->order('visit_time', 'asc')->select();
+    // $conditions['visit_date'] = ['between time', [$start_time, $end_time]];
+    $result = [];
+    $list = Db::table('reservation_list')->where($conditions)->select();
+    foreach ($list as $key => $value) {
+      $datetime = $value['visit_date'].' 00:'.$value['visit_time'];
+      if ($datetime >= $start_time && $datetime <= $end_time) {
+        array_push($result, $value);
+      }
+    }
+    return $result;
   }
 
   // 导出预约数据excel
@@ -59,12 +67,14 @@ class Export extends Controller
     $sheet->setCellValue('A1', '预约人姓名');
     $sheet->setCellValue('B1', '预约车牌号');
     $sheet->setCellValue('C1', '司机电话');
-    $sheet->setCellValue('D1', '预约时间');
-    $sheet->setCellValue('E1', '离校日期');
-    $sheet->setCellValue('F1', '来校事由');
-    $sheet->setCellValue('G1', '预约状态');
-    $sheet->setCellValue('H1', '员工号');
-    $sheet->getStyle('A1:H1')->applyFromArray([
+    $sheet->setCellValue('D1', '预约日期');
+    $sheet->setCellValue('E1', '预约时间');
+    $sheet->setCellValue('F1', '离校时间');
+    $sheet->setCellValue('G1', '来校事由');
+    $sheet->setCellValue('H1', '是否申请免费');
+    $sheet->setCellValue('I1', '免费理由');
+    $sheet->setCellValue('J1', '预约状态');
+    $sheet->getStyle('A1:J1')->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $titleFontStyle,
       'borders' => $borderStyle,
@@ -80,6 +90,8 @@ class Export extends Controller
     $sheet->getColumnDimension('F')->setWidth(17);
     $sheet->getColumnDimension('G')->setWidth(17);
     $sheet->getColumnDimension('H')->setWidth(17);
+    $sheet->getColumnDimension('I')->setWidth(17);
+    $sheet->getColumnDimension('J')->setWidth(17);
 
     // 添加数据
     $row_index = 2;
@@ -87,9 +99,12 @@ class Export extends Controller
       $sheet->setCellValue('A'.$row_index, $value['name']);
       $sheet->setCellValue('B'.$row_index, $value['car_no']);
       $sheet->setCellValue('C'.$row_index, $value['tel']);
-      $sheet->setCellValue('D'.$row_index, $value['visit_time']);
-      $sheet->setCellValue('E'.$row_index, $value['leave_date']);
-      $sheet->setCellValue('F'.$row_index, $value['visit_reason']);
+      $sheet->setCellValue('D'.$row_index, $value['visit_date']);
+      $sheet->setCellValue('E'.$row_index, $value['visit_time']);
+      $sheet->setCellValue('F'.$row_index, $value['leave_time']);
+      $sheet->setCellValue('G'.$row_index, $value['visit_reason']);
+      $sheet->setCellValue('H'.$row_index, $value['is_apply_free'] ? '是' : '否');
+      $sheet->setCellValue('I'.$row_index, $value['free_reason']);
       switch ($value['status']) {
         case 0:
           $value['status'] = '待审核';
@@ -103,12 +118,12 @@ class Export extends Controller
         default:
           break;
       }
-      $sheet->setCellValue('G'.$row_index, $value['status']);
-      $sheet->setCellValue('H'.$row_index, $value['submitter_no']);
+      $sheet->setCellValue('J'.$row_index, $value['status']);
+
       $row_index++;
     }
     $row_index--;
-    $sheet->getStyle('A2:H'.$row_index)->applyFromArray([
+    $sheet->getStyle('A2:J'.$row_index)->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $textFontStyle,
       'borders' => $borderStyle,

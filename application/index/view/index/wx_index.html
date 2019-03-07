@@ -15,7 +15,7 @@
 {block name="content"}
 <div class="weui-cells__title">尊敬的{$emp_no}用户，请选择您要办理的业务：</div>
 <div class="weui-cells">
-  <a class="weui-cell weui-cell_access" href="{:url('index/business/wx_reservation')}">
+  <a class="weui-cell weui-cell_access" href="{:url('index/business/wx_reservation')}" id="wx_reservation">
     <div class="weui-cell__hd"><img src="{$Think.STATIC_URL}/images/wx_cars_reservations.png"></div>
     <div class="weui-cell__bd">
       <p>车辆预约</p>
@@ -60,5 +60,15 @@
 
 {block name="javascript"}
 <script>
+$('#wx_reservation').on('click', function(e) {
+  e.preventDefault();
+  var now = new Date();
+  var hours = now.getHours();
+  if (hours > 7 &&hours < 23) {
+    window.location.href = "{:url('index/business/wx_reservation')}";
+  } else {
+    weui.topTips('预约时间7:00-23:00', 1500);
+  }
+});
 </script>
 {/block}

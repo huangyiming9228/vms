@@ -84,18 +84,32 @@ $('#list').bootstrapTable({
     title: '员工电话',
     align: 'center',
   }, {
+    field: 'visit_date',
+    title: '预约日期',
+    align: 'center',
+    sortable: true,
+  }, {
     field: 'visit_time',
     title: '预约时间',
     align: 'center',
     sortable: true,
   }, {
-    field: 'leave_date',
-    title: '离校日期',
+    field: 'leave_time',
+    title: '离校时间',
     align: 'center',
     sortable: true,
   }, {
     field: 'visit_reason',
     title: '来校事由',
+    align: 'center',
+  }, {
+    field: 'is_apply_free',
+    title: '是否申请免费',
+    align: 'center',
+    formatter: (value) => value === 0 ? '否': '是',
+  }, {
+    field: 'free_reason',
+    title: '免费理由',
     align: 'center',
   }, {
     field: 'status',

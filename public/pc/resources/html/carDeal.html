@@ -95,7 +95,7 @@
             <div class="form-group">
                 <label class="col-sm-4 control-label">预约日期：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="选择预约日期范围" id="visit_date" name="visit_date" class="form-control" >
+                    <input type="text" placeholder="选择预约日期" id="visit_date" name="visit_date" class="form-control" >
                 </div>
             </div>
             <div class="form-group">
@@ -123,9 +123,50 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-4 control-label">离校时间：</label>
+                <div class="col-sm-6">
+                    <select id="leave_time" name="leave_time" class="form-control">
+                        <option>07:00</option>
+                        <option>08:00</option>
+                        <option>09:00</option>
+                        <option>10:00</option>
+                        <option>11:00</option>
+                        <option>12:00</option>
+                        <option>13:00</option>
+                        <option>14:00</option>
+                        <option>15:00</option>
+                        <option>16:00</option>
+                        <option>17:00</option>
+                        <option>18:00</option>
+                        <option>19:00</option>
+                        <option>20:00</option>
+                        <option>21:00</option>
+                        <option>22:00</option>
+                        <option>23:00</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-4 control-label">预约事由：</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reasons" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">是否申请免费：</label>
+                <div class="col-sm-6">
+                    <label class="radio-inline">
+                        <input type="radio" name="radio" id="inlineRadio1" value="1" checked> 是
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="radio" id="inlineRadio2" value="0"> 否
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">免费理由：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="免费理由：因私不免费" id="free_reason" name="free_reason" class="form-control" >
                 </div>
             </div>
             <div class="form-group">
@@ -141,28 +182,35 @@
     $(function() {
         $.get('/vms/index/business/get_reservation_days', {}, (data) => {
             variable['reservation_days'] = data;
-        })
+        });
+        var now = new Date();
+        var hours = now.getHours();
+        if (hours < 7 || hours > 23) {
+            $('#btn-submit').attr('disabled', 'disabled');
+            $('#warning').text('预约时间7:00-23:00!');
+        };
+        $('#visit_date').val(Utils.getTomorrowDate());
     });
     // 渲染日期选择器
-    laydate.render({
-        elem: '#visit_date',
-        theme: '#337AB7',
-        range: true,
-        // value: Utils.getTomorrowDate(),
-        min: Utils.getTomorrowDate(),
-        btns: ['confirm'],
-        done: function(value, date, endDate) {
-            const arr = value.split(' ')
-            const start_date = new Date(arr[0]).getTime();
-            const end_date = new Date(arr[2]).getTime();
-            const days_diff = (end_date - start_date) / (24*60*60*1000);
-            if (days_diff + 1 > variable['reservation_days']) {
-                ui_alert(`您最多可预约${variable['reservation_days']}天！请重新选择日期范围。`, () => {
-                    $('#visit_date').val('');
-                });
-            }
-        }
-    });
+    // laydate.render({
+    //     elem: '#visit_date',
+    //     theme: '#337AB7',
+    //     range: true,
+    //     // value: Utils.getTomorrowDate(),
+    //     min: Utils.getTomorrowDate(),
+    //     btns: ['confirm'],
+    //     done: function(value, date, endDate) {
+    //         const arr = value.split(' ')
+    //         const start_date = new Date(arr[0]).getTime();
+    //         const end_date = new Date(arr[2]).getTime();
+    //         const days_diff = (end_date - start_date) / (24*60*60*1000);
+    //         if (days_diff + 1 > variable['reservation_days']) {
+    //             ui_alert(`您最多可预约${variable['reservation_days']}天！请重新选择日期范围。`, () => {
+    //                 $('#visit_date').val('');
+    //             });
+    //         }
+    //     }
+    // });
     // 获取到用户名,剩余预约次数
     $(document).ready(function(){ 
         const emp_no = localStorage.getItem('emp_no');
@@ -202,8 +250,19 @@
             validateFlag && (form.car_no.value || _alert('请填写车牌号！', form.car_no));
             validateFlag && (Utils.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
             validateFlag && (form.name.value || _alert('请填写预约人姓名！', form.name));
-            validateFlag && (form.visit_date.value || _alert('请选择日期范围！', form.visit_date));
+            validateFlag && (form.visit_date.value || _alert('请选择预约日期！', form.visit_date));
             validateFlag && (form.visit_reason.value || _alert('请填写预约事由！', form.visit_reason));
+        }
+
+        if (form.visit_time.value > form.leave_time.value) {
+            return _alert('离校时间不能小于预约时间！');
+        }
+
+        const is_apply_free = $("input[name='radio']:checked").val();
+        if (validateFlag) {
+            if (is_apply_free == 1 && !form.free_reason.value) {
+                _alert('请填写免费理由！', form.free_reason);
+            }
         }
 
         if(validateFlag) {
@@ -212,9 +271,12 @@
                 tel: form.tel.value,
                 car_no: form.car_no.value,
                 name: form.name.value,
-                visit_time: form.visit_date.value.split(' ')[0] + ' ' + form.visit_time.value + ':00',
-                leave_date: form.visit_date.value.split(' ')[2],
+                visit_date: form.visit_date.value,
+                visit_time: form.visit_time.value,
+                leave_time: form.leave_time.value,
                 visit_reason: form.visit_reason.value,
+                is_apply_free: is_apply_free,
+                free_reason: form.free_reason.value,
             };
             let url = '';
             const emp_no = localStorage.getItem('emp_no');

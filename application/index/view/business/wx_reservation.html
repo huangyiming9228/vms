@@ -51,14 +51,14 @@
         <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择预约日期" readonly>
       </div>
     </div>
-    <div class="weui-cell">
+    <!-- <div class="weui-cell">
       <div class="weui-cell__hd">
         <label class="weui-label">离校日期</label>
       </div>
       <div class="weui-cell__bd">
         <input class="weui-input" type="text" id="leave_date" name="leave_date" placeholder="选择离校日期" readonly>
       </div>
-    </div>
+    </div> -->
     <div class="weui-cell">
       <div class="weui-cell__hd">
         <label class="weui-label">预约时间</label>
@@ -69,10 +69,37 @@
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
+        <label class="weui-label">离校时间</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" id="leave_time" name="leave_time" placeholder="选择预约时间" readonly>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
         <label class="weui-label">预约事由</label>
       </div>
       <div class="weui-cell__bd">
         <input class="weui-input" type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reason">
+      </div>
+    </div>
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+      <div class="weui-cell__hd">
+        <label class="weui-label">是否申请免费</label>
+      </div>
+      <div class="weui-cell__bd">
+        <select class="weui-select" name="is_apply_free" id="is_apply_free">
+          <option value="1">是</option>
+          <option value="0">否</option>
+        </select>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">免费理由</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="免费理由：因私不免费" id="free_reason" name="free_reason">
       </div>
     </div>
   </form>
@@ -87,7 +114,8 @@ var variable = {};
 $(function() {
   $.get("{:url('get_reservation_days')}", {}, (data) => {
     variable['reservation_days'] = data;
-  })
+  });
+  $('#visit_date').val(Global.getTomorrowDate());
 });
 // 绑定时间选择器
 $('#visit_time').on('click', function() {
@@ -104,23 +132,37 @@ $('#visit_time').on('click', function() {
     id: 'visit_time',
   })
 });
-// 绑定预约日期选择器
-$('#visit_date').on('click', function() {
+$('#leave_time').on('click', function() {
   const self = this;
-  weui.datePicker({
-    start: Global.getTomorrowDate(),
-    end: 2030,
-    defaultValue: Global.getTomorrowDate().split('-'),
-    onChange: function(result) {
-      const [ { value: year } , { value: month }, { value: day }] = result;
-      const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
-      $(self).val(date);
-      variable['visit_date'] = date;
+  weui.picker(getHours(), {
+    container: 'body',
+    defaultValue: ['07:00'],
+    onChange: function(value) {
+      $(self).val(value);
     },
-    onConfirm: function(result) {console.log(result)},
-    id: 'visit_date',
-  });
+    onConfirm: function() {
+      // $(self).val(Global.getTomorrowDate() + ' ' + $(self).val() + ':00');
+    },
+    id: 'visit_time',
+  })
 });
+// 绑定预约日期选择器
+// $('#visit_date').on('click', function() {
+//   const self = this;
+//   weui.datePicker({
+//     start: Global.getTomorrowDate(),
+//     end: 2030,
+//     defaultValue: Global.getTomorrowDate().split('-'),
+//     onChange: function(result) {
+//       const [ { value: year } , { value: month }, { value: day }] = result;
+//       const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
+//       $(self).val(date);
+//       variable['visit_date'] = date;
+//     },
+//     onConfirm: function(result) {console.log(result)},
+//     id: 'visit_date',
+//   });
+// });
 
 // 绑定离校日期选择器
 $('#leave_date').on('click', function() {
@@ -169,13 +211,20 @@ $('#btn-submit').on('click', function() {
     validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
     validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
     validateFlag && (form.visit_date.value || _alert('请选择预约日期！'));
-    validateFlag && (form.leave_date.value || _alert('请选择离校日期！'));
+    // validateFlag && (form.leave_date.value || _alert('请选择离校日期！'));
     validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
+    validateFlag && (form.leave_time.value || _alert('请选择离校时间！'));
     validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
   }
 
-  if (new Date(form.visit_date.value).getTime() > new Date(form.leave_date.value).getTime()) {
-    return _alert('离校日期不能小于预约日期！');
+  if (form.visit_time.value > form.leave_time.value) {
+    return _alert('离校时间不能小于预约时间！');
+  }
+
+  if (validateFlag) {
+    if (form.is_apply_free.value == 1 && !form.free_reason.value) {
+      _alert('请填写免费理由！');
+    }
   }
 
   if(validateFlag) {
@@ -183,19 +232,19 @@ $('#btn-submit').on('click', function() {
     const emp_no = "{$emp_no}";
     let url = '';
     new Promise((resolve) => {
-      const sendData = $('#form-submit').serializeArray().filter((item) => {
-        return item.name != 'visit_time' && item.name != 'visit_date';
-      });
-      sendData.push({
-        name: 'visit_time',
-        value: $('#visit_date').val() + ' ' + $('#visit_time').val() + ':00',
-      });
+      // const sendData = $('#form-submit').serializeArray().filter((item) => {
+      //   return item.name != 'visit_time' && item.name != 'visit_date';
+      // });
+      // sendData.push({
+      //   name: 'visit_time',
+      //   value: $('#visit_date').val() + ' ' + $('#visit_time').val() + ':00',
+      // });
       if (emp_no.length === 11) {
         url = "{:url('save_reservation_driver')}";
       } else {
         url = "{:url('save_reservation')}";
       }
-      $.post(url, sendData, (response) => {
+      $.post(url, $('#form-submit').serializeArray(), (response) => {
         if (response.code) {
           loading.hide(() => {
             weui.toast(response.msg, {

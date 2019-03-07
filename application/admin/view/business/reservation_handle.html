@@ -57,18 +57,30 @@ $('#list').bootstrapTable({
     title: '司机电话',
     align: 'center',
   }, {
+    field: 'visit_date',
+    title: '预约日期',
+    align: 'center',
+    sortable: true,
+  }, {
     field: 'visit_time',
     title: '预约时间',
     align: 'center',
-    sortable: true,
   }, {
-    field: 'leave_date',
-    title: '离校日期',
+    field: 'leave_time',
+    title: '离校时间',
     align: 'center',
-    sortable: true,
   }, {
     field: 'visit_reason',
     title: '来校事由',
+    align: 'center',
+  }, {
+    field: 'is_apply_free',
+    title: '是否申请免费',
+    align: 'center',
+    formatter: (value) => value === 0 ? '否': '是',
+  }, {
+    field: 'free_reason',
+    title: '免费理由',
     align: 'center',
   }, {
     field: 'status',
@@ -174,21 +186,39 @@ function createModalHtml(data) {
         </div>
       </div>
       <div class="form-group">
+        <label class="col-sm-3 control-label">预约日期</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" disabled value="${data.visit_date}">
+        </div>
+      </div>
+      <div class="form-group">
         <label class="col-sm-3 control-label">预约时间</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" disabled value="${data.visit_time}">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3 control-label">离校日期</label>
+        <label class="col-sm-3 control-label">离校时间</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" disabled value="${data.leave_date}">
+          <input type="text" class="form-control" disabled value="${data.leave_time}">
         </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">来校事由</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" disabled value="${data.visit_reason}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">是否申请免费</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" disabled value="${data.is_apply_free === 1 ? '是' : '否'}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">免费理由</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" disabled value="${data.free_reason ? data.free_reason : '-'}">
         </div>
       </div>
       ${(() => {
