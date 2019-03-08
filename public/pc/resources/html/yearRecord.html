@@ -8,15 +8,6 @@
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/common.css">
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
-    <script src="../libs/jquery-3.3.1.min.js"></script>
-    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../libs/bootbox/bootbox.min.js"></script>
-    <script src="../scripts/common_alert.js"></script>
-    <!-- 引入bootstrap-table -->
-    <link rel="stylesheet" href="../libs/bootstrap-table/dist/bootstrap-table.min.css">
-    <script src="../libs/bootstrap-table/dist/bootstrap-table.min.js"></script>
-    <script src="../libs/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
-    <script src="../scripts/common.js"></script>
 
     <style  rel="stylesheet">
         .main {
@@ -71,7 +62,18 @@
     <div class="main">
         <table id="list"></table>
     </div>
-	<script>
+    <script src="../libs/node_modules/babel-core/browser.min.js"></script>
+	<script src="../libs/node_modules/babel-core/browser-polyfill.min.js"></script>
+    <script src="../libs/jquery-3.3.1.min.js"></script>
+    <script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../libs/bootbox/bootbox.min.js"></script>
+    <script src="../scripts/common_alert.js"></script>
+    <!-- 引入bootstrap-table -->
+    <link rel="stylesheet" href="../libs/bootstrap-table/dist/bootstrap-table.min.css">
+    <script src="../libs/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../libs/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../scripts/common.js"></script>
+	<script type="text/babel">
         const emp_no = localStorage.getItem('emp_no');
         if (!emp_no) {
             ui_alert('登录身份失效，请重新登录！', function() {

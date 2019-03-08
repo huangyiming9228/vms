@@ -10,13 +10,6 @@
 	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../css/yearcheck.css">
 	<link rel="stylesheet" href="../libs/weui/weui.min.css">
-	<script src="../libs/jquery-3.3.1.min.js"></script>
-	<script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="../libs/bootbox/bootbox.min.js"></script>
-	<script src="../scripts/common_alert.js"></script>
-	<script src="../scripts/utils.js"></script>
-	<script src="../libs/weui/weui.min.js"></script>
-	<script src="../scripts/common.js"></script>
 	<style>
 		.weui-uploader__hd {
 			padding-bottom: 0;
@@ -237,7 +230,16 @@
 			</div>
 		</div>
 	</div>
-<script>
+	<script src="../libs/node_modules/babel-core/browser.min.js"></script>
+	<script src="../libs/node_modules/babel-core/browser-polyfill.min.js"></script>
+	<script src="../libs/jquery-3.3.1.min.js"></script>
+	<script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../libs/bootbox/bootbox.min.js"></script>
+	<script src="../scripts/common_alert.js"></script>
+	<script src="../scripts/utils.js"></script>
+	<script src="../libs/weui/weui.min.js"></script>
+	<script src="../scripts/common.js"></script>
+	<script type="text/babel">
 	// 获取到用户名
 	$(document).ready(function(){ 
 		const emp_no = localStorage.getItem('emp_no');
@@ -294,7 +296,6 @@
 			const imageData = $('#form-image').serializeArray();
 			const data = formData.concat(imageData);
 			const images = imageData.filter((item) => item.value).map((item) => item.value);
-			console.log(data, images);
 			$.post('/vms/index/business/save_mot_test', { data, images }, function(response){
 				if(response.code) {
 					ui_alert(response.msg, function() {

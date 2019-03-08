@@ -51,7 +51,7 @@
 {/block}
 
 {block name="javascript"}
-<script>
+<script type="text/babel">
 $(function() {
   $.get("{:url('get_mot_test_detail')}", { id: "{$id}" }, (response) => {
     const baseInfoHtml = createBaseInfoHtml(response.base_data);

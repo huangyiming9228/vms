@@ -49,7 +49,10 @@
   </div>
   <script src="{$Think.STATIC_URL}/libs/jquery/dist/jquery.min.js"></script>
   <script src="{$Think.STATIC_URL}/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script>
+  <!-- 引入babel -->
+  <script src="{$Think.STATIC_URL}/libs/node_modules/babel-core/browser.min.js"></script>
+  <script src="{$Think.STATIC_URL}/libs/node_modules/babel-core/browser-polyfill.min.js"></script>
+  <script type="text/babel">
     $('#btn_login').on('click', function() {
       if (!$('#admin_no').val()) {
         $('#admin_no').parent().addClass('has-error');
@@ -90,7 +93,9 @@
 
     // 刷新验证码
 		$('#captcha_img').on('click', function() {
-			$(this).attr('src', '/vms/index/verification/get_captcha_img');
+      var now = new Date();
+			var url = '/vms/index/verification/get_captcha_img' + '?v=' + now.getTime();
+			$(this).attr('src', url);
 		});
   </script>
 </body>

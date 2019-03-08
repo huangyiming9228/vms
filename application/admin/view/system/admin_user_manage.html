@@ -33,7 +33,7 @@
 {/block}
 
 {block name="javascript"}
-<script>
+<script type="text/babel">
 $(function() {
   $.get("{:url('get_admin_role_list')}", {}, (data) => {
     const html = data.map((item) => {
