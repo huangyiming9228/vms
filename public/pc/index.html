@@ -35,8 +35,9 @@
 		<button class="btn btn-primary btn-block" id="btn-submit">登录</button>
 	</div>
 
-	<!-- <script src="./resources/scripts/index.js"></script> -->
-	<script>
+	<script src="./resources/libs/node_modules/babel-core/browser.min.js"></script>
+	<script src="./resources/libs/node_modules/babel-core/browser-polyfill.min.js"></script>
+	<script type="text/babel">
 		//点击登录完成验证后登录跳转
 		$('#btn-submit').on('click', function(e){
 			let emp_no = $('#emp_no').val();
@@ -100,7 +101,9 @@
 
 		// 刷新验证码
 		$('#captcha_img').on('click', function() {
-			$(this).attr('src', '/vms/index/verification/get_captcha_img');
+			var now = new Date();
+			var url = '/vms/index/verification/get_captcha_img' + '?v=' + now.getTime();
+			$(this).attr('src', url);
 		});
 	</script>
 </body>
