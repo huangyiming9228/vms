@@ -128,6 +128,26 @@ class Business extends Controller
     }
   }
 
+  /*
+   * @desc 保存预约数据
+   * @status 0 - 未审核
+   *         1 - 审核通过
+   *         2 - 审核未通过
+   */
+  public function save_temp_reservation() {
+    $data = $_POST;
+    $data['status'] = 0;
+    $data['submit_time'] = Date('Y-m-d H:i:s');
+    $data['visit_time'] = Date('Y-m-d').' '.$data['visit_time'].':00';
+    $data['leave_time'] = Date('Y-m-d').' '.$data['leave_time'].':00';
+    $res = Db::table('temp_reservation_list')->insert($data);
+    if ($res) {
+      $this->success('提交成功！', url('index/index/wx_index'));
+    } else {
+      $this->error('服务器错误，提交失败！');
+    }
+  }
+
   // 获取预约记录列表
   public function get_reservation_list($emp_no) {
     return Db::table('reservation_list')
@@ -230,6 +250,14 @@ class Business extends Controller
   // 获取年审记录详情
   public function get_mot_test_detail($id) {
     return Db::table('mot_test_list')->where('id', $id)->find();
+  }
+
+  public function get_emp_level($emp_no) {
+    return Db::table('employee_list')->where('emp_no', $emp_no)->value('emp_level');
+  }
+
+  public function get_emp_info($emp_no) {
+    return Db::table('employee_list')->where('emp_no', $emp_no)->find();
   }
 
 }

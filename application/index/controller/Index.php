@@ -18,6 +18,7 @@ class Index extends Controller
     return $this->fetch('wx_index', [
       'title' => '首页',
       'emp_no' => Session::get('emp_no'),
+      'emp_level' => Session::get('emp_level'),
     ]);
   }
 

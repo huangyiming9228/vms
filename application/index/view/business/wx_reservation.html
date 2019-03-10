@@ -40,7 +40,7 @@
         <label class="weui-label">预约人姓名</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name">
+        <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name" id="name">
       </div>
     </div>
     <div class="weui-cell">
@@ -120,6 +120,9 @@ $(function() {
     $('#tel').value(emp_no);
   }
   $('#visit_date').val(Global.getTomorrowDate());
+  $.get("{:url('get_emp_info')}", { emp_no: emp_no }, function(data) {
+    $('#name').val(data['emp_name']);
+  });
 });
 $('#visit_date').on('click', function() {
   weui.topTips('仅能预约下一天！', 1500);

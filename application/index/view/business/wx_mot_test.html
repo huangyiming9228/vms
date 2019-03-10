@@ -211,6 +211,10 @@
 {block name="javascript"}
 <script>
 $(function() {
+  $.get("{:url('get_emp_info')}", { emp_no: "{$emp_no}" }, function(data) {
+    $('#applicant').val(data['emp_name']);
+    $('#applicant_unit').val(data['emp_unit']);
+  });
   // 图片上传注册
   uploadFactory('#driving-license-uploader').init();
   uploadFactory('#campus-card-uploader').init();

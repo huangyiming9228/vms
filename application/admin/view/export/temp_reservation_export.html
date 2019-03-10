@@ -4,15 +4,6 @@
 <div class="row">
   <form id="form-query" class="form-horizontal">
     <div class="form-group">
-      <label class="col-sm-1 control-label">预约状态:</label>
-      <div class="col-sm-2">
-        <select class="form-control" id="status" name="status">
-          <option value="99">所有</option>
-          <option value="0">待审核</option>
-          <option value="1">通过审核</option>
-          <option value="2">未通过审核</option>
-        </select>
-      </div>
       <label class="col-sm-1 control-label">开始时间:</label>
       <div class="col-sm-2">
         <input type="text" class="form-control datetime-item" id="start_time" name="start_time">
@@ -21,7 +12,7 @@
       <div class="col-sm-2">
         <input type="text" class="form-control datetime-item" id="end_time" name="end_time">
       </div>
-      <div class="col-sm-1">
+      <div class="col-sm-2" style="text-align:left;">
         <button class="btn btn-default ladda-button" data-style="slide-right" data-spinner-color="#000" id="btn-query">
           <span class="ladda-label">
             <i class="fa fa-search"></i>&nbsp;查询
@@ -30,7 +21,7 @@
       </div>
       <div class="col-sm-1">
         <button class="btn btn-primary" id="btn-export">
-            <i class="fa fa-download"></i>&nbsp;导出当前数据
+          <i class="fa fa-download"></i>&nbsp;导出当前数据
         </button>
       </div>
     </div>
@@ -65,7 +56,6 @@ lay('.datetime-item').each(function() {
     },
   });
 });
-
 // 绑定表格数据
 $('#list').bootstrapTable({
   pageSize: 10,
@@ -73,65 +63,53 @@ $('#list').bootstrapTable({
   pagination: true,
   columns: [{
     field: 'name',
-    title: '预约人姓名',
+    title: '姓名',
     align: 'center',
   }, {
-    field: 'emp_unit',
-    title: '预约人单位',
+    field: 'unit',
+    title: '单位',
+    align: 'center',
+  }, {
+    field: 'campus_card_no',
+    title: '一卡通号',
+    align: 'center',
+  }, {
+    field: 'apply_type',
+    title: '预约形式',
+    align: 'center',
+  }, {
+    field: 'apply_reason',
+    title: '申请事由',
     align: 'center',
   }, {
     field: 'car_no',
     title: '车牌号',
     align: 'center',
   }, {
-    field: 'tel',
-    title: '员工电话',
+    field: 'car_type',
+    title: '车辆种类',
     align: 'center',
   }, {
-    field: 'visit_date',
-    title: '预约日期',
+    field: 'tel',
+    title: '联系电话',
     align: 'center',
-    sortable: true,
   }, {
     field: 'visit_time',
-    title: '预约时间',
+    title: '进校时间',
     align: 'center',
-    sortable: true,
   }, {
     field: 'leave_time',
     title: '离校时间',
     align: 'center',
-    sortable: true,
   }, {
-    field: 'visit_reason',
-    title: '来校事由',
+    field: 'op',
+    title: '操作',
     align: 'center',
-  }, {
-    field: 'is_apply_free',
-    title: '是否申请免费',
-    align: 'center',
-    formatter: (value) => value === 0 ? '否': '是',
-  }, {
-    field: 'free_reason',
-    title: '免费理由',
-    align: 'center',
-  }, {
-    field: 'status',
-    title: '预约状态',
-    align: 'center',
-    formatter: (value) => {
-      switch (value) {
-        case 0: return '待审核';
-        case 1: return '审核通过';
-        case 2: return '未通过审核';
-      }
-    },
-  }, {
-    field: 'submitter_no',
-    title: '员工号',
-    align: 'center',
+    formatter: (value, row) => {
+      return `<a href="javascript:void(0);" data-id="${row.id}" class="operation">查看详情</a>`;
+    }
   }]
-});
+})
 
 // 绑定查询事件
 $('#btn-query').on('click', function(e) {
@@ -141,9 +119,14 @@ $('#btn-query').on('click', function(e) {
   }
   const loading = Ladda.create(this);
   loading.start();
-  $.get("{:url('query_reservation_list')}", $('#form-query').serializeArray(), (response) => {
+  $.get("{:url('query_reservations')}", $('#form-query').serializeArray(), (response) => {
     $('#list').bootstrapTable('load', response);
   }).always(() => loading.stop());
+});
+
+// 绑定操作跳转事件
+$('#list').on('click', '.operation', function() {
+  window.location.href = "{:url('temp_reservation_detail')}?id=" + $(this).attr('data-id');
 });
 
 // 绑定导出事件
@@ -152,7 +135,7 @@ $('#btn-export').on('click', function(e) {
   if (!$('#start_time').val() || !$('#end_time').val()) {
     return ui_alert('请选择时间范围！');
   }
-  const url = "{:url('export_reservation_excel')}?" + $('#form-query').serialize();
+  const url = "{:url('export_temp_reservation_excel')}?" + $('#form-query').serialize();
   window.open(url);
 });
 </script>

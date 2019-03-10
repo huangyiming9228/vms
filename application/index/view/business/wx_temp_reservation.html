@@ -21,50 +21,26 @@
   <form id="form-submit">
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">司机电话</label>
+        <label class="weui-label">一卡通号</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="number" value="{$emp_no}" pattern="[0-9]*" placeholder="输入司机电话" name="tel">
+        <input class="weui-input" type="number" value="" placeholder="输入一卡通号" name="campus_card_no" id="campus_card_no">
       </div>
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">预约车牌号</label>
+        <label class="weui-label">姓名</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="例如：川A12345" name="car_no" id="car_no">
+        <input class="weui-input" type="text" value="" placeholder="输入姓名" name="name" id="name">
       </div>
     </div>
     <div class="weui-cell">
       <div class="weui-cell__hd">
-        <label class="weui-label">预约人姓名</label>
+        <label class="weui-label">单位</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name">
-      </div>
-    </div>
-    <div class="weui-cell">
-      <div class="weui-cell__hd">
-        <label class="weui-label">预约日期</label>
-      </div>
-      <div class="weui-cell__bd">
-        <input class="weui-input" type="text" id="visit_date" name="visit_date" placeholder="选择预约日期" readonly>
-      </div>
-    </div>
-    <div class="weui-cell">
-      <div class="weui-cell__hd">
-        <label class="weui-label">离校日期</label>
-      </div>
-      <div class="weui-cell__bd">
-        <input class="weui-input" type="text" id="leave_date" name="leave_date" placeholder="选择离校日期" readonly>
-      </div>
-    </div>
-    <div class="weui-cell">
-      <div class="weui-cell__hd">
-        <label class="weui-label">预约时间</label>
-      </div>
-      <div class="weui-cell__bd">
-        <input class="weui-input" type="text" id="visit_time" name="visit_time" placeholder="选择预约时间" readonly>
+        <input class="weui-input" type="text" value="" placeholder="输入单位名称" name="unit" id="unit">
       </div>
     </div>
     <div class="weui-cell">
@@ -72,7 +48,79 @@
         <label class="weui-label">预约事由</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reason">
+        <input class="weui-input" type="text" value="" placeholder="输入预约事由" name="apply_reason">
+      </div>
+    </div>
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+      <div class="weui-cell__hd">
+        <label class="weui-label">预约形式</label>
+      </div>
+      <div class="weui-cell__bd">
+        <select class="weui-select" name="apply_type" id="apply_type">
+          <option value="单位预约">单位预约</option>
+          <option value="个人预约">个人预约</option>
+        </select>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">车主姓名</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" value="" placeholder="输入车主姓名" name="car_owner_name">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">车牌号</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" placeholder="例如：川A12345" name="car_no" id="car_no">
+      </div>
+    </div>
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+      <div class="weui-cell__hd">
+        <label class="weui-label">车辆种类</label>
+      </div>
+      <div class="weui-cell__bd">
+        <select class="weui-select" name="car_type" id="car_type">
+          <option value="轿车">轿车</option>
+          <option value="客车">客车</option>
+          <option value="货车">货车</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">行驶证编号</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" value="" placeholder="输入行驶证编号" name="driving_license_no">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">联系电话</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" value="" placeholder="输入联系电话" name="tel">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">进校时间</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" value="" name="visit_time" id="visit_time">
+      </div>
+    </div>
+    <div class="weui-cell">
+      <div class="weui-cell__hd">
+        <label class="weui-label">离校时间</label>
+      </div>
+      <div class="weui-cell__bd">
+        <input class="weui-input" type="text" value="" name="leave_time" id="leave_time">
       </div>
     </div>
   </form>
@@ -116,7 +164,6 @@
     </div>
   </div>
 </form>
-<div class="weui-cells__tips">您当前剩余的预约次数为：{$rest_time}次。</div>
 <a href="javascript:;" class="weui-btn weui-btn_primary btn-submit" id="btn-submit">预约</a>
 {/block}
 
@@ -124,10 +171,6 @@
 <script>
 var variable = {};
 $(function() {
-  $.get("{:url('get_reservation_days')}", {}, (data) => {
-    variable['reservation_days'] = data;
-  })
-
   // 图片上传注册
   uploadFactory('#driving-license-uploader').init();
   uploadFactory('#campus-card-uploader').init();
@@ -147,39 +190,19 @@ $('#visit_time').on('click', function() {
     id: 'visit_time',
   })
 });
-// 绑定预约日期选择器
-$('#visit_date').on('click', function() {
+$('#leave_time').on('click', function() {
   const self = this;
-  weui.datePicker({
-    start: new Date(),
-    end: 2030,
-    // defaultValue: Global.getTomorrowDate().split('-'),
-    onChange: function(result) {
-      const [ { value: year } , { value: month }, { value: day }] = result;
-      const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
-      $(self).val(date);
-      variable['visit_date'] = date;
+  weui.picker(getHours(), {
+    container: 'body',
+    defaultValue: ['07:00'],
+    onChange: function(value) {
+      $(self).val(value);
     },
-    onConfirm: function(result) {console.log(result)},
-    id: 'visit_date',
-  });
-});
-
-// 绑定离校日期选择器
-$('#leave_date').on('click', function() {
-  const self = this;
-  weui.datePicker({
-    start: variable['visit_date'],
-    end: Global.getFutureDate(variable['visit_date'], variable['reservation_days']),
-    defaultValue: variable['visit_date'].split('-'),
-    onChange: function(result) {
-      const [ { value: year } , { value: month }, { value: day }] = result;
-      const date = year + '-' + (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day);
-      $(self).val(date);
+    onConfirm: function() {
+      // $(self).val(Global.getTomorrowDate() + ' ' + $(self).val() + ':00');
     },
-    onConfirm: function(result) {console.log(result)},
-    id: 'leave_date',
-  });
+    id: 'leave_time',
+  })
 });
 
 // 获取预约时间段
@@ -206,62 +229,61 @@ $('#btn-submit').on('click', function() {
   };
 
   if (validateFlag) {
-    validateFlag && (form.tel.value || _alert('请填写司机手机号！'));
-    validateFlag && (form.tel.value.length === 11 || _alert('请填写长度为11位的手机号！'));
+    validateFlag && (form.name.value || _alert('请填写姓名！'));
+    validateFlag && (form.unit.value || _alert('请填写单位！'));
+    validateFlag && (form.campus_card_no.value || _alert('请填写一卡通号！'));
+    validateFlag && (form.campus_card_no.value.length === 12 || _alert('请填写长度为12位的一卡通号！！'));
+    validateFlag && (form.apply_reason.value || _alert('请填写申请事由！'));
+    validateFlag && (form.car_owner_name.value || _alert('请填写车主姓名！'));
     validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
     validateFlag && (Global.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
-    validateFlag && (form.name.value || _alert('请填写预约人姓名！'));
-    validateFlag && (form.visit_date.value || _alert('请选择预约日期！'));
-    validateFlag && (form.leave_date.value || _alert('请选择离校日期！'));
-    validateFlag && (form.visit_time.value || _alert('请选择预约时间！'));
-    validateFlag && (form.visit_reason.value || _alert('请填写预约事由！'));
+    validateFlag && (form.driving_license_no.value || _alert('请填写行驶证编号！'));
+    validateFlag && (form.tel.value || _alert('请填写联系电话！'));
+    validateFlag && (form.tel.value.length === 11 || _alert('请填写长度为11位的手机号！'));
+    validateFlag && (form.visit_time.value || _alert('请选择入校时间！'));
+    validateFlag && (form.leave_time.value || _alert('请选择离校时间！'));
   }
 
-  if (new Date(form.visit_date.value).getTime() > new Date(form.leave_date.value).getTime()) {
-    return _alert('离校日期不能小于预约日期！');
+  if (form.visit_time.value > form.leave_time.value) {
+    return _alert('离校时间不能小于预约时间！');
   }
 
-  // if(validateFlag) {
-  //   const loading = weui.loading('提交中...');
-  //   const emp_no = "{$emp_no}";
-  //   let url = '';
-  //   new Promise((resolve) => {
-  //     const sendData = $('#form-submit').serializeArray().filter((item) => {
-  //       return item.name != 'visit_time' && item.name != 'visit_date';
-  //     });
-  //     sendData.push({
-  //       name: 'visit_time',
-  //       value: $('#visit_date').val() + ' ' + $('#visit_time').val() + ':00',
-  //     });
-  //     if (emp_no.length === 11) {
-  //       url = "{:url('save_reservation_driver')}";
-  //     } else {
-  //       url = "{:url('save_reservation')}";
-  //     }
-  //     $.post(url, sendData, (response) => {
-  //       if (response.code) {
-  //         loading.hide(() => {
-  //           weui.toast(response.msg, {
-  //             duration: 1000,
-  //             callback: () => {
-  //               window.location.replace(response.url);
-  //               // window.location.href = response.url;
-  //             }
-  //           });
-  //         })
-  //       } else {
-  //         loading.hide(() => {
-  //           weui.topTips(response.msg, 3000);
-  //         });
-  //       }
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     loading.hide();
-  //     console.log('error', error);
-  //     weui.topTips('服务器未知错误！提交失败。', 1500);
-  //   })
-  // }
+  const imageForm = document.querySelector('#form-image');
+  if (validateFlag) {
+    validateFlag && (imageForm.campus_card_id.value || _alert('请上传校园一卡通！'));
+    validateFlag && (imageForm.driving_license_id.value || _alert('请上传车辆行驶证！'));
+  }
+
+  if(validateFlag) {
+    const loading = weui.loading('提交中...');
+    new Promise((resolve) => {
+      const formData = $('#form-submit').serializeArray();
+      const imageData = $('#form-image').serializeArray();
+      const data = formData.concat(imageData);
+      $.post("{:url('save_temp_reservation')}", data, (response) => {
+        if (response.code) {
+          loading.hide(() => {
+            weui.toast(response.msg, {
+              duration: 1000,
+              callback: () => {
+                window.location.replace(response.url);
+                // window.location.href = response.url;
+              }
+            });
+          })
+        } else {
+          loading.hide(() => {
+            weui.topTips(response.msg, 3000);
+          });
+        }
+      });
+    })
+    .catch((error) => {
+      loading.hide();
+      console.log('error', error);
+      weui.topTips('服务器未知错误！提交失败。', 1500);
+    })
+  }
 });
 
 // 图片上传工厂模式
@@ -288,8 +310,8 @@ function uploadFactory(uploadSelector) {
             weui.alert('请上传图片');
             return false;
           }
-          if(this.size > 10 * 1024 * 1024){
-            weui.alert('请上传不超过10M的图片');
+          if(this.size > 20 * 1024 * 1024){
+            weui.alert('请上传不超过20M的图片');
             return false;
           }
           if (files.length > 1) { // 防止一下子选中过多文件
@@ -346,5 +368,15 @@ function uploadFactory(uploadSelector) {
     }
   }
 }
+
+$('#campus_card_no').on('change', function() {
+  var capus_card_no = $(this).val();
+  if (capus_card_no.length === 12) {
+    $.get("{:url('get_emp_info')}", { emp_no: capus_card_no }, function(data) {
+      $('#name').val(data['emp_name']);
+      $('#unit').val(data['emp_unit']);
+    });
+  }
+});
 </script>
 {/block}

@@ -1,0 +1,120 @@
+{extend name="base" /}
+
+{block name="style"}
+<style>
+.img-dispaly {
+  width: 300px;
+  height: 300px;
+}
+</style>
+{/block}
+
+{block name="content"}
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">基本信息</div>
+    <div class="panel-body">
+      <form class="form-horizontal" id="base_info">
+  
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row" id="images_dom">
+</div>
+{/block}
+
+{block name="javascript"}
+<script type="text/babel">
+$(function() {
+  $.get("{:url('get_temp_reservation_detail')}", { id: "{$id}" }, (response) => {
+    const baseInfoHtml = createBaseInfoHtml(response.base_data);
+    $('#base_info').html(baseInfoHtml);
+    console.log(response.images_url);
+    const imagesHtml = createImagesHtml(response.images_url);
+    $('#images_dom').html(imagesHtml);
+  })
+})
+
+// 构建基本信息html
+function createBaseInfoHtml(data) {
+  return `<div class="form-group">
+    <label class="control-label col-sm-2">姓名：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.name}</p>
+    </div>
+    <label class="control-label col-sm-2">单位：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.unit}</p>
+    </div>
+    <label class="control-label col-sm-2">一卡通号：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.campus_card_no}</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">申请事由：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.apply_reason}</p>
+    </div>
+    <label class="control-label col-sm-2">预约形式：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.apply_type}</p>
+    </div>
+    <label class="control-label col-sm-2">车主姓名：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.car_owner_name}</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">车牌号：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.car_no}</p>
+    </div>
+    <label class="control-label col-sm-2">车辆种类：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.car_type}</p>
+    </div>
+    <label class="control-label col-sm-2">行驶证编号：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.driving_license_no}</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">联系电话：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.tel}</p>
+    </div>
+    <label class="control-label col-sm-2">进校时间：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.visit_time}</p>
+    </div>
+    <label class="control-label col-sm-2">离校时间：</label>
+    <div class="col-sm-2">
+        <p class="form-control-static">${data.leave_time}</p>
+    </div>
+  </div>`;
+}
+
+// 构建图片html
+function createImagesHtml(data) {
+  return `<div class="panel panel-default">
+    <div class="panel-heading">校园一卡通</div>
+    <div class="panel-body">
+      <a href="${data.campus_card_url}" target="_blank">
+        <img class="img-dispaly" src="${data.campus_card_url}">
+      </a>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">行驶证</div>
+    <div class="panel-body">
+      <a href="${data.driving_license_url}" target="_blank">
+        <img class="img-dispaly" src="${data.driving_license_url}">
+      </a>
+    </div>
+  </div>`;
+}
+
+</script>
+{/block}

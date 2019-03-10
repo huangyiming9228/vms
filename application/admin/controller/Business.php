@@ -22,7 +22,11 @@ class Business extends Controller
     if ($_GET['status'] != '99') $conditions['status'] = $_GET['status'];
     if ($_GET['submitter_no']) $conditions['submitter_no'] = $_GET['submitter_no'];
     if ($_GET['name']) $conditions['name'] = $_GET['name'];
-    return Db::table('reservation_list')->where($conditions)->order('submit_time', 'desc')->select();
+    $res = Db::table('reservation_list')->where($conditions)->order('submit_time', 'desc')->select();
+    foreach ($res as $key => $value) {
+      $res[$key]['emp_unit'] = Db::table('employee_list')->where('emp_no', $value['submitter_no'])->value('emp_unit');
+    }
+    return $res;
   }
 
   // 获取单条预约记录

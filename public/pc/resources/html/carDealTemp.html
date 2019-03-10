@@ -40,6 +40,9 @@
         .laydate-footer-btns span:hover {
             color: #337AB7 !important;
         }
+        .required-icon {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -71,37 +74,80 @@
     </header>
     <div class="tips">
         <p>尊敬的<span id="emp_no"></span>用户，请填写要预约的车辆信息：</p>
-        <p>您当前剩余的预约次数为：<span id="reservation_time"></span>次</p>
     </div>
 	<div class="main">
-        <p id="warning"></p>
         <form class="form-horizontal" id="form-submit">
             <div class="form-group">
-                <label class="col-sm-4 control-label">司机电话：</label>
+                <label class="col-sm-4 control-label">一卡通号：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="输入司机电话" id="tel" name="tel" class="form-control" >
+                    <input type="number" placeholder="输入一卡通号" id="campus_card_no" name="campus_card_no" class="form-control" >
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label">预约车牌号：</label>
+                <label class="col-sm-4 control-label">姓名：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入姓名" id="name" name="name" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">单位：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入单位名称" id="unit" name="unit" class="form-control" >
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-4 control-label">申请事由：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入申请事由" id="apply_reason" name="apply_reason" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">预约形式：</label>
+                <div class="col-sm-6">
+                    <select id="apply_type" name="apply_type" class="form-control">
+                        <option value="单位预约">单位预约</option>
+                        <option value="个人预约">个人预约</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">车主姓名：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="输入车主姓名" id="car_owner_name" name="car_owner_name" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">车牌号：</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="例如：川A12345" id="car_no" name="car_no" class="form-control">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label">预约人姓名：</label>
+                <label class="col-sm-4 control-label">车辆种类：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="输入预约人姓名" id="name" name="name" class="form-control" >
+                    <select id="car_type" name="car_type" class="form-control">
+                        <option value="轿车">轿车</option>
+                        <option value="客车">客车</option>
+                        <option value="货车">货车</option>
+                        <option value="其他">其他</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label">预约日期：</label>
+                <label class="col-sm-4 control-label">行驶证编号：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="选择预约日期范围" id="visit_date" name="visit_date" class="form-control" >
+                    <input type="text" placeholder="输入行驶证编号" id="driving_license_no" name="driving_license_no" class="form-control" >
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label">预约时间：</label>
+                <label class="col-sm-4 control-label">联系电话：</label>
+                <div class="col-sm-6">
+                    <input type="number" placeholder="输入联系电话" id="tel" name="tel" class="form-control" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">进校时间：</label>
                 <div class="col-sm-6">
                     <select id="visit_time" name="visit_time" class="form-control">
                         <option>07:00</option>
@@ -125,16 +171,29 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label">预约事由：</label>
+                <label class="col-sm-4 control-label">离校时间：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reasons" class="form-control" >
+                    <select id="leave_time" name="leave_time" class="form-control">
+                        <option>07:00</option>
+                        <option>08:00</option>
+                        <option>09:00</option>
+                        <option>10:00</option>
+                        <option>11:00</option>
+                        <option>12:00</option>
+                        <option>13:00</option>
+                        <option>14:00</option>
+                        <option>15:00</option>
+                        <option>16:00</option>
+                        <option>17:00</option>
+                        <option>18:00</option>
+                        <option>19:00</option>
+                        <option>20:00</option>
+                        <option>21:00</option>
+                        <option>22:00</option>
+                        <option>23:00</option>
+                    </select>
                 </div>
             </div>
-            <!-- <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-1">
-                    <button type="submit" class="btn btn-primary" id="btn-submit">预 约</button>
-                </div>
-            </div> -->
         </form>
         <form class="form-horizontal" id="form-image">
             <div class="form-group">
@@ -179,38 +238,8 @@
     </div>
 
 <script>
-    var variable = {};
     $(function() {
-        $.get('/vms/index/business/get_reservation_days', {}, (data) => {
-            variable['reservation_days'] = data;
-        })
-
-        // 图片上传注册
-        uploadFactory('#driving-license-uploader').init();
-        uploadFactory('#campus-card-uploader').init();
-    });
-    // 渲染日期选择器
-    laydate.render({
-        elem: '#visit_date',
-        theme: '#337AB7',
-        range: true,
-        // value: Utils.getTomorrowDate(),
-        min: 0,
-        btns: ['confirm'],
-        done: function(value, date, endDate) {
-            const arr = value.split(' ')
-            const start_date = new Date(arr[0]).getTime();
-            const end_date = new Date(arr[2]).getTime();
-            const days_diff = (end_date - start_date) / (24*60*60*1000);
-            if (days_diff + 1 > variable['reservation_days']) {
-                ui_alert(`您最多可预约${variable['reservation_days']}天！请重新选择日期范围。`, () => {
-                    $('#visit_date').val('');
-                });
-            }
-        }
-    });
-    // 获取到用户名,剩余预约次数
-    $(document).ready(function(){ 
+        // 获取到用户名
         const emp_no = localStorage.getItem('emp_no');
         if (!emp_no) {
             ui_alert('登录身份失效，请重新登录！', function() {
@@ -218,12 +247,19 @@
             });
         }
         $('#emp_no').text(emp_no);
-        if (emp_no.length == 11) {
-            $('#tel').val(emp_no);
+        // 图片上传注册
+        uploadFactory('#driving-license-uploader').init();
+        uploadFactory('#campus-card-uploader').init();
+    });
+
+    $('#campus_card_no').on('change', function() {
+        var capus_card_no = $(this).val();
+        if (capus_card_no.length === 12) {
+            $.get('/vms/index/business/get_emp_info', { emp_no: capus_card_no }, function(data) {
+                $('#name').val(data['emp_name']);
+                $('#unit').val(data['emp_unit']);
+            });
         }
-        $.get('/vms/index/business/get_rest_reservation_time', {}, function(response) {
-            $('#reservation_time').text(response);
-        });
     });
 
     // 车牌字母转换为大写
@@ -244,41 +280,45 @@
         }
 
         if (validateFlag) {
-            validateFlag && (form.tel.value || _alert('请填写司机手机号！', form.tel));
-            validateFlag && (form.car_no.value || _alert('请填写车牌号！', form.car_no));
-            validateFlag && (Utils.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！', form.car_no));
-            validateFlag && (form.name.value || _alert('请填写预约人姓名！', form.name));
-            validateFlag && (form.visit_date.value || _alert('请选择日期范围！', form.visit_date));
-            validateFlag && (form.visit_reason.value || _alert('请填写预约事由！', form.visit_reason));
+            validateFlag && (form.name.value || _alert('请填写姓名！'));
+            validateFlag && (form.unit.value || _alert('请填写单位！'));
+            validateFlag && (form.campus_card_no.value || _alert('请填写一卡通号！'));
+            validateFlag && (form.campus_card_no.value.length === 12 || _alert('请填写长度为12位的一卡通号！！'));
+            validateFlag && (form.apply_reason.value || _alert('请填写申请事由！'));
+            validateFlag && (form.car_owner_name.value || _alert('请填写车主姓名！'));
+            validateFlag && (form.car_no.value || _alert('请填写车牌号！'));
+            validateFlag && (Utils.checkCarNo(form.car_no.value) || _alert('请填写合法的车牌号！'));
+            validateFlag && (form.driving_license_no.value || _alert('请填写行驶证编号！'));
+            validateFlag && (form.tel.value || _alert('请填写联系电话！'));
+            validateFlag && (form.tel.value.length === 11 || _alert('请填写长度为11位的手机号！'));
+            validateFlag && (form.visit_time.value || _alert('请选择入校时间！'));
+            validateFlag && (form.leave_time.value || _alert('请选择离校时间！'));
         }
 
-        // if(validateFlag) {
-        //     visit_time = Utils.getTomorrowDate() + ' ' + $('#visit_time option:selected').val() + ':00';
-        //     const send_data = {
-        //         tel: form.tel.value,
-        //         car_no: form.car_no.value,
-        //         name: form.name.value,
-        //         visit_time: form.visit_date.value.split(' ')[0] + ' ' + form.visit_time.value + ':00',
-        //         leave_date: form.visit_date.value.split(' ')[2],
-        //         visit_reason: form.visit_reason.value,
-        //     };
-        //     let url = '';
-        //     const emp_no = localStorage.getItem('emp_no');
-        //     if (emp_no.length === 11) {
-        //         url = '/vms/index/business/save_reservation_driver';
-        //     } else {
-        //         url = '/vms/index/business/save_reservation';
-        //     }
-        //     $.post(url, send_data, function(response){
-        //         if(response.code) {
-        //             ui_alert(response.msg, function() {
-        //                 window.location.reload();
-        //             });
-        //         }else {
-        //             ui_alert(response.msg);
-        //         }
-        //     })
-        // }
+        if (form.visit_time.value > form.leave_time.value) {
+            return _alert('离校时间不能小于预约时间！');
+        }
+
+        const imageForm = document.querySelector('#form-image');
+        if (validateFlag) {
+            validateFlag && (imageForm.campus_card_id.value || _alert('请上传校园一卡通！'));
+            validateFlag && (imageForm.driving_license_id.value || _alert('请上传车辆行驶证！'));
+        }
+
+        if(validateFlag) {
+            const formData = $('#form-submit').serializeArray();
+            const imageData = $('#form-image').serializeArray();
+            const data = formData.concat(imageData);
+            $.post('/vms/index/business/save_temp_reservation', data, (response) => {
+                if (response.code) {
+                    ui_alert(response.msg, function() {
+                        window.location.reload();
+                    });
+                } else {
+                    ui_alert(response.msg);
+                }
+            });
+        }
     });
 
     // 聚焦元素时清除错误状态

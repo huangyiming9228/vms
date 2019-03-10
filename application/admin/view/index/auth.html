@@ -33,7 +33,7 @@
                     <div class="panel-body">
                         <div class="row" style="padding: 5px">
                             <div class="col-sm-3">
-                            <button onclick="add_menu_iterm()" type="button"  class="btn btn-primary" ><i class=""></i> 添加菜单</button>
+                            <button type="button" id="btn-add-menu" class="btn btn-primary" ><i class=""></i> 添加菜单</button>
                             </div>
                         </div>
                         <table id="tb_able_select_menu"></table>
@@ -73,7 +73,7 @@
     </div> 
 {/block}
 {block name="javascript"}
-<script type="text/babel">
+<script>
     $(document).ready(function(){
         init_station_tb();
         init_iterm_select_tb();
@@ -284,6 +284,9 @@
             return row.id;
         });
     }
+    $('#btn-add-menu').on('click', function() {
+        add_menu_iterm();
+    });
 
 </script>
 {/block}

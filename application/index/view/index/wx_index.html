@@ -47,19 +47,27 @@
     <div class="weui-cell__ft">
     </div>
   </a>
-  <!-- <a class="weui-cell weui-cell_access" href="{:url('index/business/wx_temp_reservation')}">
+  <a class="weui-cell weui-cell_access" id="temp_reservation" href="{:url('index/business/wx_temp_reservation')}">
     <div class="weui-cell__hd"><img src="{$Think.STATIC_URL}/images/wx_cars_reservations.png"></div>
     <div class="weui-cell__bd">
       <p>临时出入</p>
     </div>
     <div class="weui-cell__ft">
     </div>
-  </a> -->
+  </a>
 </div>
 {/block}
 
 {block name="javascript"}
 <script>
+$(function() {
+  var emp_level = "{$emp_level}";
+  if (emp_level == 3) {
+    $('#temp_reservation').show();
+  } else {
+    $('#temp_reservation').hide();
+  }
+});
 $('#wx_reservation').on('click', function(e) {
   e.preventDefault();
   var now = new Date();

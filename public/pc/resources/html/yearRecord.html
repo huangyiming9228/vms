@@ -39,7 +39,7 @@
                         <li><a href="./yearcheck.html">年审</a></li>
                         <li><a href="./carRecord.html">预约记录</a></li>
                         <li class="active"><a href="#">年审记录<span class="sr-only">(current)</span></a></li>
-                        <!-- <li><a href="./carDealTemp.html">临时出入</a></li> -->
+                        <li id="temp_reservation"><a href="./carDealTemp.html">临时出入</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="javascript:void(0);" onclick="logout()">退出登录</a></li>
@@ -80,6 +80,13 @@
                 window.location.href = '../../index.html';
             });
         }
+        $.get('/vms/index/business/get_emp_level', { emp_no: emp_no }, function(data) {
+            if (data == 3) {
+                $('#temp_reservation').show();
+            } else {
+                $('#temp_reservation').hide();
+            }
+        });
         $('#emp_no').text(emp_no);
         $('#list').bootstrapTable({
             url: "/vms/index/business/get_moe_test_list?emp_no=" + emp_no,
