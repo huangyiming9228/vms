@@ -80,12 +80,16 @@ $('#list').bootstrapTable({
     title: '预约人单位',
     align: 'center',
   }, {
+    field: 'submitter_no',
+    title: '预约人工号',
+    align: 'center',
+  }, {
     field: 'car_no',
     title: '车牌号',
     align: 'center',
   }, {
     field: 'tel',
-    title: '员工电话',
+    title: '司机电话',
     align: 'center',
   }, {
     field: 'visit_date',
@@ -126,10 +130,6 @@ $('#list').bootstrapTable({
         case 2: return '未通过审核';
       }
     },
-  }, {
-    field: 'submitter_no',
-    title: '员工号',
-    align: 'center',
   }]
 });
 

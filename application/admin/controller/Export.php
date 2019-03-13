@@ -23,7 +23,7 @@ class Export extends Controller
     if ($status != '99') $conditions['status'] = $status;
     // $conditions['visit_date'] = ['between time', [$start_time, $end_time]];
     $result = [];
-    $list = Db::table('reservation_list')->where($conditions)->select();
+    $list = Db::table('reservation_list')->where($conditions)->order('visit_date', 'desc')->select();
     foreach ($list as $key => $value) {
       $datetime = $value['visit_date'].' 00:'.$value['visit_time'];
       if ($datetime >= $start_time && $datetime <= $end_time) {
@@ -69,16 +69,17 @@ class Export extends Controller
     // 设置表头
     $sheet->setCellValue('A1', '预约人姓名');
     $sheet->setCellValue('B1', '预约人单位');
-    $sheet->setCellValue('C1', '预约车牌号');
-    $sheet->setCellValue('D1', '司机电话');
-    $sheet->setCellValue('E1', '预约日期');
-    $sheet->setCellValue('F1', '预约时间');
-    $sheet->setCellValue('G1', '离校时间');
-    $sheet->setCellValue('H1', '来校事由');
-    $sheet->setCellValue('I1', '是否申请免费');
-    $sheet->setCellValue('J1', '免费理由');
-    $sheet->setCellValue('K1', '预约状态');
-    $sheet->getStyle('A1:K1')->applyFromArray([
+    $sheet->setCellValue('C1', '预约人工号');
+    $sheet->setCellValue('D1', '车牌号');
+    $sheet->setCellValue('E1', '司机电话');
+    $sheet->setCellValue('F1', '预约日期');
+    $sheet->setCellValue('G1', '预约时间');
+    $sheet->setCellValue('H1', '离校时间');
+    $sheet->setCellValue('I1', '来校事由');
+    $sheet->setCellValue('J1', '是否申请免费');
+    $sheet->setCellValue('K1', '免费理由');
+    $sheet->setCellValue('L1', '预约状态');
+    $sheet->getStyle('A1:L1')->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $titleFontStyle,
       'borders' => $borderStyle,
@@ -97,20 +98,22 @@ class Export extends Controller
     $sheet->getColumnDimension('I')->setWidth(17);
     $sheet->getColumnDimension('J')->setWidth(17);
     $sheet->getColumnDimension('K')->setWidth(17);
+    $sheet->getColumnDimension('L')->setWidth(17);
 
     // 添加数据
     $row_index = 2;
     foreach ($data as $key => $value) {
       $sheet->setCellValue('A'.$row_index, $value['name']);
       $sheet->setCellValue('B'.$row_index, $value['emp_unit']);
-      $sheet->setCellValue('C'.$row_index, $value['car_no']);
-      $sheet->setCellValue('D'.$row_index, $value['tel']);
-      $sheet->setCellValue('E'.$row_index, $value['visit_date']);
-      $sheet->setCellValue('F'.$row_index, $value['visit_time']);
-      $sheet->setCellValue('G'.$row_index, $value['leave_time']);
-      $sheet->setCellValue('H'.$row_index, $value['visit_reason']);
-      $sheet->setCellValue('I'.$row_index, $value['is_apply_free'] ? '是' : '否');
-      $sheet->setCellValue('J'.$row_index, $value['free_reason']);
+      $sheet->setCellValue('C'.$row_index, $value['submitter_no']);
+      $sheet->setCellValue('D'.$row_index, $value['car_no']);
+      $sheet->setCellValue('E'.$row_index, $value['tel']);
+      $sheet->setCellValue('F'.$row_index, $value['visit_date']);
+      $sheet->setCellValue('G'.$row_index, $value['visit_time']);
+      $sheet->setCellValue('H'.$row_index, $value['leave_time']);
+      $sheet->setCellValue('I'.$row_index, $value['visit_reason']);
+      $sheet->setCellValue('J'.$row_index, $value['is_apply_free'] ? '是' : '否');
+      $sheet->setCellValue('K'.$row_index, $value['free_reason']);
       switch ($value['status']) {
         case 0:
           $value['status'] = '待审核';
@@ -124,12 +127,12 @@ class Export extends Controller
         default:
           break;
       }
-      $sheet->setCellValue('K'.$row_index, $value['status']);
+      $sheet->setCellValue('L'.$row_index, $value['status']);
 
       $row_index++;
     }
     $row_index--;
-    $sheet->getStyle('A2:K'.$row_index)->applyFromArray([
+    $sheet->getStyle('A2:L'.$row_index)->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $textFontStyle,
       'borders' => $borderStyle,
@@ -171,7 +174,7 @@ class Export extends Controller
     $conditions = [];
     if ($status != '99') $conditions['status'] = $status;
     $conditions['submit_time'] = ['between time', [$start_time, $end_time]];
-    return Db::table('mot_test_list')->where($conditions)->order('submit_time', 'asc')->select();
+    return Db::table('mot_test_list')->where($conditions)->order('submit_time', 'desc')->select();
   }
 
   // 导出年审数据excel
@@ -206,16 +209,17 @@ class Export extends Controller
 
     // 设置表头
     $sheet->setCellValue('A1', '申请人姓名');
-    $sheet->setCellValue('B1', '车主姓名');
-    $sheet->setCellValue('C1', '申请人与车主关系');
-    $sheet->setCellValue('D1', '车牌号');
-    $sheet->setCellValue('E1', '联系方式');
-    $sheet->setCellValue('F1', '排量（升）');
-    $sheet->setCellValue('G1', '申请人所在单位');
-    $sheet->setCellValue('H1', '申请类别');
-    $sheet->setCellValue('I1', '提交时间');
-    $sheet->setCellValue('J1', '审核状态');
-    $sheet->getStyle('A1:J1')->applyFromArray([
+    $sheet->setCellValue('B1', '申请人工号');
+    $sheet->setCellValue('C1', '车主姓名');
+    $sheet->setCellValue('D1', '申请人与车主关系');
+    $sheet->setCellValue('E1', '车牌号');
+    $sheet->setCellValue('F1', '联系方式');
+    $sheet->setCellValue('G1', '排量（升）');
+    $sheet->setCellValue('H1', '申请人所在单位');
+    $sheet->setCellValue('I1', '申请类别');
+    $sheet->setCellValue('J1', '提交时间');
+    $sheet->setCellValue('K1', '审核状态');
+    $sheet->getStyle('A1:K1')->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $titleFontStyle,
       'borders' => $borderStyle,
@@ -231,21 +235,23 @@ class Export extends Controller
     $sheet->getColumnDimension('F')->setWidth(17);
     $sheet->getColumnDimension('G')->setWidth(17);
     $sheet->getColumnDimension('H')->setWidth(17);
-    $sheet->getColumnDimension('I')->setWidth(20);
+    $sheet->getColumnDimension('I')->setWidth(17);
     $sheet->getColumnDimension('J')->setWidth(17);
+    $sheet->getColumnDimension('K')->setWidth(17);
 
     // 添加数据
     $row_index = 2;
     foreach ($data as $key => $value) {
       $sheet->setCellValue('A'.$row_index, $value['applicant']);
-      $sheet->setCellValue('B'.$row_index, $value['car_owner']);
-      $sheet->setCellValue('C'.$row_index, $value['relationship']);
-      $sheet->setCellValue('D'.$row_index, $value['car_no']);
-      $sheet->setCellValue('E'.$row_index, $value['tel']);
-      $sheet->setCellValue('F'.$row_index, $value['displacement']);
-      $sheet->setCellValue('G'.$row_index, $value['applicant_unit']);
-      $sheet->setCellValue('H'.$row_index, $value['apply_type']);
-      $sheet->setCellValue('I'.$row_index, $value['submit_time']);
+      $sheet->setCellValue('B'.$row_index, $value['submitter_no']);
+      $sheet->setCellValue('C'.$row_index, $value['car_owner']);
+      $sheet->setCellValue('D'.$row_index, $value['relationship']);
+      $sheet->setCellValue('E'.$row_index, $value['car_no']);
+      $sheet->setCellValue('F'.$row_index, $value['tel']);
+      $sheet->setCellValue('G'.$row_index, $value['displacement']);
+      $sheet->setCellValue('H'.$row_index, $value['applicant_unit']);
+      $sheet->setCellValue('I'.$row_index, $value['apply_type']);
+      $sheet->setCellValue('J'.$row_index, $value['submit_time']);
       switch ($value['status']) {
         case 0:
           $value['status'] = '待审核';
@@ -259,11 +265,11 @@ class Export extends Controller
         default:
           break;
       }
-      $sheet->setCellValue('J'.$row_index, $value['status']);
+      $sheet->setCellValue('K'.$row_index, $value['status']);
       $row_index++;
     }
     $row_index--;
-    $sheet->getStyle('A2:J'.$row_index)->applyFromArray([
+    $sheet->getStyle('A2:K'.$row_index)->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $textFontStyle,
       'borders' => $borderStyle,
@@ -442,7 +448,7 @@ class Export extends Controller
   public function query_reservations($start_time, $end_time) {
     $conditions = [];
     $conditions['visit_time'] = ['between time', [$start_time, $end_time]];
-    return Db::table('temp_reservation_list')->where($conditions)->select();
+    return Db::table('temp_reservation_list')->where($conditions)->order('visit_time', 'desc')->select();
   }
 
   // 临时预约详情

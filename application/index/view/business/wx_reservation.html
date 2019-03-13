@@ -40,7 +40,7 @@
         <label class="weui-label">预约人姓名</label>
       </div>
       <div class="weui-cell__bd">
-        <input class="weui-input" type="text" placeholder="输入预约人姓名" name="name" id="name">
+        <input class="weui-input" type="text" placeholder="输入预约人姓名" readonly name="name" id="name">
       </div>
     </div>
     <div class="weui-cell">
@@ -83,7 +83,7 @@
         <input class="weui-input" type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reason">
       </div>
     </div>
-    <div class="weui-cell weui-cell_select weui-cell_select-after">
+    <!-- <div class="weui-cell weui-cell_select weui-cell_select-after">
       <div class="weui-cell__hd">
         <label class="weui-label">是否申请免费</label>
       </div>
@@ -101,7 +101,7 @@
       <div class="weui-cell__bd">
         <input class="weui-input" type="text" placeholder="免费理由：因私不免费" id="free_reason" name="free_reason">
       </div>
-    </div>
+    </div> -->
   </form>
 </div>
 <div class="weui-cells__tips">您当前剩余的预约次数为：{$rest_time}次。</div>
@@ -231,11 +231,11 @@ $('#btn-submit').on('click', function() {
     return _alert('离校时间不能小于预约时间！');
   }
 
-  if (validateFlag) {
-    if (form.is_apply_free.value == 1 && !form.free_reason.value) {
-      _alert('请填写免费理由！');
-    }
-  }
+  // if (validateFlag) {
+  //   if (form.is_apply_free.value == 1 && !form.free_reason.value) {
+  //     _alert('请填写免费理由！');
+  //   }
+  // }
 
   if(validateFlag) {
     const loading = weui.loading('提交中...');

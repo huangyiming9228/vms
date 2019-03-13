@@ -53,6 +53,10 @@ $('#list').bootstrapTable({
     title: '预约人单位',
     align: 'center',
   }, {
+    field: 'submitter_no',
+    title: '预约人工号',
+    align: 'center',
+  }, {
     field: 'car_no',
     title: '车牌号',
     align: 'center',
@@ -169,6 +173,12 @@ function createModalHtml(data) {
         <label class="col-sm-3 control-label">预约人姓名</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" disabled value="${data.name}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">预约人工号</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" disabled value="${data.submitter_no}">
         </div>
       </div>
       <div class="form-group">
