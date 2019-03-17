@@ -75,7 +75,7 @@ $('#list').bootstrapTable({
         case 1: return '普通员工';
         case 2: return '部门授权人';
         case 3: return '保卫处授权人';
-        case 3: return '临时出入授权人';
+        case 4: return '临时出入授权人';
       }
     },
   }, {
@@ -217,7 +217,7 @@ function createModalHtml(data) {
           <option value="1" ${data.emp_level === 1 ? 'selected' : ''}>普通员工</option>
           <option value="2" ${data.emp_level === 2 ? 'selected' : ''}>部门授权人</option>
           <option value="3" ${data.emp_level === 3 ? 'selected' : ''}>保卫处授权人</option>
-          <option value="3" ${data.emp_level === 4 ? 'selected' : ''}>临时出入授权人</option>
+          <option value="4" ${data.emp_level === 4 ? 'selected' : ''}>临时出入授权人</option>
         </select>
       </div>
     </div>
