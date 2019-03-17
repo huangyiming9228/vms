@@ -34,12 +34,12 @@
         <nav class="navbar navbar-default navbar-static-top ">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="./carDeal.html">车辆预约</a></li>
+                    <ul class="nav navbar-nav" id="nav">
+                        <!-- <li><a href="./carDeal.html">车辆预约</a></li>
                         <li><a href="./yearcheck.html">年审</a></li>
                         <li class="active"><a href="#">预约记录<span class="sr-only">(current)</span></a></li>
                         <li><a href="./yearRecord.html">年审记录</a></li>
-                        <li id="temp_reservation"><a href="./carDealTemp.html">临时出入</a></li>
+                        <li id="temp_reservation"><a href="./carDealTemp.html">临时出入</a></li> -->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="javascript:void(0);" onclick="logout()">退出登录</a></li>
@@ -75,18 +75,27 @@
     <script src="../libs/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 	<script type="text/babel">
         const emp_no = localStorage.getItem('emp_no');
-        $.get('/vms/index/business/get_emp_level', { emp_no: emp_no }, function(data) {
-            if (data == 3) {
-                $('#temp_reservation').show();
-            } else {
-                $('#temp_reservation').hide();
-            }
-        });
+        // $.get('/vms/index/business/get_emp_level', { emp_no: emp_no }, function(data) {
+        //     if (data == 3) {
+        //         $('#temp_reservation').show();
+        //     } else {
+        //         $('#temp_reservation').hide();
+        //     }
+        // });
         if (!emp_no) {
             ui_alert('登录身份失效，请重新登录！', function() {
                 window.location.href = '../../index.html';
             });
         }
+        var menus = JSON.parse(localStorage.getItem('menus'));
+		var html = menus.map(function(item) {
+			if (item.name == '预约记录') {
+				return '<li class="active"><a href="'+ item.url +'">'+ item.name +'</a></li>';
+			} else {
+				return '<li><a href="'+ item.url +'">'+ item.name +'</a></li>';
+			}
+		});
+        $('#nav').append(html);
         $('#emp_no').text(emp_no);
         $('#list').bootstrapTable({
             url: "/vms/index/business/get_reservation_list?emp_no=" + emp_no,
