@@ -20,7 +20,8 @@ class Business extends Controller
     return $this->fetch('wx_reservation', [
       'title' => '车辆预约',
       'emp_no' => Session::get('emp_no'),
-      'rest_time' => $this->get_rest_reservation_time()
+      'emp_level' => Session::get('emp_level'),
+      'rest_time' => $this->get_rest_reservation_time(),
     ]);
   }
 
@@ -152,7 +153,7 @@ class Business extends Controller
   public function get_reservation_list($emp_no) {
     return Db::table('reservation_list')
               ->where('submitter_no', $emp_no)
-              ->order('visit_time', 'desc')
+              ->order('visit_date', 'desc')
               ->select();
   }
 

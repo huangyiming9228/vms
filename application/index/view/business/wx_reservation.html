@@ -83,7 +83,8 @@
         <input class="weui-input" type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reason">
       </div>
     </div>
-    <!-- <div class="weui-cell weui-cell_select weui-cell_select-after">
+    {neq name="emp_level" value="1"}
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
       <div class="weui-cell__hd">
         <label class="weui-label">是否申请免费</label>
       </div>
@@ -101,7 +102,8 @@
       <div class="weui-cell__bd">
         <input class="weui-input" type="text" placeholder="免费理由：因私不免费" id="free_reason" name="free_reason">
       </div>
-    </div> -->
+    </div>
+    {/neq}
   </form>
 </div>
 <div class="weui-cells__tips">您当前剩余的预约次数为：{$rest_time}次。</div>

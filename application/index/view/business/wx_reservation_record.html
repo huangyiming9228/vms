@@ -58,7 +58,7 @@ function createReservations(list) {
     <a href="/vms/index/business/wx_reservation_detail?id=${item.id}" class="weui-cell weui-cell_access weui-cell_link">
       <div class="weui-media-box weui-media-box_text">
         <h4 class="weui-media-box__title">${item.car_no}</h4>
-        <p class="weui-media-box__desc">预约时间：${item.visit_time}</p>
+        <p class="weui-media-box__desc">预约时间：${item.visit_date} ${item.visit_time}</p>
         <p class="weui-media-box__desc">审核状态：${(() => {
           switch(item.status) {
             case 0: return '<span normal>待审核</span>';

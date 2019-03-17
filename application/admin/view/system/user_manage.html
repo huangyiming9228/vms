@@ -169,6 +169,7 @@ $('#btn-save').on('click', function() {
     id_card: $('#id_card').val(),
     tel: $('#tel').val(),
     emp_level: $('#emp_level').val(),
+    emp_unit: $('#emp_unit').val(),
   };
   $.post("{:url('update_user_info')}", updateData, (response) => {
     $('#modal-user-edit').modal('hide');
@@ -194,6 +195,12 @@ function createModalHtml(data) {
       <label class="col-sm-3 control-label">员工姓名</label>
       <div class="col-sm-9">
         <input type="text" class="form-control" disabled value="${data.emp_name}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label">单位</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="emp_unit" value="${data.emp_unit}">
       </div>
     </div>
     <div class="form-group">

@@ -88,7 +88,7 @@
             <div class="form-group">
                 <label class="col-sm-4 control-label">预约日期：</label>
                 <div class="col-sm-6">
-                    <input type="text" placeholder="选择预约日期" id="visit_date" name="visit_date" class="form-control" >
+                    <input type="text" placeholder="选择预约日期" id="visit_date" name="visit_date" class="form-control" readonly>
                 </div>
             </div>
             <div class="form-group">
@@ -145,7 +145,7 @@
                     <input type="text" placeholder="输入预约事由" id="visit_reason" name="visit_reasons" class="form-control" >
                 </div>
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group" style="display: none;" id="apply_free_group">
                 <label class="col-sm-4 control-label">是否申请免费：</label>
                 <div class="col-sm-6">
                     <label class="radio-inline">
@@ -156,12 +156,12 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: none;" id="free_reason_group">
                 <label class="col-sm-4 control-label">免费理由：</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="免费理由：因私不免费" id="free_reason" name="free_reason" class="form-control" >
                 </div>
-            </div> -->
+            </div>
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-1">
                     <button type="submit" class="btn btn-primary" id="btn-submit">预 约</button>
@@ -236,6 +236,10 @@
             } else {
                 $('#temp_reservation').hide();
             }
+            if (data != 1) {
+                $('#apply_free_group').show();
+                $('#free_reason_group').show();
+            }
         });
         $.get('/vms/index/business/get_emp_info', { emp_no: emp_no }, function(data) {
             $('#name').val(data['emp_name']);
@@ -272,7 +276,7 @@
             return _alert('离校时间不能小于预约时间！');
         }
 
-        // const is_apply_free = $("input[name='radio']:checked").val();
+        const is_apply_free = $("input[name='radio']:checked").val();
         // if (validateFlag) {
         //     if (is_apply_free == 1 && !form.free_reason.value) {
         //         _alert('请填写免费理由！', form.free_reason);
@@ -288,7 +292,8 @@
                 visit_time: form.visit_time.value,
                 leave_time: form.leave_time.value,
                 visit_reason: form.visit_reason.value,
-                // is_apply_free: is_apply_free,
+                is_apply_free: is_apply_free,
+                free_reason: $('#free_reason').val(),
                 // free_reason: form.free_reason.value,
             };
             let url = '';
