@@ -33,7 +33,7 @@ class Pc extends Controller {
     $data['status'] = 0;
     $activity_id = Db::table('activity_list')->insertGetId($data);
     foreach ($driver_list as $key => $value) {
-      $driver_list[$key]['name'] = $emp_name;
+      $driver_list[$key]['name'] = $emp_info['emp_name'];
       $driver_list[$key]['start_date'] = $data['start_date'];
       $driver_list[$key]['end_date'] = $data['end_date'];
       $driver_list[$key]['reason'] = $data['activity_name'];
