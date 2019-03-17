@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>年审</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/common.css">
+	<link rel="stylesheet" href="../libs/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../libs/weui/weui.min.css">
+	<style>
+		.weui-uploader__hd {
+			padding-bottom: 0;
+		}
+		.weui-uploader__title {
+			margin-top: 8px;
+			margin-bottom: 0;
+		}
+		.weui-uploader__files > li {
+			margin-top: 10px;
+		}
+		.clause-list {
+			padding-left: 30px;
+		}
+    .main {
+      margin: 0 auto;
+      width: 1200px;
+      background-color: #F8F8F8;
+      padding: 20px 20px;
+    }
+    .tips {
+      margin: 0 auto;
+      width: 1200px;
+      color: #666;
+    }
+    span.required {
+      color: red;
+    }
+	</style>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-default navbar-static-top ">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav" id="nav">
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="javascript:void(0);" onclick="logout()">退出登录</a></li>
+					</ul> 
+				</div>
+			</div>
+		</nav>
+  </header>
+  <div class="tips">
+    <p>尊敬的<span id="emp_no"></span>用户，以下是您的活动预约记录列表：</p>
+  </div>
+	<div class="main">
+    <div class="container-fluid">
+      <div class="row">
+        <form id="form-query" class="form-horizontal">
+          <div class="form-group">
+            <div class="col-sm-2">
+              <button class="btn btn-primary" id="btn-add">
+                <i class="fa fa-add"></i>&nbsp;新增活动
+              </button>
+            </div>
+            <div class="col-sm-2">
+              <a target="_blank" href="../downloadFile/司机名单模板.xlsx">下载司机名单模板</a>
+            </div>
+          </div>
+        </form>              
+      </div>
+      <div class="row" style="margin-top: 20px;">
+        <table id="list"></table>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal-activity-add">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-title">新增活动</h4>
+        </div>
+        <div class="modal-body" id="modal-body">   
+          <form class="form-horizontal" id="form-add">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">预约人电话</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="tel" id="tel">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">会议名称<span class="required">*</span></label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name="activity_name" id="activity_name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">开始时间<span class="required">*</span></label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control datetime-item" name="start_date" id="start_date">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">结束时间<span class="required">*</span></label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control datetime-item" name="end_date" id="end_date">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">司机名单<span class="required">*</span></label>
+              <div class="col-sm-9">
+                <input type="file" class="form-control" id="file">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="btn-save">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+	<script src="../libs/node_modules/babel-core/browser.min.js"></script>
+	<script src="../libs/node_modules/babel-core/browser-polyfill.min.js"></script>
+  <script src="../libs/jquery-3.3.1.min.js"></script>
+  <script src="../libs/xlsx.full.min.js"></script>
+	<script src="../libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../libs/bootbox/bootbox.min.js"></script>
+	<script src="../scripts/common_alert.js"></script>
+	<script src="../scripts/utils.js"></script>
+	<script src="../libs/weui/weui.min.js"></script>
+  <script src="../scripts/common.js"></script>
+  <script src="../libs/laydate/laydate.js"></script>
+  <!-- 引入bootstrap-table -->
+  <link rel="stylesheet" href="../libs/bootstrap-table/dist/bootstrap-table.min.css">
+  <script src="../libs/bootstrap-table/dist/bootstrap-table.min.js"></script>
+  <script src="../libs/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+<script type="text/babel">
+// 获取到用户名
+$(document).ready(function(){ 
+  const emp_no = localStorage.getItem('emp_no');
+  if (!emp_no) {
+    ui_alert('登录身份失效，请重新登录！', function() {
+      window.location.href = '../../index.html';
+    });
+  }
+  $('#emp_no').text(emp_no);
+  var menus = JSON.parse(localStorage.getItem('menus'));
+  var html = menus.map(function(item) {
+    if (item.name == '活动预约') {
+      return '<li class="active"><a href="'+ item.url +'">'+ item.name +'</a></li>';
+    } else {
+      return '<li><a href="'+ item.url +'">'+ item.name +'</a></li>';
+    }
+  });
+  $('#nav').append(html);
+
+  $.get('/vms/index/pc/get_activity_list', { emp_no: emp_no }, function(data) {
+    $('#list').bootstrapTable('load', data);
+  });
+});
+
+lay('.datetime-item').each(function() {
+  const self = this;
+  laydate.render({
+    elem: this,
+    theme: '#222222',
+    trigger: 'click',
+  });
+});
+
+$('#btn-add').on('click', function(e) {
+  e.preventDefault();
+  $('#modal-activity-add').modal('show');
+});
+
+var driver_list = null;
+$('#file').on('change', function() {
+  Utils.import_excel_data(this).then(function(data) {
+    var real_data = data.map((item) => {
+      var { 司机电话: tel, 预约车牌号: car_no } = item;
+      return { tel, car_no };
+    });
+    driver_list = real_data;
+  }, function(err) {
+    console.error(err);
+  });
+});
+
+$('#btn-save').on('click', function(e) {
+  e.preventDefault();
+  var send_data = {
+    tel: $('#tel').val(),
+    activity_name: $('#activity_name').val(),
+    start_date: $('#start_date').val(),
+    end_date: $('#end_date').val(),
+    driver_list: driver_list,
+    submitter_no: localStorage.getItem('emp_no'),
+  };
+  if (!send_data.activity_name) {
+    return ui_alert('请填写会议名称！');
+  }
+  if (!send_data.start_date) {
+    return ui_alert('请填写开始时间！');
+  }
+  if (!send_data.end_date) {
+    return ui_alert('请填写结束时间！');
+  }
+  if (!send_data.driver_list) {
+    return ui_alert('请上传司机名单！');
+  }
+  $.post('/vms/index/pc/save_activity', send_data, (data) => {
+    if (data) {
+      ui_alert('提交成功！', () => {
+        window.location.reload();
+      });
+    } else {
+      ui_alert('提交失败！', () => {
+        window.location.reload();
+      });
+    }
+  })
+});
+
+// 绑定表格数据
+$('#list').bootstrapTable({
+  url: "",
+  pageSize: 10,
+  pageList: [10, 25, 50, 100],
+  pagination: true,
+  columns: [{
+    field: 'id',
+    title: '序号',
+    align: 'center',
+  }, {
+    field: 'submitter',
+    title: '预约人',
+    align: 'center',
+  }, {
+    field: 'submitter_no',
+    title: '预约人工号',
+    align: 'center',
+  }, {
+    field: 'tel',
+    title: '电话',
+    align: 'center',
+  }, {
+    field: 'activity_name',
+    title: '会议名称',
+    align: 'center',
+  }, {
+    field: 'start_date',
+    title: '开始时间',
+    align: 'center',
+  }, {
+    field: 'end_date',
+    title: '结束时间',
+    align: 'center',
+  }, {
+    field: 'file',
+    title: '附件',
+    align: 'center',
+    formatter: (value, row) => {
+      return `<a target="_blank" href="/vms/admin/export/driver_list?activity_id=${row.id}">下载</a>`
+    }
+  }, {
+    field: 'status',
+    title: '状态',
+    align: 'center',
+    formatter: (value) => {
+      switch (value) {
+        case 0: return '待审核';
+        case 1: return '审核通过';
+        case 2: return '未通过审核';
+      }
+    },
+  }]
+})
+</script>
+</body>
+</html>

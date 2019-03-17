@@ -315,8 +315,9 @@ class Export extends Controller
     ];
 
     // 设置表头
-    $sheet->setCellValue('A1', '手机号');
-    $sheet->getStyle('A1')->applyFromArray([
+    $sheet->setCellValue('A1', '司机');
+    $sheet->setCellValue('B1', '预约车牌号');
+    $sheet->getStyle('A1:B1')->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $titleFontStyle,
       'borders' => $borderStyle,
@@ -325,15 +326,17 @@ class Export extends Controller
     // 设置列宽、高度
     $sheet->getRowDimension('1')->setRowHeight(20);
     $sheet->getColumnDimension('A')->setWidth(17);
+    $sheet->getColumnDimension('B')->setWidth(17);
 
     // 添加数据
     $row_index = 2;
     foreach ($data as $key => $value) {
-      $sheet->setCellValue('A'.$row_index, $value['emp_no']);
+      $sheet->setCellValue('A'.$row_index, $value['tel']);
+      $sheet->setCellValue('B'.$row_index, $value['car_no']);
       $row_index++;
     }
     $row_index--;
-    $sheet->getStyle('A2:A'.$row_index)->applyFromArray([
+    $sheet->getStyle('A2:B'.$row_index)->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $textFontStyle,
       'borders' => $borderStyle,
