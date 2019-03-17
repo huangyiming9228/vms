@@ -87,7 +87,7 @@
         <div class="modal-body" id="modal-body">   
           <form class="form-horizontal" id="form-add">
             <div class="form-group">
-              <label class="col-sm-3 control-label">预约人电话</label>
+              <label class="col-sm-3 control-label">预约人电话<span class="required">*</span></label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" name="tel" id="tel">
               </div>
@@ -202,6 +202,9 @@ $('#btn-save').on('click', function(e) {
     driver_list: driver_list,
     submitter_no: localStorage.getItem('emp_no'),
   };
+  if (!send_data.tel) {
+    return ui_alert('请填写预约人电话！');
+  }
   if (!send_data.activity_name) {
     return ui_alert('请填写会议名称！');
   }
