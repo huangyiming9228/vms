@@ -356,9 +356,10 @@ class Export extends Controller
   // 导出司机预约名单
   public function export_driver_reservation($id) {
     // 获取数据
-    $data = action('admin/business/get_activity_drivers', ['id' => $id]);
+    // $data = action('admin/business/get_activity_drivers', ['id' => $id]);
+    $data = Db::table('driver_list')->where('activity_id', $id)->select();
     
-    $file_name = '预约导出数据';
+    $file_name = '活动预约导出名单';
 
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
@@ -384,15 +385,13 @@ class Export extends Controller
     ];
 
     // 设置表头
-    $sheet->setCellValue('A1', '会议名称');
-    $sheet->setCellValue('B1', '预约人姓名');
+    $sheet->setCellValue('A1', '预约人姓名');
+    $sheet->setCellValue('B1', '司机电话');
     $sheet->setCellValue('C1', '预约车牌号');
-    $sheet->setCellValue('D1', '司机电话');
-    $sheet->setCellValue('E1', '预约时间');
-    $sheet->setCellValue('F1', '离校日期');
-    $sheet->setCellValue('G1', '来校事由');
-    $sheet->setCellValue('H1', '预约状态');
-    $sheet->getStyle('A1:H1')->applyFromArray([
+    $sheet->setCellValue('D1', '预约事由');
+    $sheet->setCellValue('E1', '开始时间');
+    $sheet->setCellValue('F1', '结束时间');
+    $sheet->getStyle('A1:F1')->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $titleFontStyle,
       'borders' => $borderStyle,
@@ -406,24 +405,20 @@ class Export extends Controller
     $sheet->getColumnDimension('D')->setWidth(20);
     $sheet->getColumnDimension('E')->setWidth(17);
     $sheet->getColumnDimension('F')->setWidth(17);
-    $sheet->getColumnDimension('G')->setWidth(17);
-    $sheet->getColumnDimension('H')->setWidth(17);
 
     // 添加数据
     $row_index = 2;
     foreach ($data as $key => $value) {
-      $sheet->setCellValue('A'.$row_index, $value['activity_name']);
-      $sheet->setCellValue('B'.$row_index, $value['name']);
+      $sheet->setCellValue('A'.$row_index, $value['name']);
+      $sheet->setCellValue('B'.$row_index, $value['tel']);
       $sheet->setCellValue('C'.$row_index, $value['car_no']);
-      $sheet->setCellValue('D'.$row_index, $value['driver_tel']);
-      $sheet->setCellValue('E'.$row_index, $value['visit_time']);
-      $sheet->setCellValue('F'.$row_index, $value['leave_date']);
-      $sheet->setCellValue('G'.$row_index, $value['visit_reason']);
-      $sheet->setCellValue('H'.$row_index, '审核通过');
+      $sheet->setCellValue('D'.$row_index, $value['reason']);
+      $sheet->setCellValue('E'.$row_index, $value['start_date']);
+      $sheet->setCellValue('F'.$row_index, $value['end_date']);
       $row_index++;
     }
     $row_index--;
-    $sheet->getStyle('A2:H'.$row_index)->applyFromArray([
+    $sheet->getStyle('A2:F'.$row_index)->applyFromArray([
       'alignment' => $centerStyle,
       'font' => $textFontStyle,
       'borders' => $borderStyle,

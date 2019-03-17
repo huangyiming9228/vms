@@ -26,8 +26,9 @@ class Pc extends Controller {
     $data = $_POST;
     $driver_list = $data['driver_list'];
     unset($data['driver_list']);
-    $emp_name = Db::table('employee_list')->where('emp_no', $data['submitter_no'])->value('emp_name');
-    $data['submitter'] = $emp_name;
+    $emp_info = Db::table('employee_list')->where('emp_no', $data['submitter_no'])->find();
+    $data['submitter'] = $emp_info['emp_name'];
+    $data['emp_unit'] = $emp_info['emp_unit'];
     $data['submit_time'] = date('Y-m-d H:i:s');
     $data['status'] = 0;
     $activity_id = Db::table('activity_list')->insertGetId($data);

@@ -69,12 +69,25 @@ $('#list').bootstrapTable({
     title: '结束时间',
     align: 'center',
   }, {
-    field: 'file',
-    title: '附件',
+    field: 'submitter',
+    title: '预约人姓名',
     align: 'center',
-    formatter: (value, row) => {
-      return `<a target="_blank" href="{:url('admin/export/driver_list')}?activity_id=${row.id}">下载</a>`
-    }
+  }, {
+    field: 'submitter_no',
+    title: '预约人工号',
+    align: 'center',
+  }, {
+    field: 'tel',
+    title: '手机号码',
+    align: 'center',
+  }, {
+    field: 'emp_unit',
+    title: '部门',
+    align: 'center',
+  }, {
+    field: 'submit_time',
+    title: '提交审核时间',
+    align: 'center',
   }, {
     field: 'status',
     title: '状态',
@@ -101,14 +114,16 @@ $('#list').bootstrapTable({
         return '-';
       }
     }
-  }, {
-    field: 'look',
-    title: '查看预约名单',
-    align: 'center',
-    formatter: (value, row) => {
-      return `<a href="javascript:;" class="look" data-id="${row.id}">查看</a>`
-    }
-  }, {
+  }
+  // , {
+  //   field: 'look',
+  //   title: '查看预约名单',
+  //   align: 'center',
+  //   formatter: (value, row) => {
+  //     return `<a href="javascript:;" class="look" data-id="${row.id}">查看</a>`
+  //   }
+  // }
+  , {
     field: 'export',
     title: '导出预约名单',
     align: 'center',
@@ -118,54 +133,54 @@ $('#list').bootstrapTable({
   }]
 })
 
-// 绑定预约名单表格数据
-$('#driver-list').bootstrapTable({
-  pageSize: 10,
-  pageList: [10, 25, 50, 100],
-  pagination: true,
-  columns: [{
-    field: 'activity_name',
-    title: '会议名称',
-    align: 'center',
-  }, {
-    field: 'name',
-    title: '预约人姓名',
-    align: 'center',
-  }, {
-    field: 'car_no',
-    title: '车牌号',
-    align: 'center',
-  }, {
-    field: 'driver_tel',
-    title: '司机电话',
-    align: 'center',
-  }, {
-    field: 'visit_time',
-    title: '预约时间',
-    align: 'center',
-    sortable: true,
-  }, {
-    field: 'leave_date',
-    title: '离校日期',
-    align: 'center',
-    sortable: true,
-  }, {
-    field: 'visit_reason',
-    title: '来校事由',
-    align: 'center',
-  }, {
-    field: 'status',
-    title: '预约状态',
-    align: 'center',
-    formatter: (value) => {
-      switch (value) {
-        case 0: return '待审核';
-        case 1: return '审核通过';
-        case 2: return '未通过审核';
-      }
-    },
-  }]
-})
+// // 绑定预约名单表格数据
+// $('#driver-list').bootstrapTable({
+//   pageSize: 10,
+//   pageList: [10, 25, 50, 100],
+//   pagination: true,
+//   columns: [{
+//     field: 'activity_name',
+//     title: '会议名称',
+//     align: 'center',
+//   }, {
+//     field: 'name',
+//     title: '预约人姓名',
+//     align: 'center',
+//   }, {
+//     field: 'car_no',
+//     title: '车牌号',
+//     align: 'center',
+//   }, {
+//     field: 'driver_tel',
+//     title: '司机电话',
+//     align: 'center',
+//   }, {
+//     field: 'visit_time',
+//     title: '预约时间',
+//     align: 'center',
+//     sortable: true,
+//   }, {
+//     field: 'leave_date',
+//     title: '离校日期',
+//     align: 'center',
+//     sortable: true,
+//   }, {
+//     field: 'visit_reason',
+//     title: '来校事由',
+//     align: 'center',
+//   }, {
+//     field: 'status',
+//     title: '预约状态',
+//     align: 'center',
+//     formatter: (value) => {
+//       switch (value) {
+//         case 0: return '待审核';
+//         case 1: return '审核通过';
+//         case 2: return '未通过审核';
+//       }
+//     },
+//   }]
+// })
 
 // 绑定查询事件
 $('#btn-query').on('click', function(e) {
@@ -178,16 +193,16 @@ $('#btn-query').on('click', function(e) {
 });
 
 // 绑定modal弹窗事件
-$('#list').on('click', '.look', function() {
-  const id = $(this).attr('data-id');
-  $.get("{:url('get_activity_drivers')}", { id }, (data) => {
-    data = data.map((item, index) => {
-      return { index: index + 1, ...item };
-    })
-    $('#driver-list').bootstrapTable('load', data);
-  })
-  $('#modal-look-drivers').modal('show');
-})
+// $('#list').on('click', '.look', function() {
+//   const id = $(this).attr('data-id');
+//   $.get("{:url('get_activity_drivers')}", { id }, (data) => {
+//     data = data.map((item, index) => {
+//       return { index: index + 1, ...item };
+//     })
+//     $('#driver-list').bootstrapTable('load', data);
+//   })
+//   $('#modal-look-drivers').modal('show');
+// })
 
 // 绑定导出事件
 $('#list').on('click', '.export', function() {
