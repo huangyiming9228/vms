@@ -75,4 +75,15 @@ class Index extends Controller
       $this->error('密码错误！');
     }
   }
+
+  public function get_muens() {
+    $emp_level = Session::get('emp_level');
+    $menus = Db::table('wx_menu_seek')->where('level', $emp_level)->select();
+    $menus_info = [];
+    foreach ($menus as $key => $value) {
+      $res = Db::table('wx_menus')->where('id', $value['menu_id'])->find();
+      array_push($menus_info, $res);
+    }
+    return $menus_info;
+  }
 }
